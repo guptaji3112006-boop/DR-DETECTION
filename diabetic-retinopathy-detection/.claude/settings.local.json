@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed 's/\"source\":\"//')",
+      "Bash(sed 's/\"source\":\"\\\\s*//')",
+      "Bash(find:*)",
+      "Bash(python3:*)",
+      "Bash(python -c ':*)",
+      "Bash(python:*)",
+      "Bash(pip show:*)",
+      "Bash(pip list:*)",
+      "Bash(conda env:*)",
+      "Bash(where python:*)",
+      "Bash(C:/Users/Priyanka/AppData/Local/Programs/Python/Python310/python.exe:*)",
+      "Bash(/c/Users/Priyanka/diabetic-retinopathy-detection/venv/Scripts/python.exe:*)",
+      "Bash(/c/Users/Priyanka/diabetic-retinopathy-detection/venv/Scripts/pip.exe show:*)",
+      "Bash(/c/Users/Priyanka/anaconda3/python.exe --version)",
+      "Bash(/c/Users/Priyanka/anaconda3/python.exe -c \"import tensorflow as tf; print\\('TF:', tf.__version__\\)\")",
+      "Bash(/c/Users/Priyanka/anaconda3/python.exe:*)",
+      "Bash(ls -la D:/Documents/GitHub/diabetic-retinopathy-detection/.git*)",
+      "Bash(cd /tmp)",
+      "Read(//tmp/**)",
+      "Bash(ls -la /tmp/cell_*.txt)",
+      "Bash(mkdir -p D:/Documents/GitHub/diabetic-retinopathy-detection/netlify-app/public/images)",
+      "Bash(cp D:/Documents/GitHub/diabetic-retinopathy-detection/images/gradcam_sample1.png D:/Documents/GitHub/diabetic-retinopathy-detection/netlify-app/public/images/)",
+      "Bash(cp D:/Documents/GitHub/diabetic-retinopathy-detection/images/gradcam_sample2.png D:/Documents/GitHub/diabetic-retinopathy-detection/netlify-app/public/images/)",
+      "Bash(cp D:/Documents/GitHub/diabetic-retinopathy-detection/images/gradcam_sample3.png D:/Documents/GitHub/diabetic-retinopathy-detection/netlify-app/public/images/)",
+      "Bash(pip install:*)",
+      "WebSearch"
+    ]
+  }
+}
