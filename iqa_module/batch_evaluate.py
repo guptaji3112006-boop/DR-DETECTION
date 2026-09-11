@@ -41,7 +41,11 @@ def run_batch_triage(image_folder):
         })
 
     df = pd.DataFrame(records)
-    csv_path = os.path.join(image_folder, "iqa_triage_report.csv")
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    reports_folder = os.path.join(project_root, "reports")
+    os.makedirs(reports_folder, exist_ok=True)
+
+    csv_path = os.path.join(reports_folder, "iqa_triage_report.csv")
     df.to_csv(csv_path, index=False)
 
     total = len(df)
@@ -60,6 +64,10 @@ def run_batch_triage(image_folder):
 
 if __name__ == "__main__":
     import sys
-    # Defaults to Desktop where sample images are located
-    folder = sys.argv[1] if len(sys.argv) > 1 else r"C:\Users\HP\Desktop"
+    default_dir = (
+        r"C:\Users\HP\Desktop\testing"
+        if os.path.exists(r"C:\Users\HP\Desktop\testing")
+        else r"C:\Users\HP\Desktop"
+    )
+    folder = sys.argv[1] if len(sys.argv) > 1 else default_dir
     run_batch_triage(folder)

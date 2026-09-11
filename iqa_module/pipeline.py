@@ -4,9 +4,11 @@ import cv2
 import numpy as np
 
 try:
+    from .config import IMAGE_SIZE
     from .quality_assessment import load_image, assess_quality, evaluate_quality, extract_fov_mask
     from .enhancement import enhance_retinal_image
 except ImportError:
+    from config import IMAGE_SIZE
     from quality_assessment import load_image, assess_quality, evaluate_quality, extract_fov_mask
     from enhancement import enhance_retinal_image
 
@@ -19,7 +21,6 @@ def process_retinal_image(image_input):
             raise FileNotFoundError(f"Image not found at: {image_input}")
         image = load_image(image_input)
     elif isinstance(image_input, np.ndarray):
-        from config import IMAGE_SIZE
         image = cv2.resize(image_input, IMAGE_SIZE)
     else:
         raise TypeError("Input must be a valid filepath string or numpy array.")
@@ -43,4 +44,5 @@ def process_retinal_image(image_input):
         "clinical_guidance": eval_result.get("clinical_guidance", eval_result.get("reason", "Suboptimal capture; retake recommended.")),
         "metrics": metrics,
         "processed_image": enhanced_image,
+        "enhanced_image": enhanced_image,
     }

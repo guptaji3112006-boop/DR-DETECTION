@@ -1,9 +1,34 @@
 # iqa_module/test_iqa.py
 import os
+import sys
 import glob
-from pipeline import process_retinal_image
 
-image_paths = sorted(glob.glob(r"C:\Users\HP\Desktop\IDRiD_*.jpg"))
+try:
+    from .pipeline import process_retinal_image
+except ImportError:
+    from pipeline import process_retinal_image
+
+if len(sys.argv) > 1:
+    target = sys.argv[1]
+    if os.path.isdir(target):
+        image_paths = sorted(glob.glob(os.path.join(target, "IDRiD_*.jpg")) or glob.glob(os.path.join(target, "*.jpg")))
+    else:
+        image_paths = [target]
+else:
+    search_dirs = [
+        r"C:\Users\HP\Desktop\testing",
+        r"C:\Users\HP\Desktop",
+    ]
+    image_paths = []
+    for d in search_dirs:
+        found = sorted(glob.glob(os.path.join(d, "IDRiD_*.jpg")))
+        if found:
+            image_paths = found
+            break
+
+if not image_paths:
+    print("No sample images found in Desktop or testing folder. Provide path via: python test_iqa.py <path_or_folder>")
+    sys.exit(0)
 
 print("=" * 115)
 print(f"{'IMAGE':<14} | {'STATUS':<6} | {'SCORE':<5} | {'SHARP':<6} | {'BRIGHT':<6} | {'UNIFORM':<7} | {'GLARE':<6} | ACTIONABLE CLINICAL GUIDANCE")

@@ -80,5 +80,10 @@ def generate_visual_report(image_path, output_path=None):
 
 if __name__ == "__main__":
     import sys
-    test_img = sys.argv[1] if len(sys.argv) > 1 else r"C:\Users\HP\Desktop\IDRiD_001.jpg"
+    default_img = (
+        r"C:\Users\HP\Desktop\testing\IDRiD_001.jpg"
+        if os.path.exists(r"C:\Users\HP\Desktop\testing\IDRiD_001.jpg")
+        else r"C:\Users\HP\Desktop\IDRiD_001.jpg"
+    )
+    test_img = sys.argv[1] if len(sys.argv) > 1 else default_img
     generate_visual_report(test_img)

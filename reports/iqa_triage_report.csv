@@ -1,0 +1,9 @@
+Filename,Status,Quality_Score,Sharpness,Brightness,Contrast,FOV_Coverage,Uniformity,Glare_Ratio,Reason,Actionable_Guidance
+IDRiD_001.jpg,PASS,0.925,215.3,102.2,20.3,69.4%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_001_quality_report.png,REJECT,0.755,1883.5,100.5,85.5,80.6%,0.63,19.20%,Corneal flash reflection detected (19.2% glare),Corneal reflection artifact; tilt camera slightly to shift reflection away from macula.
+IDRiD_002.jpg,PASS,0.909,206.8,100.9,18.0,69.3%,0.86,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_003.jpg,REJECT,0.554,85.0,76.6,15.3,69.1%,0.76,0.00%,"Composite quality score (0.55 < 0.6) due to marginal sharpness, suboptimal illumination, low tissue contrast",Hold camera steady and ensure patient fixates on target. | Increase illumination slightly or check pupil alignment. | Clean lens and verify focus.
+IDRiD_003_quality_report.png,REJECT,0.752,1878.5,89.3,85.3,80.9%,0.64,19.03%,Corneal flash reflection detected (19.0% glare),Corneal reflection artifact; tilt camera slightly to shift reflection away from macula.
+IDRiD_004.jpg,PASS,0.921,178.4,90.1,26.8,69.2%,0.72,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_005.jpg,PASS,0.894,208.3,103.2,18.3,69.2%,0.74,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+comparison_001.jpg,PASS,0.965,445.4,105.3,22.7,69.6%,0.92,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
