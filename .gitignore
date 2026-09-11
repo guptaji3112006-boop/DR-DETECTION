@@ -1,6 +1,8 @@
 # Environments
 .env
 .venv
+.venv-model/
+.venv/
 env/
 venv/
 ENV/
@@ -12,6 +14,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
+*.pyc
 .Python
 build/
 develop-eggs/
@@ -64,5 +67,12 @@ Thumbs.db
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
-.venv-model/
 external_data/
+
+# Datasets & Archives
+data/
+idrid/
+*.zip
+
+# Generated Reports & Media
+reports/*.png

@@ -1,0 +1,37 @@
+# ==============================================================================
+# DR-DETECTION: AI Diabetic Retinopathy Screening System
+# Master Project Dependencies (Build With Bharat 2.0)
+# ==============================================================================
+
+# --- Core & Image Processing ---
+numpy
+pandas
+scikit-learn
+scikit-image
+opencv-python
+matplotlib
+Pillow
+
+# --- Deep Learning (TensorFlow / Keras Framework) ---
+tensorflow
+keras
+
+# --- Explainability & Interpretability (Grad-CAM) ---
+tf-keras-vis
+
+# --- Calibration & Scientific Metrics ---
+scipy
+
+# --- Tele-Ophthalmology UI (Member 5) ---
+streamlit
+
+# --- Clinical Report Generation (Member 5) ---
+fpdf2
+reportlab
+
+# --- Deployment & Queue Simulation (Member 4) ---
+simpy
+
+# --- Utilities & Configuration ---
+tqdm
+python-dotenv
