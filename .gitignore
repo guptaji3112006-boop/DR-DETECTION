@@ -1,4 +1,14 @@
+# Python bytecode & cache
 __pycache__/
 *.pyc
+
+# Virtual Environment
 .venv/
+
+# Datasets & Archives
+data/
+idrid/
+*.zip
+
+# Generated Reports & Media
 reports/*.png

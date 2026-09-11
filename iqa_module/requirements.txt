@@ -1,4 +1,32 @@
-opencv-python>=4.8.0
-numpy>=1.24.0
-matplotlib>=3.7.0
-pandas>=2.0.0
+# --- Core & Image Processing ---
+numpy==2.4.6
+pandas==3.0.5
+scikit-learn==1.9.1
+scikit-image==0.26.0
+opencv-python==5.0.0.93
+matplotlib==3.11.1
+Pillow==12.3.0
+
+# --- Deep Learning (TensorFlow / Keras Framework) ---
+tensorflow==2.21.0
+keras==3.15.1
+
+# --- Explainability & Interpretability (Grad-CAM) ---
+tf-keras-vis==0.8.7
+
+# --- Calibration & Scientific Metrics ---
+scipy==1.17.1
+
+# --- Tele-Ophthalmology UI (Member 5) ---
+streamlit==1.63.0
+
+# --- Clinical Report Generation (Member 5) ---
+fpdf2==2.8.8
+reportlab==5.0.1
+
+# --- Deployment & Queue Simulation (Member 4) ---
+simpy==4.1.2
+
+# --- Utilities & Configuration ---
+tqdm==4.70.1
+python-dotenv==1.2.3
