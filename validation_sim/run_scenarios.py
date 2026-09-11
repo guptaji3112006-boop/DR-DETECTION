@@ -1,7 +1,8 @@
+import sys
 from pathlib import Path
-
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(ROOT))
 import pandas as pd
-
 from validation_sim.simpy_model import load_config, run_simulation
 
 
@@ -72,6 +73,7 @@ def main():
         "manual_review_routes",
         "referrals_completed",
         "average_queue_wait_completed_minutes",
+        "p95_queue_wait_completed_minutes",
         "average_total_time_completed_minutes",
         "camera_queue_at_close",
         "ai_queue_at_close",

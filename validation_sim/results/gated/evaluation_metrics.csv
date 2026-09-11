@@ -1,0 +1,4 @@
+subset,count,sensitivity,sensitivity_ci_lower,sensitivity_ci_upper,specificity,specificity_ci_lower,specificity_ci_upper,qwk,tp,tn,fp,fn
+All Successfully Predicted External Images,94,0.9667,0.9212,1.0,0.1176,0.0093,0.2259,0.1694,58,4,30,2
+IQA Accepted Images (Valid Predictions),94,0.9667,0.9212,1.0,0.1176,0.0093,0.2259,0.1694,58,4,30,2
+"IQA Rejected Images (Valid Predictions, Offline)",0,,,,,,,,0,0,0,0

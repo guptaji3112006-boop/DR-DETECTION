@@ -1,5 +1,10 @@
 from pathlib import Path
 
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(ROOT))
+
 import matplotlib
 
 # Save charts without opening a separate desktop window.

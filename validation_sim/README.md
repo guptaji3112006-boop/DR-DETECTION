@@ -1,116 +1,43 @@
-# Validation and Screening Simulation
+# DR Screening Validation Simulation
 
-Member 4 module for the DR Detection project.
+This module performs clinical validation of the Diabetic Retinopathy screening model (Feature 7) and simulates the screening workflow to handle realistic patient load (Feature 8).
 
-## Responsibilities
+## Implementation Status
+- **Cross-Dataset Validation**: Implemented and executable.
+- **Workflow Simulation**: Implemented and executable (SimPy).
+- **Environment**: Reproducible `requirements.txt` unified for model and pipeline.
+- **Dependencies on other members**: 
+  - Depends on Member 1's IQA Module for triage thresholds.
+  - Depends on Member 2's frozen APTOS-trained DR model.
+  - Handoff ready for UI Dashboard integration.
 
-- Evaluate the model on independent labeled datasets.
-- Simulate patient arrivals, image capture, IQA recapture,
-  AI processing, doctor review, and referral routing.
-- Compare screening capacity and waiting times across scenarios.
+## Environment Setup
+Run from the root of the repository:
+```powershell
+python -m venv .venv-model
+.venv-model\Scripts\python.exe -m pip install -r validation_sim/requirements.txt
+```
 
-## Folders
+## Running the Pipeline
+Run the full suite of tests, data validation, metrics generation, and simulations:
+```powershell
+.\validation_sim\run_pipeline.ps1
+```
 
-- config/: Simulation settings.
-- results/: Generated metrics, CSV files, and charts.
+## Dataset Arrangement
+The cross-dataset validation relies on the external `IDRiD` testing set.
+Place it at: `external_data/idrid/images/idrid_full_dataset/idrid/B. Disease Grading/1. Original Images/b. Testing Set`.
+The label manifest should be at: `external_data/idrid/IDRiD_Testing_Labels.csv`.
 
-## Status
+## Evaluation Modes (Baseline vs. Gated)
+- **Baseline**: Passes all test images through the raw DR Model and computes metrics for the whole set, while also silently recording their IQA status.
+- **Gated**: Simulates the true clinical pipeline by running the IQA module first. If an image is flagged as `REJECT`, the classifier inference is skipped (`SKIPPED_BY_GATE`).
 
-Screening simulation, scenario comparison, CSV exports, and
-comparison charts are implemented. Cross-dataset model
-validation is pending.
+## Results and Limitations
+- Outputs are saved in `validation_sim/results/`.
+- Refer to `validation_protocol.md` for strict dataset independence limitations (IDRiD was partially used by Member 1 for IQA tuning, causing potential leakage).
+- **Low Specificity Limitation**: The current frozen DR classifier demonstrates high sensitivity (>95%) but extremely poor specificity (~11%). It generates significant false positives. **This is a known limitation of the model, not a bug in the evaluation pipeline.**
 
-## Run the simulation
-
-Run from the DR-DETECTION repository root:
-
-    python -m validation_sim.simpy_model
-    python -m validation_sim.run_scenarios
-    python -m validation_sim.plot_results
-
-## Scenarios
-
-| Scenario | Patients/hour | Cameras | Reviewers |
-|---|---:|---:|---:|
-| Baseline | 10 | 1 | 1 |
-| High patient load | 20 | 1 | 1 |
-| Extra camera | 20 | 2 | 1 |
-
-Each scenario runs with five random seeds.
-
-## Generated outputs
-
-- results/scenario_runs.csv: Results for individual runs.
-- results/scenario_results.csv: Scenario means and standard deviations.
-- results/patient_records.csv: Simulated patient records at closing.
-- results/scenario_comparison.png: Scenario comparison charts.
-
-## Assumptions
-
-- The screening day lasts 480 minutes.
-- Patient arrival intervals follow an exponential distribution.
-- Capture, IQA, AI processing, and review durations are fixed.
-- The camera remains occupied during IQA.
-- Each patient has at most two capture attempts.
-- Repeated IQA rejection routes to manual review without AI grading.
-- Every patient receives doctor review.
-- Referral uses an assumed probability, not a clinical prediction.
-- Processing stops at closing; unfinished patients form the backlog.
-
-## Interpretation
-
-Waiting-time averages include completed patients only.
-They must be interpreted alongside the closing backlog.
-
-Error bars show standard deviation across simulation runs,
-not confidence intervals.
-
-## Limitations
-
-The timings and probabilities are illustrative assumptions.
-The simulation does not establish clinical accuracy or prove
-real-world district capacity.
-
-Specialist appointment queues and treatment are not modeled.
-
-Cross-dataset model validation is pending.
-
-## Simulation Results
-
-Results below are averages across five runs.
-All scenarios simulate an eight-hour working day.
-
-| Scenario | Mean arrivals | Mean completed | Mean pending at close | Mean queue wait (minutes) |
-|---|---:|---:|---:|---:|
-| Baseline | 82.4 | 80.6 | 1.8 | 2.89 |
-| High patient load | 155.8 | 129.0 | 26.8 | 48.51 |
-| Extra camera | 162.0 | 158.8 | 3.2 | 2.33 |
-
-## Findings
-
-- Under baseline conditions, an average of 80.6 patients
-  completed screening, with 1.8 patients pending at closing.
-
-- Increasing the configured arrival rate from 10 to 20 patients
-  per hour increased the average closing backlog to 26.8 patients.
-  Average queue wait among completed patients rose to 48.51 minutes.
-
-- With two cameras at the same configured high arrival rate,
-  average completed screenings reached 158.8 and the closing
-  backlog fell to 3.2 patients. Average queue wait among completed
-  patients was 2.33 minutes.
-
-- These results suggest that camera capacity is an important
-  bottleneck under the current simulation assumptions.
-
-## Interpretation Notes
-
-- Arrival counts vary because arrivals are randomly simulated.
-  The high-load scenarios have the same configured arrival rate,
-  but their realized patient counts are different.
-
-- Waiting-time averages include completed patients only.
-  Unfinished patients are reported separately as the closing backlog.
-
-- These are simulated operational results, not clinical
-  model-accuracy measurements or verified hospital performance.
+## Simulation Assumptions
+- A patient can have a maximum of 2 image capture attempts (one recapture if the first is rejected by IQA).
+- Referral probability is simulated via static probabilities; they are decoupled from the AI predictions in the simulation context.
