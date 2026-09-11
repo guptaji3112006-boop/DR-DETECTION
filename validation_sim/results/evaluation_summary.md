@@ -1,5 +1,9 @@
 # Cross-Dataset Evaluation Summary
 
+> SUPERSEDED: This is an earlier report.
+> Its "0% data leakage" statement was not verified and is withdrawn.
+> Use the latest timestamped baseline and gated reports instead.
+
 ## Dataset Information
 - **Dataset**: IDRiD Testing Set (Untouched for 0% data leakage)
 - **Total Images**: 103

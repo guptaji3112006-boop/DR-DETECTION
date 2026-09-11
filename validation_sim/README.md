@@ -41,3 +41,17 @@ The label manifest should be at: `external_data/idrid/IDRiD_Testing_Labels.csv`.
 ## Simulation Assumptions
 - A patient can have a maximum of 2 image capture attempts (one recapture if the first is rejected by IQA).
 - Referral probability is simulated via static probabilities; they are decoupled from the AI predictions in the simulation context.
+
+
+## Latest Simulation Results
+
+Averages across five runs of an eight-hour screening day.
+
+| Scenario | Mean completed | Mean pending at close | Mean queue wait (minutes) |
+|---|---:|---:|---:|
+| Baseline | 85.8 | 1.4 | 4.34 |
+| High patient load | 129.6 | 35.8 | 57.86 |
+| Extra camera | 162.2 | 3.2 | 2.80 |
+
+Queue-wait averages include completed patients only.
+These results use simulated arrivals and assumed service times.
