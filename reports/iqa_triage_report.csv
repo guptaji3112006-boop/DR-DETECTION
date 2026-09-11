@@ -1,9 +1,414 @@
 Filename,Status,Quality_Score,Sharpness,Brightness,Contrast,FOV_Coverage,Uniformity,Glare_Ratio,Reason,Actionable_Guidance
 IDRiD_001.jpg,PASS,0.925,215.3,102.2,20.3,69.4%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
-IDRiD_001_quality_report.png,REJECT,0.755,1883.5,100.5,85.5,80.6%,0.63,19.20%,Corneal flash reflection detected (19.2% glare),Corneal reflection artifact; tilt camera slightly to shift reflection away from macula.
 IDRiD_002.jpg,PASS,0.909,206.8,100.9,18.0,69.3%,0.86,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
 IDRiD_003.jpg,REJECT,0.554,85.0,76.6,15.3,69.1%,0.76,0.00%,"Composite quality score (0.55 < 0.6) due to marginal sharpness, suboptimal illumination, low tissue contrast",Hold camera steady and ensure patient fixates on target. | Increase illumination slightly or check pupil alignment. | Clean lens and verify focus.
-IDRiD_003_quality_report.png,REJECT,0.752,1878.5,89.3,85.3,80.9%,0.64,19.03%,Corneal flash reflection detected (19.0% glare),Corneal reflection artifact; tilt camera slightly to shift reflection away from macula.
 IDRiD_004.jpg,PASS,0.921,178.4,90.1,26.8,69.2%,0.72,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
 IDRiD_005.jpg,PASS,0.894,208.3,103.2,18.3,69.2%,0.74,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
-comparison_001.jpg,PASS,0.965,445.4,105.3,22.7,69.6%,0.92,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_006.jpg,PASS,0.836,176.2,83.0,22.6,69.2%,0.73,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_007.jpg,REJECT,0.75,165.5,76.4,24.0,69.1%,0.55,0.00%,Severe uneven illumination (uniformity: 0.55 < 0.60),Pupil shadow detected; realign camera perpendicularly with pupil axis.
+IDRiD_008.jpg,PASS,0.857,197.3,79.9,22.3,69.1%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_009.jpg,PASS,0.647,152.0,67.8,22.3,69.1%,0.62,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_010.jpg,PASS,0.911,174.6,99.5,23.3,69.2%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_011.jpg,PASS,0.803,169.8,86.1,16.7,69.2%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_012.jpg,PASS,0.912,261.6,130.6,22.5,70.0%,0.87,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_013.jpg,PASS,0.947,211.7,126.4,26.4,69.9%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_014.jpg,REJECT,0.457,78.5,62.0,19.5,69.0%,0.72,0.00%,Blur detected (78.5 < 80.0),Patient moved or camera out-of-focus; hold camera steady and refocus.
+IDRiD_015.jpg,PASS,0.89,169.5,104.8,29.7,69.2%,0.62,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_016.jpg,PASS,0.732,109.6,89.8,17.1,69.2%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_017.jpg,PASS,0.731,81.8,93.2,22.6,69.2%,0.74,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_018.jpg,REJECT,0.426,68.0,67.1,13.1,69.1%,0.78,0.00%,Blur detected (68.0 < 80.0),Patient moved or camera out-of-focus; hold camera steady and refocus.
+IDRiD_019.jpg,REJECT,0.341,62.6,54.3,10.3,69.0%,0.85,0.00%,Blur detected (62.6 < 80.0); Image underexposed (54.3 < 60.0); Low tissue contrast (10.3 < 12.0),Patient moved or camera out-of-focus; hold camera steady and refocus. | Lighting too dark; increase camera flash intensity or check pupil dilation. | Possible media opacity (cataract) or dirty lens; verify lens cleanliness.
+IDRiD_020.jpg,PASS,0.958,205.3,117.1,24.1,69.6%,0.78,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_021.jpg,PASS,0.929,213.9,116.5,19.9,69.4%,0.86,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_022.jpg,PASS,0.972,197.0,111.9,24.9,69.3%,0.85,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_023.jpg,PASS,0.925,222.7,95.1,21.9,69.3%,0.71,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_024.jpg,PASS,0.93,215.7,100.5,20.9,69.2%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_025.jpg,REJECT,0.497,133.3,60.7,15.8,69.0%,0.67,0.00%,"Composite quality score (0.50 < 0.6) due to suboptimal illumination, low tissue contrast",Increase illumination slightly or check pupil alignment. | Clean lens and verify focus.
+IDRiD_026.jpg,REJECT,0.475,124.9,60.5,13.9,69.0%,0.75,0.00%,"Composite quality score (0.47 < 0.6) due to marginal sharpness, suboptimal illumination, low tissue contrast",Hold camera steady and ensure patient fixates on target. | Increase illumination slightly or check pupil alignment. | Clean lens and verify focus.
+IDRiD_027.jpg,PASS,0.834,163.9,90.3,18.1,69.1%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_028.jpg,PASS,0.845,181.6,89.2,15.4,69.1%,0.87,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_029.jpg,PASS,0.903,219.4,92.0,18.2,69.1%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_030.jpg,REJECT,0.352,71.4,39.8,10.1,69.0%,0.84,0.00%,Blur detected (71.4 < 80.0); Image underexposed (39.8 < 60.0); Low tissue contrast (10.1 < 12.0),Patient moved or camera out-of-focus; hold camera steady and refocus. | Lighting too dark; increase camera flash intensity or check pupil dilation. | Possible media opacity (cataract) or dirty lens; verify lens cleanliness.
+IDRiD_031.jpg,PASS,0.743,138.4,90.0,12.4,69.2%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_032.jpg,PASS,0.902,177.9,104.0,22.9,69.2%,0.75,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_033.jpg,PASS,0.934,186.1,109.8,24.4,69.4%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_034.jpg,PASS,0.901,250.2,92.6,17.6,69.5%,0.83,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_035.jpg,PASS,0.673,171.5,70.9,17.7,69.2%,0.69,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_036.jpg,PASS,0.88,225.4,119.7,14.8,69.4%,0.89,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_037.jpg,PASS,0.845,141.3,88.7,24.5,69.1%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_038.jpg,PASS,0.955,204.8,123.5,23.3,70.2%,0.91,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_039.jpg,PASS,0.95,203.2,97.3,25.8,69.3%,0.67,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_040.jpg,PASS,0.922,210.4,101.6,20.3,69.2%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_041.jpg,PASS,0.66,113.9,83.4,14.3,69.2%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_042.jpg,PASS,0.754,139.1,86.4,15.5,69.2%,0.91,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_043.jpg,PASS,0.652,156.5,73.9,13.9,69.1%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_044.jpg,PASS,0.821,171.9,84.7,19.6,69.1%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_045.jpg,PASS,0.917,227.4,118.0,18.1,69.4%,0.91,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_046.jpg,PASS,0.934,227.5,129.4,25.4,70.5%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_047.jpg,PASS,0.937,216.5,114.9,22.4,69.4%,0.75,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_048.jpg,PASS,0.899,201.0,89.6,18.3,69.1%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_049.jpg,PASS,0.944,202.3,105.7,23.3,69.4%,0.74,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_050.jpg,PASS,0.923,193.7,110.2,21.3,69.2%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_051.jpg,PASS,0.668,135.7,80.0,14.4,69.1%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_052.jpg,REJECT,0.544,86.6,74.7,15.8,69.1%,0.74,0.00%,"Composite quality score (0.54 < 0.6) due to marginal sharpness, suboptimal illumination, low tissue contrast",Hold camera steady and ensure patient fixates on target. | Increase illumination slightly or check pupil alignment. | Clean lens and verify focus.
+IDRiD_053.jpg,PASS,0.908,229.4,91.8,18.6,69.2%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_054.jpg,PASS,0.899,204.6,103.8,17.9,69.4%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_055.jpg,PASS,0.94,188.6,107.8,23.6,70.1%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_056.jpg,REJECT,0.447,85.8,64.7,13.6,69.1%,0.82,0.00%,"Composite quality score (0.45 < 0.6) due to marginal sharpness, suboptimal illumination, low tissue contrast",Hold camera steady and ensure patient fixates on target. | Increase illumination slightly or check pupil alignment. | Clean lens and verify focus.
+IDRiD_057.jpg,PASS,0.954,277.4,114.4,23.4,69.4%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_058.jpg,PASS,0.869,195.3,82.9,23.3,69.1%,0.69,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_059.jpg,PASS,0.833,133.6,94.0,24.8,69.1%,0.67,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_060.jpg,PASS,0.937,230.6,130.0,29.3,71.5%,0.86,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_061.jpg,PASS,0.939,208.8,129.5,36.0,72.4%,0.85,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_062.jpg,PASS,0.963,205.4,104.1,24.1,69.5%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_063.jpg,PASS,0.825,157.2,89.3,18.1,69.2%,0.83,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_064.jpg,PASS,0.859,154.2,90.4,22.8,69.1%,0.74,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_065.jpg,PASS,0.913,187.2,99.6,21.9,69.3%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_066.jpg,PASS,0.927,218.4,109.2,20.8,69.2%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_067.jpg,PASS,0.885,185.9,93.2,19.8,69.2%,0.75,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_068.jpg,PASS,0.782,174.8,84.5,15.3,69.1%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_069.jpg,PASS,0.917,191.7,87.0,25.7,69.1%,0.71,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_070.jpg,PASS,0.871,192.8,98.3,15.6,69.3%,0.86,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_071.jpg,PASS,0.769,176.1,78.3,20.1,69.1%,0.71,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_072.jpg,PASS,0.752,185.8,76.8,17.6,69.1%,0.74,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_073.jpg,PASS,0.914,238.5,126.1,21.6,69.6%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_074.jpg,PASS,0.917,185.4,99.6,23.5,69.2%,0.72,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_075.jpg,PASS,0.732,134.4,84.0,16.8,69.2%,0.86,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_076.jpg,PASS,0.665,103.6,82.0,18.6,69.1%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_077.jpg,PASS,0.914,197.3,134.5,34.0,70.6%,0.86,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_078.jpg,PASS,0.927,241.8,129.2,28.9,70.6%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_079.jpg,PASS,0.909,211.3,91.1,18.3,69.1%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_080.jpg,PASS,0.921,196.5,91.7,22.4,69.1%,0.69,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_081.jpg,REJECT,0.845,148.9,118.5,49.1,70.2%,0.56,0.00%,Severe uneven illumination (uniformity: 0.56 < 0.60),Pupil shadow detected; realign camera perpendicularly with pupil axis.
+IDRiD_082.jpg,PASS,0.95,194.8,110.9,26.1,69.3%,0.72,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_083.jpg,PASS,0.768,171.6,80.4,17.1,69.1%,0.85,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_084.jpg,PASS,0.654,154.6,68.9,18.8,69.1%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_085.jpg,REJECT,0.5,145.7,57.3,13.7,69.0%,0.72,0.00%,Image underexposed (57.3 < 60.0),Lighting too dark; increase camera flash intensity or check pupil dilation.
+IDRiD_086.jpg,REJECT,0.51,139.8,61.4,13.9,69.1%,0.76,0.00%,"Composite quality score (0.51 < 0.6) due to suboptimal illumination, low tissue contrast",Increase illumination slightly or check pupil alignment. | Clean lens and verify focus.
+IDRiD_087.jpg,PASS,0.856,146.1,92.4,26.2,69.2%,0.67,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_088.jpg,PASS,0.837,169.7,84.4,22.8,69.1%,0.72,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_089.jpg,PASS,0.652,131.7,70.3,19.7,70.6%,0.93,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_090.jpg,REJECT,0.571,86.9,71.9,21.4,69.1%,0.71,0.00%,"Composite quality score (0.57 < 0.6) due to marginal sharpness, suboptimal illumination",Hold camera steady and ensure patient fixates on target. | Increase illumination slightly or check pupil alignment.
+IDRiD_091.jpg,PASS,0.835,172.0,86.9,19.6,69.2%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_092.jpg,PASS,0.895,214.5,89.0,17.3,69.2%,0.87,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_093.jpg,PASS,0.771,188.4,79.2,14.9,69.1%,0.88,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_094.jpg,PASS,0.688,157.7,76.8,15.7,69.1%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_095.jpg,PASS,0.955,221.1,123.8,27.3,71.2%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_096.jpg,PASS,0.853,183.2,92.6,16.2,69.2%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_097.jpg,PASS,0.932,219.6,121.4,20.6,69.9%,0.88,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_098.jpg,PASS,0.787,134.5,96.9,17.4,69.2%,0.85,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_099.jpg,PASS,0.804,134.5,96.5,19.8,69.3%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_100.jpg,PASS,0.73,162.7,79.8,16.9,69.1%,0.74,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_101.jpg,PASS,0.936,206.3,102.1,22.2,69.2%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_102.jpg,PASS,0.929,179.9,110.1,27.3,70.3%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_103.jpg,REJECT,0.667,145.7,69.7,27.8,69.1%,0.55,0.00%,Severe uneven illumination (uniformity: 0.55 < 0.60),Pupil shadow detected; realign camera perpendicularly with pupil axis.
+IDRiD_104.jpg,PASS,0.888,182.8,97.0,19.7,69.2%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_105.jpg,PASS,0.912,186.7,94.3,22.5,69.2%,0.73,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_106.jpg,PASS,0.883,158.5,106.7,23.7,70.3%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_107.jpg,REJECT,0.63,78.4,80.6,22.6,69.3%,0.64,0.00%,Blur detected (78.4 < 80.0),Patient moved or camera out-of-focus; hold camera steady and refocus.
+IDRiD_108.jpg,PASS,0.914,201.7,102.4,18.1,69.3%,0.89,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_109.jpg,PASS,0.724,112.4,103.4,14.4,69.4%,0.89,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_110.jpg,PASS,0.645,90.2,85.5,15.0,69.2%,0.83,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_111.jpg,REJECT,0.515,69.0,74.4,14.3,69.1%,0.88,0.00%,Blur detected (69.0 < 80.0),Patient moved or camera out-of-focus; hold camera steady and refocus.
+IDRiD_112.jpg,PASS,0.908,195.8,91.2,21.1,69.3%,0.7,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_113.jpg,PASS,0.9,190.9,99.8,18.4,69.6%,0.87,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_114.jpg,PASS,0.801,174.0,88.5,12.9,69.3%,0.86,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_115.jpg,PASS,0.856,152.3,86.8,36.4,69.1%,0.78,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_116.jpg,PASS,0.938,238.6,123.5,23.2,69.3%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_117.jpg,PASS,0.887,187.8,95.5,18.6,69.1%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_118.jpg,PASS,0.916,199.5,94.0,19.7,69.3%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_119.jpg,PASS,0.841,166.5,87.8,21.2,69.1%,0.71,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_120.jpg,PASS,0.912,184.0,94.3,22.4,69.2%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_121.jpg,PASS,0.915,200.2,102.5,19.1,69.3%,0.83,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_122.jpg,REJECT,0.537,146.4,61.1,15.7,69.1%,0.77,0.00%,"Composite quality score (0.54 < 0.6) due to suboptimal illumination, low tissue contrast",Increase illumination slightly or check pupil alignment. | Clean lens and verify focus.
+IDRiD_123.jpg,PASS,0.91,197.7,101.6,18.9,69.3%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_124.jpg,REJECT,0.294,42.7,43.7,12.3,69.1%,0.64,0.00%,Blur detected (42.7 < 80.0); Image underexposed (43.7 < 60.0),Patient moved or camera out-of-focus; hold camera steady and refocus. | Lighting too dark; increase camera flash intensity or check pupil dilation.
+IDRiD_125.jpg,PASS,0.869,199.5,89.1,16.3,69.2%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_126.jpg,PASS,0.884,182.2,91.7,18.4,69.2%,0.87,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_127.jpg,REJECT,0.526,103.3,67.4,15.4,69.1%,0.86,0.00%,"Composite quality score (0.53 < 0.6) due to marginal sharpness, suboptimal illumination, low tissue contrast",Hold camera steady and ensure patient fixates on target. | Increase illumination slightly or check pupil alignment. | Clean lens and verify focus.
+IDRiD_128.jpg,PASS,0.959,219.1,119.3,24.1,69.3%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_129.jpg,PASS,0.919,177.8,96.6,24.8,69.5%,0.73,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_130.jpg,REJECT,0.564,153.5,64.0,14.2,69.1%,0.8,0.00%,"Composite quality score (0.56 < 0.6) due to suboptimal illumination, low tissue contrast",Increase illumination slightly or check pupil alignment. | Clean lens and verify focus.
+IDRiD_131.jpg,PASS,0.841,177.8,102.2,15.0,69.4%,0.87,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_132.jpg,PASS,0.8,124.2,100.9,22.1,69.0%,0.74,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_133.jpg,PASS,0.83,123.9,97.7,23.8,71.3%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_134.jpg,PASS,0.903,214.5,90.6,17.7,69.4%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_135.jpg,PASS,0.905,179.7,90.4,23.4,69.3%,0.71,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_136.jpg,REJECT,0.435,86.7,65.9,11.1,69.1%,0.82,0.00%,Low tissue contrast (11.1 < 12.0),Possible media opacity (cataract) or dirty lens; verify lens cleanliness.
+IDRiD_137.jpg,REJECT,0.447,84.5,69.0,8.3,69.2%,0.94,0.00%,Low tissue contrast (8.3 < 12.0),Possible media opacity (cataract) or dirty lens; verify lens cleanliness.
+IDRiD_138.jpg,PASS,0.863,175.4,84.8,25.4,69.2%,0.66,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_139.jpg,PASS,0.684,163.0,70.2,20.9,69.1%,0.69,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_140.jpg,PASS,0.7,164.1,70.7,22.5,69.1%,0.66,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_141.jpg,PASS,0.959,212.8,105.9,24.2,69.3%,0.78,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_142.jpg,PASS,0.712,178.6,73.7,17.9,69.1%,0.71,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_143.jpg,PASS,0.737,191.5,71.6,18.3,69.1%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_144.jpg,PASS,0.953,210.2,98.7,22.8,69.2%,0.83,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_145.jpg,PASS,0.792,205.0,71.3,25.5,69.1%,0.65,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_146.jpg,REJECT,0.512,120.9,51.5,21.6,69.2%,0.56,0.00%,Image underexposed (51.5 < 60.0); Severe uneven illumination (uniformity: 0.56 < 0.60),Lighting too dark; increase camera flash intensity or check pupil dilation. | Pupil shadow detected; realign camera perpendicularly with pupil axis.
+IDRiD_147.jpg,REJECT,0.49,109.0,47.3,19.3,69.0%,0.71,0.00%,Image underexposed (47.3 < 60.0),Lighting too dark; increase camera flash intensity or check pupil dilation.
+IDRiD_148.jpg,REJECT,0.453,115.4,46.6,14.7,69.0%,0.69,0.00%,Image underexposed (46.6 < 60.0),Lighting too dark; increase camera flash intensity or check pupil dilation.
+IDRiD_149.jpg,REJECT,0.475,123.3,49.7,15.2,69.1%,0.71,0.00%,Image underexposed (49.7 < 60.0),Lighting too dark; increase camera flash intensity or check pupil dilation.
+IDRiD_150.jpg,REJECT,0.563,151.3,63.5,16.2,69.1%,0.72,0.00%,"Composite quality score (0.56 < 0.6) due to suboptimal illumination, low tissue contrast",Increase illumination slightly or check pupil alignment. | Clean lens and verify focus.
+IDRiD_151.jpg,REJECT,0.583,160.8,66.2,12.1,69.1%,0.86,0.00%,"Composite quality score (0.58 < 0.6) due to suboptimal illumination, low tissue contrast",Increase illumination slightly or check pupil alignment. | Clean lens and verify focus.
+IDRiD_152.jpg,REJECT,0.54,146.0,60.5,17.9,69.1%,0.68,0.00%,"Composite quality score (0.54 < 0.6) due to suboptimal illumination, low tissue contrast",Increase illumination slightly or check pupil alignment. | Clean lens and verify focus.
+IDRiD_153.jpg,REJECT,0.359,66.0,58.1,13.9,69.1%,0.69,0.00%,Blur detected (66.0 < 80.0); Image underexposed (58.1 < 60.0),Patient moved or camera out-of-focus; hold camera steady and refocus. | Lighting too dark; increase camera flash intensity or check pupil dilation.
+IDRiD_154.jpg,REJECT,0.398,64.9,61.7,14.2,69.1%,0.85,0.00%,Blur detected (64.9 < 80.0),Patient moved or camera out-of-focus; hold camera steady and refocus.
+IDRiD_155.jpg,REJECT,0.55,139.6,55.6,18.1,69.1%,0.83,0.00%,Image underexposed (55.6 < 60.0),Lighting too dark; increase camera flash intensity or check pupil dilation.
+IDRiD_156.jpg,PASS,0.767,121.5,88.5,19.7,69.1%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_157.jpg,REJECT,0.584,154.8,59.5,22.3,69.1%,0.6,0.00%,Image underexposed (59.5 < 60.0); Severe uneven illumination (uniformity: 0.60 < 0.60),Lighting too dark; increase camera flash intensity or check pupil dilation. | Pupil shadow detected; realign camera perpendicularly with pupil axis.
+IDRiD_158.jpg,PASS,0.724,109.0,85.5,21.4,69.1%,0.71,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_159.jpg,REJECT,0.547,145.0,55.4,20.6,69.1%,0.58,0.00%,Image underexposed (55.4 < 60.0); Severe uneven illumination (uniformity: 0.58 < 0.60),Lighting too dark; increase camera flash intensity or check pupil dilation. | Pupil shadow detected; realign camera perpendicularly with pupil axis.
+IDRiD_160.jpg,REJECT,0.537,84.8,72.7,17.1,69.1%,0.74,0.00%,"Composite quality score (0.54 < 0.6) due to marginal sharpness, suboptimal illumination, low tissue contrast",Hold camera steady and ensure patient fixates on target. | Increase illumination slightly or check pupil alignment. | Clean lens and verify focus.
+IDRiD_161.jpg,REJECT,0.546,125.1,57.0,25.2,69.1%,0.52,0.00%,Image underexposed (57.0 < 60.0); Severe uneven illumination (uniformity: 0.52 < 0.60),Lighting too dark; increase camera flash intensity or check pupil dilation. | Pupil shadow detected; realign camera perpendicularly with pupil axis.
+IDRiD_162.jpg,PASS,0.955,201.1,123.9,34.3,72.9%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_163.jpg,PASS,0.914,185.8,88.1,24.0,69.6%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_164.jpg,PASS,0.844,155.4,91.2,20.7,69.3%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_165.jpg,PASS,0.82,162.9,88.5,16.6,69.3%,0.88,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_166.jpg,PASS,0.734,174.2,75.7,17.5,69.1%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_167.jpg,PASS,0.774,197.1,79.6,14.6,69.3%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_168.jpg,REJECT,0.564,150.6,54.0,19.1,69.1%,0.73,0.00%,Image underexposed (54.0 < 60.0),Lighting too dark; increase camera flash intensity or check pupil dilation.
+IDRiD_169.jpg,REJECT,0.662,182.9,60.8,26.1,69.1%,0.57,0.00%,Severe uneven illumination (uniformity: 0.57 < 0.60),Pupil shadow detected; realign camera perpendicularly with pupil axis.
+IDRiD_170.jpg,REJECT,0.546,167.2,55.8,12.2,69.1%,0.88,0.00%,Image underexposed (55.8 < 60.0),Lighting too dark; increase camera flash intensity or check pupil dilation.
+IDRiD_171.jpg,REJECT,0.531,146.6,54.5,17.1,69.1%,0.69,0.00%,Image underexposed (54.5 < 60.0),Lighting too dark; increase camera flash intensity or check pupil dilation.
+IDRiD_172.jpg,PASS,0.73,160.5,74.0,22.6,69.1%,0.71,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_173.jpg,PASS,0.633,154.5,68.9,18.4,69.1%,0.7,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_174.jpg,REJECT,0.587,161.2,63.2,16.6,69.1%,0.75,0.00%,"Composite quality score (0.59 < 0.6) due to suboptimal illumination, low tissue contrast",Increase illumination slightly or check pupil alignment. | Clean lens and verify focus.
+IDRiD_175.jpg,REJECT,0.597,164.7,63.4,18.2,69.1%,0.65,0.00%,Composite quality score (0.60 < 0.6) due to suboptimal illumination,Increase illumination slightly or check pupil alignment.
+IDRiD_176.jpg,PASS,0.702,154.3,70.7,22.6,69.1%,0.78,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_177.jpg,PASS,0.786,121.3,96.7,21.3,69.3%,0.74,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_178.jpg,PASS,0.923,242.0,100.9,20.6,69.1%,0.78,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_179.jpg,REJECT,0.854,241.2,82.0,32.7,69.0%,0.47,0.00%,Severe uneven illumination (uniformity: 0.47 < 0.60),Pupil shadow detected; realign camera perpendicularly with pupil axis.
+IDRiD_180.jpg,PASS,0.94,297.7,100.0,23.8,69.1%,0.68,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_181.jpg,PASS,0.954,286.3,120.0,25.8,69.1%,0.69,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_182.jpg,REJECT,0.792,201.6,75.1,31.7,69.1%,0.44,0.00%,Severe uneven illumination (uniformity: 0.44 < 0.60),Pupil shadow detected; realign camera perpendicularly with pupil axis.
+IDRiD_183.jpg,REJECT,0.928,285.9,105.2,34.6,69.1%,0.52,0.00%,Severe uneven illumination (uniformity: 0.52 < 0.60),Pupil shadow detected; realign camera perpendicularly with pupil axis.
+IDRiD_184.jpg,REJECT,0.744,215.8,70.8,43.9,69.1%,0.36,0.00%,Severe uneven illumination (uniformity: 0.36 < 0.60),Pupil shadow detected; realign camera perpendicularly with pupil axis.
+IDRiD_185.jpg,PASS,0.923,228.5,103.3,20.5,69.2%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_186.jpg,PASS,0.951,238.1,91.6,24.7,69.1%,0.7,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_187.jpg,PASS,0.852,230.1,82.4,22.5,69.1%,0.6,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_188.jpg,PASS,0.953,271.0,98.1,22.2,69.1%,0.87,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_189.jpg,PASS,0.862,198.6,83.2,21.5,69.1%,0.71,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_190.jpg,PASS,0.919,259.7,112.0,17.8,69.1%,0.94,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_191.jpg,PASS,0.922,219.8,122.1,22.6,69.1%,0.7,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_192.jpg,PASS,0.889,299.2,120.1,16.2,69.2%,0.85,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_193.jpg,PASS,0.941,227.6,90.3,21.5,69.1%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_194.jpg,PASS,0.898,234.5,86.1,22.9,69.1%,0.67,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_195.jpg,PASS,0.924,371.1,123.7,22.6,69.1%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_196.jpg,REJECT,0.936,202.6,111.6,36.0,69.1%,0.57,0.00%,Severe uneven illumination (uniformity: 0.57 < 0.60),Pupil shadow detected; realign camera perpendicularly with pupil axis.
+IDRiD_197.jpg,PASS,0.933,256.7,126.0,26.4,69.1%,0.72,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_198.jpg,PASS,0.94,304.2,93.7,23.5,69.1%,0.7,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_199.jpg,PASS,0.877,263.8,83.6,23.3,69.1%,0.65,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_200.jpg,PASS,0.74,223.5,69.2,18.0,69.1%,0.89,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_201.jpg,PASS,0.95,256.7,108.7,23.0,69.1%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_202.jpg,PASS,0.93,262.3,108.5,21.6,69.1%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_203.jpg,PASS,0.932,277.9,113.1,22.2,69.1%,0.73,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_204.jpg,PASS,0.954,308.8,101.5,23.3,69.1%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_205.jpg,PASS,0.96,367.0,99.9,27.5,69.0%,0.73,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_206.jpg,PASS,0.775,156.5,79.2,23.2,69.0%,0.73,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_207.jpg,PASS,0.89,284.7,123.9,18.9,69.1%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_208.jpg,PASS,0.878,239.7,109.7,14.9,69.1%,0.85,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_209.jpg,PASS,0.921,337.2,99.7,19.9,69.1%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_210.jpg,PASS,0.949,232.8,93.1,27.7,69.0%,0.66,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_211.jpg,PASS,0.957,225.6,90.7,26.9,69.0%,0.71,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_212.jpg,PASS,0.959,251.7,95.6,27.2,69.0%,0.72,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_213.jpg,PASS,0.943,210.7,121.1,22.9,69.1%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_214.jpg,PASS,0.809,253.7,134.2,13.1,69.1%,0.91,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_215.jpg,PASS,0.897,232.1,82.9,25.5,69.0%,0.71,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_216.jpg,PASS,0.881,235.7,124.6,17.4,69.1%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_217.jpg,PASS,0.946,303.0,114.7,22.0,69.1%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_218.jpg,PASS,0.97,294.0,100.9,25.4,69.0%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_219.jpg,PASS,0.952,252.5,102.4,22.9,69.1%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_220.jpg,PASS,0.901,246.8,119.5,17.8,69.1%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_221.jpg,PASS,0.969,275.9,93.5,25.9,69.0%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_222.jpg,PASS,0.941,280.2,101.5,22.6,69.1%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_223.jpg,REJECT,0.607,165.8,54.0,23.8,69.0%,0.52,0.00%,Image underexposed (54.0 < 60.0); Severe uneven illumination (uniformity: 0.52 < 0.60),Lighting too dark; increase camera flash intensity or check pupil dilation. | Pupil shadow detected; realign camera perpendicularly with pupil axis.
+IDRiD_224.jpg,PASS,0.947,191.2,97.0,26.9,69.1%,0.75,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_225.jpg,PASS,0.936,307.1,91.6,21.4,69.0%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_226.jpg,PASS,0.933,274.9,106.7,20.6,69.1%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_227.jpg,PASS,0.927,217.7,104.3,20.9,69.1%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_228.jpg,PASS,0.892,215.8,102.2,17.1,69.1%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_229.jpg,PASS,0.952,234.6,106.1,23.7,69.1%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_230.jpg,PASS,0.963,257.5,95.2,25.7,69.1%,0.75,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_231.jpg,PASS,0.946,213.2,114.1,22.0,69.1%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_232.jpg,PASS,0.91,205.2,110.4,18.4,69.1%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_233.jpg,PASS,0.963,336.9,97.9,24.1,69.0%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_234.jpg,PASS,0.927,325.5,94.1,21.1,69.0%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_235.jpg,PASS,0.964,400.7,94.2,27.3,69.0%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_236.jpg,PASS,0.881,188.5,117.0,18.4,69.1%,0.78,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_237.jpg,PASS,0.861,179.5,119.0,17.3,69.1%,0.83,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_238.jpg,PASS,0.887,271.7,82.3,29.2,69.0%,0.68,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_239.jpg,PASS,0.873,169.2,87.0,25.3,69.0%,0.68,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_240.jpg,PASS,0.826,172.3,85.5,18.6,69.0%,0.83,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_241.jpg,PASS,0.917,203.2,112.6,18.5,69.1%,0.88,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_242.jpg,PASS,0.934,216.3,112.6,21.4,69.1%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_243.jpg,PASS,0.944,270.6,103.1,22.5,69.1%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_244.jpg,PASS,0.97,256.0,109.4,25.9,69.1%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_245.jpg,PASS,0.949,198.6,107.2,23.5,69.1%,0.78,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_246.jpg,PASS,0.902,196.5,103.7,18.9,69.1%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_247.jpg,PASS,0.977,211.2,106.6,25.5,69.0%,0.85,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_248.jpg,PASS,0.929,253.6,106.8,21.4,69.1%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_249.jpg,PASS,0.961,275.8,115.7,24.6,69.1%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_250.jpg,PASS,0.874,300.5,125.9,17.6,69.1%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_251.jpg,PASS,0.943,256.0,100.7,22.3,69.0%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_252.jpg,PASS,0.95,209.0,102.4,27.0,69.1%,0.67,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_253.jpg,PASS,0.969,198.1,115.0,24.9,69.1%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_254.jpg,PASS,0.904,226.8,105.5,18.6,69.1%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_255.jpg,PASS,0.958,270.0,90.7,25.5,69.0%,0.72,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_256.jpg,PASS,0.92,326.9,99.1,19.0,69.1%,0.86,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_257.jpg,PASS,0.82,214.0,83.9,14.9,69.0%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_258.jpg,PASS,0.87,272.2,114.3,13.6,69.1%,0.9,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_259.jpg,PASS,0.896,251.0,136.8,27.4,69.1%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_260.jpg,PASS,0.868,244.2,84.3,20.5,69.0%,0.74,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_261.jpg,PASS,0.929,295.1,93.5,20.8,69.1%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_262.jpg,PASS,0.922,333.7,119.7,19.9,69.1%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_263.jpg,PASS,0.897,321.2,111.5,17.2,69.1%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_264.jpg,PASS,0.953,294.9,102.5,24.6,69.1%,0.71,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_265.jpg,PASS,0.913,234.8,121.2,19.8,69.1%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_266.jpg,PASS,0.889,233.8,116.9,16.8,69.1%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_267.jpg,PASS,0.907,262.9,84.3,25.7,69.0%,0.7,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_268.jpg,PASS,0.916,236.7,115.2,19.4,69.1%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_269.jpg,PASS,0.85,206.6,83.7,18.9,69.1%,0.75,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_270.jpg,PASS,0.888,212.5,99.9,15.9,69.1%,0.86,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_271.jpg,PASS,0.895,187.7,87.1,23.1,69.0%,0.73,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_272.jpg,PASS,0.915,230.9,87.9,21.6,69.0%,0.78,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_273.jpg,PASS,0.953,195.5,116.8,27.1,69.1%,0.74,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_274.jpg,REJECT,0.436,104.4,35.8,15.5,69.0%,0.66,0.00%,Image underexposed (35.8 < 60.0),Lighting too dark; increase camera flash intensity or check pupil dilation.
+IDRiD_275.jpg,PASS,0.961,243.6,109.9,24.7,69.1%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_276.jpg,PASS,0.951,331.2,90.7,23.7,69.0%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_277.jpg,PASS,0.883,206.4,104.8,15.9,69.1%,0.83,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_278.jpg,REJECT,0.797,198.6,84.9,11.2,69.0%,0.86,0.00%,Low tissue contrast (11.2 < 12.0),Possible media opacity (cataract) or dirty lens; verify lens cleanliness.
+IDRiD_279.jpg,PASS,0.909,211.3,91.1,18.3,69.1%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_280.jpg,PASS,0.912,228.8,90.4,19.5,69.0%,0.78,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_281.jpg,PASS,0.884,242.9,89.8,16.1,69.0%,0.83,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_282.jpg,PASS,0.931,230.3,117.3,21.2,69.1%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_283.jpg,PASS,0.904,217.6,105.0,18.5,69.1%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_284.jpg,PASS,0.886,212.0,105.1,16.4,69.1%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_285.jpg,PASS,0.962,237.8,99.5,26.6,69.0%,0.75,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_286.jpg,PASS,0.922,230.1,95.5,20.2,69.0%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_287.jpg,PASS,0.936,199.9,110.3,21.8,69.1%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_288.jpg,PASS,0.912,201.8,105.9,19.0,69.0%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_289.jpg,PASS,0.932,210.5,109.2,20.9,69.0%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_290.jpg,PASS,0.966,237.4,105.0,24.5,69.0%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_291.jpg,PASS,0.944,288.2,103.9,23.0,69.0%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_292.jpg,PASS,0.956,347.3,109.2,23.4,69.1%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_293.jpg,PASS,0.916,239.1,110.7,19.7,69.1%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_294.jpg,PASS,0.893,224.3,114.0,16.6,69.1%,0.85,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_295.jpg,PASS,0.951,282.2,101.1,23.3,69.0%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_296.jpg,PASS,0.925,230.7,89.4,20.3,69.0%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_297.jpg,PASS,0.951,283.5,106.8,23.9,69.0%,0.74,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_298.jpg,REJECT,0.811,254.5,74.9,25.5,69.0%,0.58,0.00%,Severe uneven illumination (uniformity: 0.58 < 0.60),Pupil shadow detected; realign camera perpendicularly with pupil axis.
+IDRiD_299.jpg,PASS,0.914,217.1,104.9,18.9,69.1%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_300.jpg,PASS,0.922,257.9,92.2,20.7,69.0%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_301.jpg,PASS,0.931,187.2,106.0,23.6,69.0%,0.78,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_302.jpg,PASS,0.908,194.7,105.9,19.2,69.1%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_303.jpg,PASS,0.874,266.8,125.2,16.2,69.1%,0.89,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_304.jpg,PASS,0.905,225.3,120.5,17.4,69.1%,0.89,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_305.jpg,PASS,0.966,364.8,108.3,24.4,69.1%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_306.jpg,PASS,0.945,254.0,121.4,23.9,69.1%,0.74,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_307.jpg,PASS,0.903,245.0,122.2,18.5,69.1%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_308.jpg,PASS,0.918,246.5,106.2,19.5,69.1%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_309.jpg,PASS,0.904,249.8,103.8,16.3,69.1%,0.94,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_310.jpg,PASS,0.956,223.6,121.1,25.4,69.1%,0.74,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_311.jpg,PASS,0.929,250.8,107.8,21.3,69.1%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_312.jpg,PASS,0.93,295.5,91.8,21.6,69.0%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_313.jpg,PASS,0.914,216.4,114.1,19.3,69.1%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_314.jpg,PASS,0.871,195.6,103.0,15.7,69.1%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_315.jpg,PASS,0.965,215.3,100.3,26.3,69.0%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_316.jpg,PASS,0.944,272.3,118.4,22.4,69.1%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_317.jpg,PASS,0.94,231.0,112.3,21.6,69.1%,0.83,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_318.jpg,PASS,0.945,238.8,97.1,23.0,69.0%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_319.jpg,PASS,0.911,196.3,103.4,20.3,69.2%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_320.jpg,PASS,0.632,114.2,80.3,13.5,69.1%,0.85,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_321.jpg,PASS,0.658,113.3,80.2,18.3,69.1%,0.72,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_322.jpg,PASS,0.649,115.4,76.7,21.2,69.1%,0.63,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_323.jpg,PASS,0.878,173.4,91.3,20.8,69.1%,0.78,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_324.jpg,PASS,0.809,175.5,85.5,16.4,69.1%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_325.jpg,PASS,0.997,240.0,118.0,26.0,69.2%,0.98,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_326.jpg,PASS,0.968,257.7,111.7,30.4,69.2%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_327.jpg,PASS,0.845,181.6,89.2,15.4,69.1%,0.87,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_328.jpg,PASS,0.806,197.7,80.6,15.7,69.1%,0.88,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_329.jpg,PASS,0.906,236.4,111.8,18.2,69.3%,0.83,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_330.jpg,PASS,0.94,217.4,110.0,22.5,69.3%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_331.jpg,PASS,0.928,244.3,108.4,20.4,69.2%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_332.jpg,REJECT,0.777,159.1,95.9,12.0,69.2%,0.86,0.00%,Low tissue contrast (12.0 < 12.0),Possible media opacity (cataract) or dirty lens; verify lens cleanliness.
+IDRiD_333.jpg,PASS,0.917,227.4,118.0,18.1,69.4%,0.91,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_334.jpg,PASS,0.884,203.4,101.5,16.1,69.2%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_335.jpg,PASS,0.901,344.4,136.0,24.1,69.8%,0.85,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_336.jpg,REJECT,0.554,156.0,58.9,16.9,69.0%,0.75,0.00%,Image underexposed (58.9 < 60.0),Lighting too dark; increase camera flash intensity or check pupil dilation.
+IDRiD_337.jpg,REJECT,0.624,159.1,74.4,8.4,69.1%,0.94,0.00%,Low tissue contrast (8.4 < 12.0),Possible media opacity (cataract) or dirty lens; verify lens cleanliness.
+IDRiD_338.jpg,PASS,0.86,180.3,87.0,20.7,69.1%,0.75,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_339.jpg,PASS,0.835,218.9,85.7,14.2,69.1%,0.86,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_340.jpg,PASS,0.88,195.7,101.7,16.3,69.1%,0.83,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_341.jpg,PASS,0.813,181.3,87.5,14.5,69.1%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_342.jpg,PASS,0.963,220.1,122.1,27.7,69.3%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_343.jpg,PASS,0.747,175.5,76.9,18.0,69.1%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_344.jpg,PASS,0.965,235.9,106.9,26.7,69.2%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_345.jpg,PASS,0.928,285.1,88.7,22.0,69.1%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_346.jpg,PASS,0.694,181.6,66.7,22.7,69.0%,0.62,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_347.jpg,PASS,0.912,202.7,99.4,18.9,69.1%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_348.jpg,PASS,0.922,196.7,107.8,20.6,69.2%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_349.jpg,PASS,0.875,230.5,93.4,13.7,69.1%,0.93,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_350.jpg,PASS,0.855,205.5,84.7,15.8,69.1%,0.94,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_351.jpg,PASS,0.924,194.1,112.9,20.0,69.2%,0.9,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_352.jpg,PASS,0.842,150.7,86.5,31.2,69.1%,0.72,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_353.jpg,PASS,0.902,177.2,94.5,22.8,69.1%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_354.jpg,PASS,0.88,264.8,131.4,19.4,69.4%,0.89,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_355.jpg,PASS,0.914,245.0,120.1,18.4,69.3%,0.87,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_356.jpg,PASS,0.882,184.9,97.8,18.5,69.2%,0.83,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_357.jpg,PASS,0.839,175.6,110.5,15.8,69.3%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_358.jpg,PASS,0.68,174.4,69.1,18.8,69.0%,0.74,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_359.jpg,PASS,0.909,186.3,114.6,22.3,69.2%,0.74,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_360.jpg,PASS,0.776,176.5,79.8,19.2,69.1%,0.73,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_361.jpg,PASS,0.871,184.3,102.5,16.3,69.1%,0.91,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_362.jpg,PASS,0.936,224.4,115.2,21.1,69.2%,0.83,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_363.jpg,PASS,0.808,132.3,118.1,20.1,69.3%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_364.jpg,PASS,0.817,155.9,120.2,15.9,69.3%,0.91,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_365.jpg,PASS,0.927,243.8,96.9,21.1,69.1%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_366.jpg,REJECT,0.482,99.4,63.9,14.6,69.1%,0.86,0.00%,"Composite quality score (0.48 < 0.6) due to marginal sharpness, suboptimal illumination, low tissue contrast",Hold camera steady and ensure patient fixates on target. | Increase illumination slightly or check pupil alignment. | Clean lens and verify focus.
+IDRiD_367.jpg,PASS,0.958,219.4,123.6,25.5,69.2%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_368.jpg,PASS,0.909,282.6,133.1,30.9,70.2%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_369.jpg,PASS,0.922,227.7,108.4,19.3,69.2%,0.86,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_370.jpg,PASS,0.862,250.5,98.0,13.5,69.2%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_371.jpg,PASS,0.946,240.7,103.6,26.5,69.2%,0.64,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_372.jpg,PASS,0.934,203.0,99.1,24.1,69.1%,0.62,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_373.jpg,PASS,0.886,192.0,105.5,17.7,69.2%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_374.jpg,REJECT,0.709,183.6,69.7,22.2,69.1%,0.56,0.00%,Severe uneven illumination (uniformity: 0.56 < 0.60),Pupil shadow detected; realign camera perpendicularly with pupil axis.
+IDRiD_375.jpg,PASS,0.914,238.5,126.1,21.6,69.6%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_376.jpg,PASS,0.957,237.9,122.7,26.7,69.8%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_377.jpg,PASS,0.942,206.5,96.5,23.8,69.1%,0.69,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_378.jpg,PASS,0.702,172.4,74.6,17.0,69.1%,0.72,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_379.jpg,PASS,0.925,225.2,88.4,23.4,69.1%,0.69,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_380.jpg,PASS,0.923,244.9,123.0,20.9,69.6%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_381.jpg,PASS,0.911,241.5,117.7,18.6,69.3%,0.83,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_382.jpg,PASS,0.962,223.7,119.2,29.5,69.3%,0.75,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_383.jpg,PASS,0.899,265.7,104.5,16.8,69.2%,0.88,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_384.jpg,PASS,0.851,216.9,77.6,26.0,69.1%,0.7,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_385.jpg,PASS,0.901,197.3,115.1,18.4,69.3%,0.81,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_386.jpg,PASS,0.934,186.1,101.8,25.2,69.1%,0.72,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_387.jpg,PASS,0.885,181.7,89.9,20.1,69.1%,0.78,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_388.jpg,PASS,0.922,211.5,111.9,20.8,69.2%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_389.jpg,PASS,0.705,158.7,72.3,20.2,69.0%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_390.jpg,PASS,0.748,155.6,75.1,24.3,69.1%,0.71,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_391.jpg,PASS,0.929,213.9,116.5,19.9,69.4%,0.86,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_392.jpg,PASS,0.834,159.8,94.0,19.0,69.2%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_393.jpg,PASS,0.914,226.4,114.1,19.9,69.4%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_394.jpg,PASS,0.883,182.1,92.5,17.5,69.1%,0.93,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_395.jpg,PASS,0.962,229.9,118.0,25.9,69.4%,0.75,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_396.jpg,PASS,0.846,141.8,99.1,23.0,69.2%,0.78,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_397.jpg,PASS,0.683,157.5,69.7,22.2,69.0%,0.69,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_398.jpg,PASS,0.817,171.1,95.1,14.4,69.1%,0.83,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_399.jpg,PASS,0.941,240.7,113.2,22.6,69.3%,0.77,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_400.jpg,PASS,0.903,254.7,112.7,17.8,69.2%,0.84,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_401.jpg,PASS,0.875,247.7,109.3,13.9,69.5%,0.91,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_402.jpg,PASS,0.908,223.9,113.5,17.9,69.3%,0.86,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_403.jpg,PASS,0.954,234.0,117.9,24.2,69.3%,0.75,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_404.jpg,PASS,0.926,237.2,131.1,28.5,70.9%,0.82,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_405.jpg,PASS,0.928,201.7,117.6,20.7,69.4%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_406.jpg,PASS,0.899,183.3,86.5,26.1,69.1%,0.71,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_407.jpg,PASS,0.938,200.1,109.7,22.1,69.3%,0.78,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_408.jpg,PASS,0.911,208.1,105.7,19.8,69.3%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_409.jpg,PASS,0.905,192.8,108.2,19.2,69.4%,0.83,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_410.jpg,PASS,0.859,173.0,90.6,18.7,69.2%,0.8,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_411.jpg,PASS,0.887,190.3,95.7,18.6,69.2%,0.79,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_412.jpg,PASS,0.87,185.4,88.1,19.7,69.3%,0.76,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
+IDRiD_413.jpg,PASS,0.606,89.1,74.3,22.8,69.1%,0.68,0.00%,Good clinical quality; suitable for DR grading.,Image accepted. Proceeding to diagnostic classification.
