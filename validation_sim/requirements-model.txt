@@ -1,0 +1,4 @@
+tensorflow==2.16.1
+keras==3.8.0
+numpy==1.26.4
+pillow==10.0.1
