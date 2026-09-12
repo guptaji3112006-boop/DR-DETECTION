@@ -153,6 +153,37 @@ These files are essential for testing, visualization, and deployment.
 
 ## Future Work
 
+## Grading Model Contract
+
+The Flask `/predict` endpoint now uses `grading_model` for lesion-aware ICDR grading and calibrated confidence. The response includes:
+
+```json
+{
+  "severity_grade": 0,
+  "raw_confidence": 0.91,
+  "calibrated_confidence": 0.84,
+  "confidence_flag": "ok"
+}
+```
+
+`severity_grade` is an integer from 0 to 4. The optional multipart field `enhanced_image` accepts Member 1's enhanced image. The optional `lesion_evidence` form field accepts JSON with `microaneurysms`, `hemorrhages`, `exudates`, and `neovascularization` scores in the range 0 to 1.
+
+`confidence_flag` is `"low"` when calibrated confidence is below the threshold, otherwise `"ok"`. Fit calibration on the reserved split with the real APTOS image directory:
+
+```bash
+python scripts/fit_calibration.py --images /path/to/aptos/train_images
+```
+
+This writes `models/calibration.json`, which Flask and `predict.py` load automatically. The low-confidence threshold defaults to `0.60` and can be changed with `DR_LOW_CONFIDENCE_THRESHOLD`.
+
+`scripts/train_model.py` creates deterministic train, validation, calibration, and held-out manifests. Set `DR_TRAIN_IMAGES_DIR` before running it. The existing `.keras` artifact is the trained five-class baseline. The lesion-aware wrapper consumes `enhanced_image` and optional lesion evidence; it is not a substitute for a trained lesion segmentation model. A real two-stage lesion model requires segmentation outputs and lesion-labelled training data from the responsible upstream member.
+
+For packaged inference:
+
+```bash
+python predict.py path/to/fundus.png --enhanced-image path/to/enhanced.png
+```
+
 - Improve recall on severe and proliferative DR through enhanced augmentation and balanced sampling
 - Experiment with transformer-based architectures and ensemble methods
 - Extend interpretability tools to generate textual explanations alongside heatmaps
