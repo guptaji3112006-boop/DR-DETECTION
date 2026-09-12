@@ -1,6 +1,8 @@
 import argparse
 import hashlib
 import json
+import os
+import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -34,6 +36,10 @@ AUDIT_COLUMNS = [
     "predicted_grade",
     "probabilities",
     "raw_confidence",
+    "calibrated_confidence",
+    "calibrated_probabilities",
+    "referable_score",
+    "is_referable",
     "iqa_status",
     "iqa_score",
     "inference_status",
@@ -122,7 +128,10 @@ def calculate_metrics(df, subset_name):
         )
 
     true_binary = (y_true >= REFERABLE_THRESHOLD).astype(int)
-    pred_binary = (y_pred >= REFERABLE_THRESHOLD).astype(int)
+    if "is_referable" in df.columns:
+        pred_binary = df["is_referable"].astype(int).to_numpy()
+    else:
+        pred_binary = (y_pred >= REFERABLE_THRESHOLD).astype(int)
 
     tn, fp, fn, tp = confusion_matrix(
         true_binary,
@@ -174,6 +183,8 @@ def calculate_metrics(df, subset_name):
 
 
 def get_checkpoint_hash(checkpoint_path):
+    if not Path(checkpoint_path).is_file():
+        return "Not found"
     digest = hashlib.sha256()
 
     with Path(checkpoint_path).open("rb") as file:
@@ -182,6 +193,42 @@ def get_checkpoint_hash(checkpoint_path):
 
     return digest.hexdigest()
 
+def get_git_info():
+    try:
+        commit = subprocess.check_output(["git", "rev-parse", "HEAD"], stderr=subprocess.STDOUT).decode("utf-8").strip()
+        status = subprocess.check_output(["git", "status", "--porcelain"], stderr=subprocess.STDOUT).decode("utf-8").strip()
+        return {
+            "commit_sha": commit,
+            "dirty_working_tree": len(status) > 0
+        }
+    except Exception:
+        return {"commit_sha": "unavailable", "dirty_working_tree": "unavailable"}
+
+def get_package_versions():
+    packages = ["tensorflow", "keras", "numpy", "pandas", "scikit-learn", "opencv-python"]
+    versions = {}
+    for pkg in packages:
+        try:
+            import importlib.metadata
+            versions[pkg] = importlib.metadata.version(pkg)
+        except Exception:
+            versions[pkg] = "not_installed"
+    return versions
+
+def get_code_hashes():
+    files_to_hash = [
+        "validation_sim/evaluate.py",
+        "validation_sim/model_adapter.py",
+        "iqa_module/pipeline.py",
+        "iqa_module/config.py",
+        "iqa_module/quality_assessment.py",
+        "iqa_module/enhancement.py"
+    ]
+    hashes = {}
+    for f in files_to_hash:
+        p = ROOT / f
+        hashes[f] = get_checkpoint_hash(p) if p.is_file() else "Not found"
+    return hashes
 
 def save_json(path, data):
     with Path(path).open("w", encoding="utf-8") as file:
@@ -320,7 +367,7 @@ def validate_prediction(prediction):
     ):
         raise ValueError("Raw confidence does not match predicted class.")
 
-    return grade, confidence, probabilities.tolist()
+    return grade, confidence, probabilities.tolist(), prediction.get("calibrated_confidence"), prediction.get("calibrated_probabilities"), prediction.get("referable_score"), prediction.get("is_referable")
 
 
 def main():
@@ -372,9 +419,17 @@ def main():
         "checkpoint_sha256": checkpoint_hash,
         "manifest_sha256": get_checkpoint_hash(args.manifest),
         "referable_grade_threshold": REFERABLE_THRESHOLD,
+        "class_mapping": "0, 1, 2, 3, 4 (argmax of model output)",
         "preprocessing": "Original image, 224x224 RGB, values 0–1",
-        "calibration": "Not available",
+        "calibration": "Fitted on IDRiD Training subset via calibrator.py (Temperature scaling)" if Path("config/calibration.json").exists() else "Unavailable",
         "dataset_independence": "Not independently verified",
+        "thresholding": "Tuned threshold on IDRiD Training set" if Path("config/operating_threshold.json").exists() else "Argmax class >= 2",
+        "environment": {
+            "python_version": sys.version,
+            "packages": get_package_versions()
+        },
+        "git": get_git_info(),
+        "code_hashes": get_code_hashes()
     }
 
     save_json(output_dir / "run_metadata.json", metadata)
@@ -425,6 +480,10 @@ def main():
             "predicted_grade": np.nan,
             "probabilities": "[]",
             "raw_confidence": np.nan,
+            "calibrated_confidence": np.nan,
+            "calibrated_probabilities": "[]",
+            "referable_score": np.nan,
+            "is_referable": np.nan,
             "iqa_status": "NOT_RUN",
             "iqa_score": np.nan,
             "inference_status": "NOT_RUN",
@@ -495,13 +554,17 @@ def main():
             try:
                 prediction = model_adapter.predict(str(image_path))
 
-                grade, confidence, probabilities = validate_prediction(
+                grade, confidence, probabilities, cal_conf, cal_probs, ref_score, is_ref = validate_prediction(
                     prediction
                 )
 
                 record["predicted_grade"] = grade
                 record["raw_confidence"] = confidence
                 record["probabilities"] = json.dumps(probabilities)
+                record["calibrated_confidence"] = cal_conf
+                record["calibrated_probabilities"] = json.dumps(cal_probs) if cal_probs else "[]"
+                record["referable_score"] = ref_score
+                record["is_referable"] = is_ref
                 record["inference_status"] = "SUCCESS"
 
                 counts["valid_predictions"] += 1

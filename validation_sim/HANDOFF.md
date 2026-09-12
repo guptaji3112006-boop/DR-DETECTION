@@ -23,6 +23,28 @@ All simulation and evaluation results are exported to the `validation_sim/result
 - `scenario_runs.csv`: Raw summary metrics per scenario/seed combination.
 
 ## Data Types and Fallbacks
-- **Undefined Values**: Metrics that cannot be computed will appear as `"N/A"`. The UI should NOT cast these to `0`.
-- **Probabilities**: The `probabilities` column is a string representation of a Python list (e.g., `"[0.1, 0.2, 0.5, 0.1, 0.1]"`).
-- **Abstentions (Gated Mode)**: Images rejected by the IQA module in `gated` mode will have an `inference_status` of `SKIPPED_BY_GATE`. Do not assign them a DR grade.
+- **Undefined Values**: Metrics that cannot be computed will appear as `"N/A"`. The UI should NOT cast these to `0`. Missing values / N/A / null must not become zero.
+- **Probabilities**: The `probabilities` column is a string representation of a Python list. Probabilities should be read with a JSON parser, never `eval()`.
+- **Abstentions (Gated Mode)**: Images rejected by the IQA module in `gated` mode will have an `inference_status` of `SKIPPED_BY_GATE`. Do not assign them a DR grade; `SKIPPED_BY_GATE` must have no displayed severity grade.
+- **Confidence**: Missing calibrated confidence should display as unavailable.
+
+
+## Selected Evaluation Runs
+
+Selected runs are identified in `validation_sim/config/selected_runs.json`.
+
+Paths relative to the repository root:
+
+- Baseline: validation_sim/results/baseline/20260912_111803_170834/
+- Gated: validation_sim/results/gated/20260912_111805_221820/
+
+Read `evaluation_metrics.csv`, `prediction_audit.csv`, `execution_counts.json`
+and `run_metadata.json` from the selected run directories.
+Do not mix outputs from different evaluation runs.
+Do not use superseded root-level outputs as current results.
+Evaluation results and simulated workflow results must be clearly distinguished.
+
+Simulation outputs:
+- validation_sim/results/scenario_results.csv
+- validation_sim/results/scenario_runs.csv
+- validation_sim/results/scenario_comparison.png

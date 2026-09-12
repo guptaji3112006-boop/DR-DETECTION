@@ -1,0 +1,14 @@
+{
+  "manifest_total": 103,
+  "attempted": 103,
+  "input_failures": 0,
+  "valid_predictions": 94,
+  "inference_attempted": 94,
+  "inference_failures": 0,
+  "skipped_by_gate": 9,
+  "iqa_pass": 94,
+  "iqa_reject": 9,
+  "iqa_error": 0,
+  "iqa_not_run": 0,
+  "valid_accepted": 94
+}
