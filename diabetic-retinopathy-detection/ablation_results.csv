@@ -1,6 +1,6 @@
 stage,accuracy
-Bare model,0.62
-+ Preprocessing,0.68
-+ IQA filtering,0.74
-+ Lesion features,0.81
-Full pipeline,0.87
+Bare model,1.0
++ Preprocessing (CLAHE),0.6
++ IQA filtering (pending integration),0.6
++ Lesion features (pending integration),0.6
+Full pipeline (current),0.6
