@@ -1,0 +1,6 @@
+stage,accuracy
+Bare model,0.62
++ Preprocessing,0.68
++ IQA filtering,0.74
++ Lesion features,0.81
+Full pipeline,0.87
