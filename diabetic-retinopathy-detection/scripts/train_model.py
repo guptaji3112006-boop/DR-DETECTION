@@ -46,6 +46,7 @@ def create_tf_dataset(dataframe, batch_size=BATCH_SIZE, shuffle=True, augment=Fa
             img = tf.image.random_brightness(img, 0.15)
             img = tf.image.random_contrast(img, 0.9, 1.1)
             img = tf.image.random_saturation(img, 0.9, 1.1)
+            img = tf.clip_by_value(img, 0.0, 1.0)
         return img, label
 
     img_ids = dataframe['id_code'].values
@@ -109,10 +110,10 @@ val_dataset = create_tf_dataset(val_data, shuffle=False, augment=False)
 class_weights = compute_class_weight('balanced', classes=np.unique(train_data['diagnosis']), y=train_data['diagnosis'])
 class_weight_dict = dict(zip(np.unique(train_data['diagnosis']), class_weights))
 
-# Compile model with focal loss
+# Compile model with standard cross-entropy to allow class_weight handling
 improved_model.compile(
     optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001),
-    loss=focal_loss(alpha=0.25, gamma=2.0),
+    loss=tf.keras.losses.SparseCategoricalCrossentropy(),
     metrics=['accuracy']
 )
 
@@ -123,12 +124,13 @@ callbacks = [
 ]
 
 # Train
-print("Starting model training with FOCAL LOSS...")
+print("Starting model training with CLASS WEIGHTS...")
 history = improved_model.fit(
     train_dataset,
     epochs=EPOCHS,
     validation_data=val_dataset,
     callbacks=callbacks,
+    class_weight=class_weight_dict,
     verbose=1
 )
 print("Training completed!")

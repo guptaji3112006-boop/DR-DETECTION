@@ -40,6 +40,17 @@ Full-pipeline (IQA + Classifier) independence on the IDRiD Testing set is not ve
 
 The classifier is reported to have been trained on APTOS. The exact training and tuning manifests, as well as its calibration independence, remain unverified. Classifier training/calibration independence from IDRiD is still pending and has not been independently established.
 
-### Conclusion
-These results represent retrospective external-dataset evaluation of the existing classifier. We do not claim full clinical validation or deployment readiness based on this evaluation. The results reflect the isolated performance of the classifier on an external dataset, but the IQA performance may be optimistically biased due to potential dataset leakage during its tuning phase.
+### e) Classifier Class Imbalance Findings
+A full audit of the classifier's training pipeline (APTOS dataset) revealed a severe class imbalance heavily weighted toward Grade 0 (No DR) and Grade 2 (Moderate DR), with minority classes (Grade 1, Grade 3) significantly underrepresented.
 
+Analysis of the training code (`train_model.py`) identified the following critical defects:
+1. **Unused Class Weights:** Class weights were calculated but not passed to `model.fit()`, causing the model to learn the biased training distribution.
+2. **Invalid Focal Loss Implementation:** A custom focal loss was implemented using a scalar alpha (`0.25`) which scales all classes equally, failing to address class imbalance.
+3. **Destructive Augmentation:** Image augmentation (brightness/contrast) was applied after normalization, but without `tf.clip_by_value(img, 0.0, 1.0)`, resulting in invalid pixel ranges that obscured fine retinal details.
+
+These defects contribute to the classifier's observed behavior (high sensitivity, extremely low specificity) by biasing predictions towards the majority referable class (Grade 2) and destroying the morphological features necessary to distinguish healthy retinas (Grade 0/1) from diseased ones. 
+
+The training script `train_model.py` has been updated in the `experiment/class-weights` branch to resolve these defects (removing the custom focal loss in favor of `SparseCategoricalCrossentropy`, applying `class_weight`, and adding pixel clipping). A full retraining run on the APTOS dataset is required to evaluate the true impact of these changes.
+
+### Conclusion
+These results represent retrospective external-dataset evaluation of the existing classifier. We do not claim full clinical validation or deployment readiness based on this evaluation. The results reflect the isolated performance of the classifier on an external dataset, but the IQA performance may be optimistically biased due to potential dataset leakage during its tuning phase. The classifier's low specificity is likely driven by unresolved class imbalance and destructive preprocessing during its original training run.
