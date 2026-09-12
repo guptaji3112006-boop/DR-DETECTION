@@ -128,7 +128,11 @@ def check_illumination_uniformity(image, mask):
             means.append(float(pts.mean()))
 
     if len(means) < 4:
-        return 1.0
+        # Edge case: If retina is completely absent in one or more quadrants (e.g., severe
+        # decentration or crescent shadow), illumination is by definition non-uniform.
+        # Returning 0.0 ensures the image fails the uniformity threshold (<0.60) instead
+        # of receiving an artificially perfect score.
+        return 0.0
 
     # Ratio of darkest quadrant to brightest quadrant
     uniformity = min(means) / (max(means) + 1e-5)
