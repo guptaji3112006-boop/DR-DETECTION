@@ -1,0 +1,4 @@
+subset,count,sensitivity,sensitivity_ci_lower,sensitivity_ci_upper,specificity,specificity_ci_lower,specificity_ci_upper,qwk,tp,tn,fp,fn,true_grade_0_count,true_grade_1_count,true_grade_2_count,true_grade_3_count,true_grade_4_count
+All Successfully Predicted External Images,94,0.9667,0.8864,0.9908,0.1176,0.0467,0.2662,0.1694,58,4,30,2,30,4,30,19,11
+IQA Accepted Images (Valid Predictions),94,0.9667,0.8864,0.9908,0.1176,0.0467,0.2662,0.1694,58,4,30,2,30,4,30,19,11
+IQA Rejected Images (Offline Analysis Only),0,N/A,N/A,N/A,N/A,N/A,N/A,N/A,0,0,0,0,0,0,0,0,0

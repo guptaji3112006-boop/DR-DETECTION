@@ -1,0 +1,35 @@
+{
+  "time_unit": "minutes",
+  "working_day_minutes": 480,
+  "random_seeds": [42, 43, 44, 45, 46],
+  "defaults": {
+    "capture_time_minutes": 3,
+    "iqa_time_minutes": 0.1,
+    "ai_time_minutes": 0.2,
+    "review_time_minutes": 2,
+    "iqa_rejection_probability": 0.15,
+    "referral_probability": 0.2,
+    "max_capture_attempts": 2,
+    "ai_workers": 1
+  },
+  "scenarios": [
+    {
+      "name": "baseline",
+      "patients_per_hour": 10,
+      "cameras": 1,
+      "reviewers": 1
+    },
+    {
+      "name": "high_patient_load",
+      "patients_per_hour": 20,
+      "cameras": 1,
+      "reviewers": 1
+    },
+    {
+      "name": "extra_camera",
+      "patients_per_hour": 20,
+      "cameras": 2,
+      "reviewers": 1
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+scenario,seed,patients_arrived,completed_screenings,pending_at_close,recapture_attempts_started,manual_review_routes,referrals_completed,average_queue_wait_completed_minutes,p95_queue_wait_completed_minutes,average_total_time_completed_minutes,camera_queue_at_close,ai_queue_at_close,review_queue_at_close
+baseline,42,86,86,0,12,1,17,5.45,21.63,11.18,0,0,0
+baseline,43,79,79,0,14,2,22,2.1,6.79,7.94,0,0,0
+baseline,44,91,88,3,17,2,16,4.33,14.13,10.19,1,0,0
+baseline,45,88,85,3,15,2,17,3.68,13.94,9.52,2,0,0
+baseline,46,92,91,1,18,3,19,6.16,17.77,12.03,0,0,0
+high_patient_load,42,164,129,35,21,1,25,55.66,116.63,61.46,34,0,0
+high_patient_load,43,161,130,31,20,3,35,34.81,67.86,40.58,29,0,0
+high_patient_load,44,176,131,45,19,3,25,68.57,135.56,74.32,43,0,0
+high_patient_load,45,161,132,29,17,3,27,60.49,93.14,66.18,27,0,0
+high_patient_load,46,165,126,39,21,3,26,69.76,165.06,75.57,38,0,0
+extra_camera,42,164,159,5,30,1,28,2.81,9.19,8.68,2,0,0
+extra_camera,43,161,154,7,28,3,41,3.13,13.89,8.97,0,0,3
+extra_camera,44,176,175,1,27,3,34,2.59,8.75,8.37,0,0,0
+extra_camera,45,161,161,0,26,4,34,1.83,6.91,7.62,0,0,0
+extra_camera,46,165,162,3,29,3,38,3.65,11.16,9.5,1,0,0
