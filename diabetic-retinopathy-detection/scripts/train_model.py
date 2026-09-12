@@ -128,6 +128,7 @@ history = improved_model.fit(
     train_dataset,
     epochs=EPOCHS,
     validation_data=val_dataset,
+    class_weight=class_weight_dict,
     callbacks=callbacks,
     verbose=1
 )

@@ -1,0 +1,25 @@
+{
+  "referral_threshold": 0.6199145854740942,
+  "comparison_operator": ">=",
+  "referral_score_definition": "P(grade2) + P(grade3) + P(grade4)",
+  "binary_target": "ICDR grade >= 2 (referable DR proxy)",
+  "selection_rule": "Among operating points with sensitivity >= 90%, maximize specificity",
+  "development_partition_size": 123,
+  "development_metrics": {
+    "sensitivity": 0.9090909090909091,
+    "specificity": 0.4347826086956522,
+    "ppv": 0.7291666666666666,
+    "npv": 0.7407407407407407,
+    "tp": 70,
+    "tn": 20,
+    "fp": 26,
+    "fn": 7,
+    "referral_rate": 0.7804878048780488,
+    "auc_roc": 0.7340485601355167
+  },
+  "target_sensitivity_met": true,
+  "specificity_85_met": false,
+  "calibration_temperature": 13.222009426874244,
+  "label": "DEVELOPMENT SET PERFORMANCE - NOT INDEPENDENT EVALUATION",
+  "created_at": "2026-09-12T19:29:26.529609+05:30"
+}

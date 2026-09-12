@@ -1,0 +1,61 @@
+{
+  "run_id": "20260912_192954_633566",
+  "run_date": "2026-09-12T19:29:54.633566+05:30",
+  "dataset": "IDRiD Testing",
+  "sample_count": 103,
+  "inference_errors": 0,
+  "checkpoint_sha256": "52058ebf6d7a58d940d6b1ffcc7b00c0574a7153cdc5769ad3cd48ca84759b3f",
+  "calibration_temperature": 13.222009426874244,
+  "referral_threshold": 0.6199145854740942,
+  "threshold_comparison": ">=",
+  "referral_score_definition": "P(grade2) + P(grade3) + P(grade4)",
+  "preprocessing": "PIL resize(224,224) RGB /255.0",
+  "binary_metrics": {
+    "tp": 56,
+    "tn": 6,
+    "fp": 33,
+    "fn": 8,
+    "sensitivity": 0.875,
+    "specificity": 0.15384615384615385,
+    "ppv": 0.6292134831460674,
+    "npv": 0.42857142857142855,
+    "referral_rate": 0.8640776699029126
+  },
+  "false_positive_breakdown": {
+    "Grade 0 (No DR)": 28,
+    "Grade 1 (Mild DR)": 5
+  },
+  "false_negative_breakdown": {
+    "Grade 4 (Proliferative DR)": 1,
+    "Grade 3 (Severe DR)": 2,
+    "Grade 2 (Moderate DR)": 5
+  },
+  "five_class_metrics": {
+    "accuracy": 0.3300970873786408,
+    "qwk": 0.15723016313955251
+  },
+  "calibration_metrics_independent": {
+    "nll": 1.629075476499007,
+    "brier": 0.8065050581117039,
+    "ece": 0.11139890314278847
+  },
+  "targets": {
+    "sensitivity_90_met": "False",
+    "specificity_85_met": "False",
+    "both_met": "False"
+  },
+  "test_set_grade_distribution": {
+    "0": 34,
+    "1": 5,
+    "2": 32,
+    "3": 19,
+    "4": 13
+  },
+  "notes": [
+    "This is independent evaluation \u2014 threshold and temperature were frozen before testing.",
+    "IDRiD Testing labels were NOT used for threshold selection or calibration fitting.",
+    "Cross-split duplicate (IDRiD_118 Training / IDRiD_064 Testing) was excluded from development data.",
+    "IQA status not evaluated in this run \u2014 all images processed.",
+    "This is retrospective evaluation, not clinical validation."
+  ]
+}

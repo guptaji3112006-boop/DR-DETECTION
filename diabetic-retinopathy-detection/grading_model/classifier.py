@@ -84,13 +84,65 @@ class LesionAwareSeverityClassifier:
         self.lesion_predictor = lesion_predictor
 
     def _lesion_adjustment(
-    self,
-    lesion_evidence: Mapping[str, float] | None
+        self,
+        lesion_evidence: Mapping[str, float] | None
     ) -> np.ndarray:
-        """Return neutral adjustment until a trained lesion model is connected."""
-        return np.zeros(5, dtype=np.float64)
+        if not lesion_evidence:
+            return np.zeros(5, dtype=np.float64)
+            
+        ex = lesion_evidence.get("exudates", 0.0)
+        hm = lesion_evidence.get("hemorrhages", 0.0)
         
+        adj = np.zeros(5, dtype=np.float64)
+        total_lesions = ex + hm
         
+        if total_lesions < 0.01:
+            adj[2:] -= 1.5
+            adj[0] += 1.0
+        elif total_lesions > 0.05:
+            adj[0] -= 1.5
+            adj[2:] += 1.0
+            
+        return adj
+
+    def _default_lesion_predictor(self, img_input: Any) -> dict[str, float]:
+        img = img_input[0]
+        img_uint8 = (img * 255).astype(np.uint8) if img.max() <= 1.0 else img.astype(np.uint8)
+        h, w = img_uint8.shape[:2]
+
+        r = img_uint8[:, :, 0].astype(np.float32)
+        g = img_uint8[:, :, 1].astype(np.float32)
+        b = img_uint8[:, :, 2].astype(np.float32)
+
+        brightness = (r + g + b) / 3.0
+        bright_lesions = np.clip(brightness - 160, 0, None)
+
+        expected = r * 0.6
+        dark_lesions = np.clip(expected - g - 20, 0, None)
+
+        cx, cy = int(w * 0.60), int(h * 0.50)
+        disc_radius = int(min(h, w) * 0.12)
+        ys, xs = np.ogrid[:h, :w]
+        disc_mask = (xs - cx)**2 + (ys - cy)**2 < disc_radius**2
+        bright_lesions[disc_mask] *= 0.05
+        dark_lesions[disc_mask] *= 0.05
+
+        cy_c, cx_c = h // 2, w // 2
+        retina_r = int(min(h, w) * 0.46)
+        retina_mask = (xs - cx_c)**2 + (ys - cy_c)**2 < retina_r**2
+        bright_lesions[~retina_mask] = 0
+        dark_lesions[~retina_mask] = 0
+
+        retina_area = np.sum(retina_mask)
+        if retina_area == 0: retina_area = 1
+        
+        exudates_score = np.sum(bright_lesions) / (retina_area * 255) * 20
+        hemorrhages_score = np.sum(dark_lesions) / (retina_area * 255) * 20
+        
+        return {
+            "exudates": float(np.clip(exudates_score, 0, 1)),
+            "hemorrhages": float(np.clip(hemorrhages_score, 0, 1))
+        }
 
     def predict(
         self,
@@ -99,8 +151,11 @@ class LesionAwareSeverityClassifier:
         lesion_evidence: Mapping[str, float] | None = None,
     ) -> dict[str, Any]:
         model_input = enhanced_image if enhanced_image is not None else image
-        if lesion_evidence is None and self.lesion_predictor is not None:
-            lesion_evidence = self.lesion_predictor(model_input)
+        if lesion_evidence is None:
+            if self.lesion_predictor is not None:
+                lesion_evidence = self.lesion_predictor(model_input)
+            else:
+                lesion_evidence = self._default_lesion_predictor(model_input)
 
         probabilities = np.asarray(self.model.predict(model_input, verbose=0))
         if probabilities.ndim != 2 or probabilities.shape[1] != 5:
