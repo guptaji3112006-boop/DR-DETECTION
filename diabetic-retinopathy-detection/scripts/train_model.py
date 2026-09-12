@@ -39,14 +39,14 @@ def create_tf_dataset(dataframe, batch_size=BATCH_SIZE, shuffle=True, augment=Fa
         img_path = tf.strings.join([train_images_dir + '/', img_id, '.png'])
         img = tf.io.read_file(img_path)
         img = tf.image.decode_png(img, channels=3)
-        img = tf.cast(img, tf.float32) / 255.0
+        img = tf.cast(img, tf.float32)
         img = tf.image.resize(img, [IMG_SIZE, IMG_SIZE])
         if augment:
             img = tf.image.random_flip_left_right(img)
             img = tf.image.random_brightness(img, 0.15)
             img = tf.image.random_contrast(img, 0.9, 1.1)
             img = tf.image.random_saturation(img, 0.9, 1.1)
-            img = tf.clip_by_value(img, 0.0, 1.0)
+            img = tf.clip_by_value(img, 0.0, 255.0)
         return img, label
 
     img_ids = dataframe['id_code'].values
