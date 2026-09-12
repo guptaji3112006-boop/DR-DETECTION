@@ -1,4 +1,5 @@
 import os
+import json
 os.environ['KERAS_BACKEND'] = 'tensorflow'
 
 import numpy as np
@@ -7,8 +8,10 @@ import keras
 import tensorflow as tf
 import base64
 import io
+import json
 import logging
 from flask import Flask, request, jsonify, render_template_string
+from grading_model import LesionAwareSeverityClassifier
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -19,11 +22,11 @@ RISK_COLORS = ["#10b981", "#10b981", "#f59e0b", "#ef4444", "#ef4444"]
 BAR_COLORS  = ["#10b981", "#06b6d4", "#f59e0b", "#f97316", "#ef4444"]
 
 CLINICAL_DESC = [
-    "No diabetic retinopathy detected. Retinal vasculature appears healthy.",
-    "Early microaneurysms present. No vision-threatening features at this stage.",
-    "Moderate non-proliferative changes detected. Ophthalmology referral within 30 days.",
-    "Severe non-proliferative retinopathy. Urgent referral required within 1 week.",
-    "Proliferative DR confirmed. Immediate specialist intervention required."
+    "No DR predicted by the model. Clinical review is recommended when appropriate.",
+    "Mild DR predicted by the model. Clinical review is recommended when appropriate.",
+    "Moderate DR predicted by the model. Review by a qualified ophthalmologist is recommended.",
+    "Severe DR predicted by the model. Prompt review by a qualified ophthalmologist is recommended.",
+    "Proliferative DR predicted by the model. Prompt specialist review is recommended."
 ]
 
 AI_SUMMARIES = [
@@ -60,6 +63,31 @@ AI_SUMMARIES = [
 ]
 
 model = keras.models.load_model('models/diabetic_retinopathy_model.keras')
+print("MODEL LAYERS:", [(i, l.name, type(l).__name__) for i, l in enumerate(model.layers)])
+
+calibration_path = 'models/calibration.json'
+
+if os.path.exists(calibration_path):
+    with open(calibration_path, 'r') as f:
+        calibration_data = json.load(f)
+    temperature = calibration_data.get('temperature', 1.0)
+else:
+    temperature = 1.0
+grading_classifier = LesionAwareSeverityClassifier(
+    model=model,
+    temperature=temperature,
+    low_confidence_threshold=0.60
+)
+temperature_path = os.getenv('DR_TEMPERATURE_FILE', 'models/calibration.json')
+configured_temperature = float(os.getenv('DR_TEMPERATURE', '1.0'))
+if os.path.exists(temperature_path):
+    with open(temperature_path, 'r', encoding='utf-8') as calibration_file:
+        configured_temperature = float(json.load(calibration_file)['temperature'])
+grading_model = LesionAwareSeverityClassifier(
+  model,
+  temperature=configured_temperature,
+  low_confidence_threshold=float(os.getenv('DR_LOW_CONFIDENCE_THRESHOLD', '0.60')),
+)
 
 # Log model structure at startup to help diagnose Grad-CAM issues
 logging.info("Top-level model layers:")
@@ -83,62 +111,224 @@ def _find_last_conv(layers):
 
 def make_gradcam(img_array, model):
     try:
-        # Find sub-model (e.g. EfficientNet) and last conv layer
-        sub_model = next((l for l in model.layers if hasattr(l, 'layers')), None)
+        # Find EfficientNetB3
+        sub_model = next(
+            (
+                layer
+                for layer in model.layers
+                if isinstance(layer, tf.keras.Model)
+                and "efficientnet" in layer.name.lower()
+            ),
+            None
+        )
 
-        if sub_model is not None:
-            last_conv = _find_last_conv(sub_model.layers)
-            grad_model = tf.keras.Model(
-                inputs=sub_model.inputs,
-                outputs=[last_conv.output, sub_model.output]
-            )
-        else:
-            # Flat model — search top-level layers
-            last_conv = _find_last_conv(model.layers)
-            grad_model = tf.keras.Model(
-                inputs=model.inputs,
-                outputs=[last_conv.output, model.output]
-            )
+        if sub_model is None:
+            logging.warning("Grad-CAM: EfficientNetB3 not found")
+            return None
+
+        # Find last convolution layer
+        last_conv = _find_last_conv(sub_model.layers)
 
         if last_conv is None:
-            logging.warning("Grad-CAM: no Conv2D layer found in model")
+            logging.warning("Grad-CAM: no convolution layer found")
             return None
+
+        logging.info(
+            "Grad-CAM using sub-model=%s, conv=%s",
+            sub_model.name,
+            last_conv.name
+        )
+
+        # Create a model that gives:
+        # 1. Last convolution feature maps
+        # 2. EfficientNet output
+        feature_model = tf.keras.Model(
+            inputs=sub_model.input,
+            outputs=[
+                last_conv.output,
+                sub_model.output
+            ]
+        )
+
         with tf.GradientTape() as tape:
-            conv_out, predictions = grad_model(img_array, training=False)
-            pred_class = tf.argmax(predictions[0])
-            class_score = predictions[:, pred_class]
-        grads = tape.gradient(class_score, conv_out)
-        pooled = tf.reduce_mean(grads, axis=(0, 1, 2))
-        cam = tf.reduce_sum(tf.multiply(pooled, conv_out[0]), axis=-1).numpy()
-        cam = np.maximum(cam, 0)
-        cam = cam / (cam.max() + 1e-8)
 
+            # EfficientNet forward pass
+            conv_output, x = feature_model(
+                img_array,
+                training=False
+            )
+
+            # Continue through the outer model
+            # after EfficientNet
+            sub_model_index = model.layers.index(sub_model)
+
+            for layer in model.layers[sub_model_index + 1:]:
+                x = layer(x, training=False)
+
+            predictions = x
+
+            # Predicted class
+            predicted_class = tf.argmax(
+                predictions[0]
+            )
+
+            class_score = predictions[:, predicted_class]
+
+        # Gradient of predicted class
+        # with respect to convolution feature maps
+        gradients = tape.gradient(
+            class_score,
+            conv_output
+        )
+
+        if gradients is None:
+            logging.warning(
+                "Grad-CAM: gradients are None"
+            )
+            return None
+
+        # Average gradients over height and width
+        weights = tf.reduce_mean(
+            gradients,
+            axis=(1, 2)
+        )
+
+        # Weighted feature maps
+        cam = tf.reduce_sum(
+            conv_output *
+            weights[:, tf.newaxis, tf.newaxis, :],
+            axis=-1
+        )[0]
+
+        # Keep positive activations
+        cam = tf.maximum(cam, 0)
+
+        cam_max = tf.reduce_max(cam)
+
+        if float(cam_max) == 0:
+            logging.warning(
+                "Grad-CAM: empty activation map"
+            )
+            return None
+
+        cam = cam / cam_max
+        cam = cam.numpy()
+
+        # Resize heatmap
         cam_resized = np.array(
-            Image.fromarray((cam * 255).astype(np.uint8)).resize((224, 224), Image.BILINEAR),
+            Image.fromarray(
+                (cam * 255).astype(np.uint8)
+            ).resize(
+                (224, 224),
+                Image.BILINEAR
+            ),
             dtype=np.float32
-        ) / 255.0  # shape (224, 224), values in [0, 1]
+        ) / 255.0
 
-        # Vectorized HSV->RGB heatmap (hue: 0.67=blue at low activation, 0=red at high)
+        # Create heatmap
         hue = (1.0 - cam_resized) * 0.67
+
         hi = (hue * 6).astype(int) % 6
-        f  = hue * 6 - np.floor(hue * 6)
-        ones  = np.ones_like(f)
+        f = hue * 6 - np.floor(hue * 6)
+
+        ones = np.ones_like(f)
         zeros = np.zeros_like(f)
-        r = np.select([hi==0, hi==1, hi==2, hi==3, hi==4, hi==5], [ones,   1-f,   zeros, zeros, f,     ones ])
-        g = np.select([hi==0, hi==1, hi==2, hi==3, hi==4, hi==5], [f,      ones,  ones,  1-f,   zeros, zeros])
-        b = np.select([hi==0, hi==1, hi==2, hi==3, hi==4, hi==5], [zeros,  zeros, f,     ones,  ones,  1-f  ])
-        heatmap = (np.stack([r, g, b], axis=-1) * 255).astype(np.uint8)
 
-        orig = (img_array[0] * 255).astype(np.uint8)
-        blended = (0.55 * orig + 0.45 * heatmap).astype(np.uint8)
+        r = np.select(
+            [
+                hi == 0,
+                hi == 1,
+                hi == 2,
+                hi == 3,
+                hi == 4,
+                hi == 5
+            ],
+            [
+                ones,
+                1 - f,
+                zeros,
+                zeros,
+                f,
+                ones
+            ]
+        )
 
+        g = np.select(
+            [
+                hi == 0,
+                hi == 1,
+                hi == 2,
+                hi == 3,
+                hi == 4,
+                hi == 5
+            ],
+            [
+                f,
+                ones,
+                ones,
+                1 - f,
+                zeros,
+                zeros
+            ]
+        )
+
+        b = np.select(
+            [
+                hi == 0,
+                hi == 1,
+                hi == 2,
+                hi == 3,
+                hi == 4,
+                hi == 5
+            ],
+            [
+                zeros,
+                zeros,
+                f,
+                ones,
+                ones,
+                1 - f
+            ]
+        )
+
+        heatmap = (
+            np.stack(
+                [r, g, b],
+                axis=-1
+            ) * 255
+        ).astype(np.uint8)
+
+        # Original image
+        orig = (
+            img_array[0] * 255
+        ).astype(np.uint8)
+
+        # Blend
+        blended = (
+            0.55 * orig +
+            0.45 * heatmap
+        ).astype(np.uint8)
+
+        # Convert to Base64
         buf = io.BytesIO()
-        Image.fromarray(blended).save(buf, format='PNG')
-        return base64.b64encode(buf.getvalue()).decode()
-    except Exception as e:
-        logging.warning("Grad-CAM failed: %s", e)
-        return None
 
+        Image.fromarray(
+            blended
+        ).save(
+            buf,
+            format="PNG"
+        )
+
+        return base64.b64encode(
+            buf.getvalue()
+        ).decode()
+
+    except Exception as e:
+        logging.warning(
+            "Grad-CAM failed: %s",
+            e
+        )
+        return None
 
 def img_to_b64(pil_img):
     buf = io.BytesIO()
@@ -398,8 +588,9 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
         </div>
       </div>
       <div class="gradcam-note">
-        The heatmap highlights exactly which regions of the retina influenced the AI classification. Red zones indicate areas of highest model attention &mdash; typically where retinal damage features are detected. This allows clinicians to verify the AI reasoning in seconds, addressing the trust barrier to AI adoption in clinical settings.
-      </div>
+    Red zones indicate regions receiving higher attention from the model during classification. 
+    This visualization provides an additional interpretability signal alongside the model prediction.
+</div>
     </div>
     <!-- Model Performance -->
     <div class="card perf-card">
@@ -572,9 +763,32 @@ def predict():
     image = Image.open(file.stream).resize((224, 224)).convert('RGB')
     img_array = np.array(image).astype('float32') / 255.0
     img_input = np.expand_dims(img_array, axis=0)
+    
 
-    probs = model.predict(img_input, verbose=0)[0]
-    predicted_class = int(np.argmax(probs))
+
+
+
+
+
+    enhanced_file = request.files.get('enhanced_image')
+    enhanced_input = None
+    if enhanced_file is not None and enhanced_file.filename:
+        enhanced_image = Image.open(enhanced_file.stream).resize((224, 224)).convert('RGB')
+        enhanced_input = np.expand_dims(np.array(enhanced_image).astype('float32') / 255.0, axis=0)
+
+    lesion_evidence = None
+    if request.form.get('lesion_evidence'):
+        lesion_evidence = json.loads(request.form['lesion_evidence'])
+
+    grading = grading_classifier.predict(
+        img_input,
+        enhanced_image=enhanced_input,
+        lesion_evidence=lesion_evidence,
+    )
+    print("GRADING OUTPUT:", grading)
+
+    predicted_class = grading['severity_grade']
+    probs = np.asarray(grading['probabilities'], dtype=np.float32)
     summary = AI_SUMMARIES[predicted_class]
 
     orig_b64    = img_to_b64(image)
@@ -582,8 +796,12 @@ def predict():
 
     return jsonify({
         'predicted_class': predicted_class,
+        'severity_grade': grading['severity_grade'],
         'label':           CLASS_LABELS[predicted_class],
-        'confidence':      float(probs[predicted_class]),
+        'confidence':      grading['calibrated_confidence'],
+        'raw_confidence':  grading['raw_confidence'],
+        'calibrated_confidence': grading['calibrated_confidence'],
+        'confidence_flag': grading['confidence_flag'],
         'probabilities':   [float(p) for p in probs],
         'description':     CLINICAL_DESC[predicted_class],
         'ai_summary':      summary['summary'],

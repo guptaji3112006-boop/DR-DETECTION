@@ -1,6 +1,10 @@
+import os
 import numpy as np
+import pandas as pd
 import tensorflow as tf
 import matplotlib.pyplot as plt
+from pathlib import Path
+from sklearn.model_selection import train_test_split
 from sklearn.utils.class_weight import compute_class_weight
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
@@ -8,7 +12,12 @@ from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 EPOCHS = 15
 BATCH_SIZE = 32
 IMG_SIZE = 224
-train_images_dir = '/kaggle/input/aptos2019-blindness-detection/train_images'
+train_images_dir = os.getenv(
+    'DR_TRAIN_IMAGES_DIR',
+    '/kaggle/input/aptos2019-blindness-detection/train_images',
+)
+CSV_PATH = Path(__file__).resolve().parents[1] / 'data' / 'train.csv'
+MODEL_DIR = Path(__file__).resolve().parents[1] / 'models'
 
 # Focal Loss Implementation
 def focal_loss(alpha=0.25, gamma=2.0):
@@ -48,7 +57,51 @@ def create_tf_dataset(dataframe, batch_size=BATCH_SIZE, shuffle=True, augment=Fa
     dataset = dataset.batch(batch_size).prefetch(tf.data.AUTOTUNE)
     return dataset
 
-# Assuming train_data and val_data are preloaded DataFrames
+if not Path(train_images_dir).exists():
+    raise FileNotFoundError(
+        'Set DR_TRAIN_IMAGES_DIR to the APTOS train_images directory '
+        f'(missing: {train_images_dir})'
+    )
+
+if not CSV_PATH.exists():
+    raise FileNotFoundError(f'Training labels not found: {CSV_PATH}')
+
+all_data = pd.read_csv(CSV_PATH)
+train_data, heldout_data = train_test_split(
+    all_data,
+    test_size=0.20,
+    stratify=all_data['diagnosis'],
+    random_state=42,
+)
+train_data, val_data = train_test_split(
+    train_data,
+    test_size=0.20,
+    stratify=train_data['diagnosis'],
+    random_state=42,
+)
+
+inputs = tf.keras.Input(shape=(IMG_SIZE, IMG_SIZE, 3))
+backbone = tf.keras.applications.EfficientNetB3(
+    include_top=False,
+    weights='imagenet',
+    input_tensor=inputs,
+)
+backbone.trainable = True
+x = tf.keras.layers.GlobalAveragePooling2D()(backbone.output)
+x = tf.keras.layers.Dropout(0.3)(x)
+outputs = tf.keras.layers.Dense(5, activation='softmax')(x)
+improved_model = tf.keras.Model(inputs, outputs)
+
+# The four-way split is deterministic; calibration fitting is run separately.
+MODEL_DIR.mkdir(exist_ok=True)
+for name, frame in {
+    'train': train_data,
+    'validation': val_data,
+    'calibration': heldout_data.iloc[:len(heldout_data) // 2],
+    'heldout_test': heldout_data.iloc[len(heldout_data) // 2:],
+}.items():
+    frame.to_csv(MODEL_DIR / f'{name}_split.csv', index=False)
+
 train_dataset = create_tf_dataset(train_data, shuffle=True, augment=True)
 val_dataset = create_tf_dataset(val_data, shuffle=False, augment=False)
 
@@ -117,7 +170,7 @@ print(f"Best Training Accuracy: {final_train_acc:.4f}")
 print(f"Best Validation Accuracy: {final_val_acc:.4f}")
 
 # Save model with custom and standard loss
-model_save_path = '/kaggle/working/diabetic_retinopathy_model.h5'
+model_save_path = str(MODEL_DIR / 'diabetic_retinopathy_model.h5')
 improved_model.save(model_save_path)
 print(f"Model saved to: {model_save_path}")
 
@@ -127,6 +180,6 @@ improved_model.compile(
     metrics=['accuracy']
 )
 
-keras_model_path = '/kaggle/working/diabetic_retinopathy_model.keras'
+keras_model_path = str(MODEL_DIR / 'diabetic_retinopathy_model.keras')
 improved_model.save(keras_model_path)
 print(f"Keras model saved to: {keras_model_path}")
