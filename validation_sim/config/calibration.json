@@ -1,0 +1,8 @@
+{
+  "temperature": 11.87756415148809,
+  "fitted_status": true,
+  "checkpoint_hash": "b2069ed07d2c31e9c5ed104e79391ab1e71ab85295cfccf00cf05cdaaf7284b8",
+  "calibration_manifest_hash": "a52b82b973ebfe9dda8e8c12fb61cc33bf1322afec5d3f04148f15ae8ce9f862",
+  "sample_count": 413,
+  "preprocessing_identity": "duplicate_div255_rgb_224x224"
+}

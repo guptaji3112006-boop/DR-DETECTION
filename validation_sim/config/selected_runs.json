@@ -1,0 +1,5 @@
+{
+  "baseline_run": "validation_sim/results/baseline/20260912_111803_170834/",
+  "gated_run": "validation_sim/results/gated/20260912_111805_221820/",
+  "simulation_results_dir": "validation_sim/results/"
+}

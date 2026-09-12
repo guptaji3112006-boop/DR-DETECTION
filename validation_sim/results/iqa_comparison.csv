@@ -1,0 +1,104 @@
+sample_id,old_quality_score,new_quality_score,old_uniformity,new_uniformity,old_status,new_status,old_reason,new_reason,has_changed
+IDRiD_Testing_IDRiD_001.jpg,0.292,0.292,0.763,0.763,REJECT,REJECT,Blur detected (53.5 < 80.0); Image underexposed (39.9 < 60.0); Low tissue contrast (8.4 < 12.0),Blur detected (53.5 < 80.0); Image underexposed (39.9 < 60.0); Low tissue contrast (8.4 < 12.0),False
+IDRiD_Testing_IDRiD_002.jpg,0.443,0.443,0.594,0.594,REJECT,REJECT,Image underexposed (60.0 < 60.0); Severe uneven illumination (uniformity: 0.59 < 0.60),Image underexposed (60.0 < 60.0); Severe uneven illumination (uniformity: 0.59 < 0.60),False
+IDRiD_Testing_IDRiD_003.jpg,0.639,0.639,0.781,0.781,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_004.jpg,0.932,0.932,0.718,0.718,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_005.jpg,0.679,0.679,0.698,0.698,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_006.jpg,0.845,0.845,0.813,0.813,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_007.jpg,0.85,0.85,0.82,0.82,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_008.jpg,0.908,0.908,0.927,0.927,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_009.jpg,0.604,0.604,0.788,0.788,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_010.jpg,0.926,0.926,0.68,0.68,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_011.jpg,0.817,0.817,0.861,0.861,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_012.jpg,0.896,0.896,0.869,0.869,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_013.jpg,0.884,0.884,0.892,0.892,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_014.jpg,0.893,0.893,0.911,0.911,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_015.jpg,0.853,0.853,0.783,0.783,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_016.jpg,0.781,0.781,0.737,0.737,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_017.jpg,0.735,0.735,0.755,0.755,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_018.jpg,0.938,0.938,0.814,0.814,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_019.jpg,0.905,0.905,0.905,0.905,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_020.jpg,0.917,0.917,0.814,0.814,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_021.jpg,0.893,0.893,0.894,0.894,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_022.jpg,0.905,0.905,0.786,0.786,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_023.jpg,0.913,0.913,0.831,0.831,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_024.jpg,0.486,0.486,0.897,0.897,REJECT,REJECT,Blur detected (72.7 < 80.0); Low tissue contrast (9.9 < 12.0),Blur detected (72.7 < 80.0); Low tissue contrast (9.9 < 12.0),False
+IDRiD_Testing_IDRiD_025.jpg,0.927,0.927,0.802,0.802,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_026.jpg,0.901,0.901,0.895,0.895,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_027.jpg,0.962,0.962,0.767,0.767,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_028.jpg,0.907,0.907,0.722,0.722,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_029.jpg,0.899,0.899,0.862,0.862,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_030.jpg,0.933,0.933,0.792,0.792,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_031.jpg,0.898,0.898,0.783,0.783,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_032.jpg,0.921,0.921,0.703,0.703,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_033.jpg,0.886,0.886,0.887,0.887,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_034.jpg,0.926,0.926,0.77,0.77,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_035.jpg,0.944,0.944,0.78,0.78,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_036.jpg,0.918,0.918,0.774,0.774,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_037.jpg,0.917,0.917,0.726,0.726,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_038.jpg,0.787,0.787,0.825,0.825,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_039.jpg,0.786,0.786,0.727,0.727,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_040.jpg,0.885,0.885,0.791,0.791,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_041.jpg,0.943,0.943,0.876,0.876,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_042.jpg,0.891,0.891,0.792,0.792,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_043.jpg,0.965,0.965,0.764,0.764,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_044.jpg,0.951,0.951,0.721,0.721,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_045.jpg,0.884,0.884,0.907,0.907,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_046.jpg,0.978,0.978,0.85,0.85,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_047.jpg,0.908,0.908,0.852,0.852,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_048.jpg,0.927,0.927,0.851,0.851,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_049.jpg,0.768,0.768,0.697,0.697,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_050.jpg,0.893,0.893,0.877,0.877,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_051.jpg,0.589,0.589,0.695,0.695,REJECT,REJECT,"Composite quality score (0.59 < 0.6) due to suboptimal illumination, low tissue contrast","Composite quality score (0.59 < 0.6) due to suboptimal illumination, low tissue contrast",False
+IDRiD_Testing_IDRiD_052.jpg,0.905,0.905,0.897,0.897,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_053.jpg,0.876,0.876,0.805,0.805,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_054.jpg,0.962,0.962,0.749,0.749,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_055.jpg,0.893,0.893,0.821,0.821,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_056.jpg,0.938,0.938,0.743,0.743,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_057.jpg,0.861,0.861,0.805,0.805,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_058.jpg,0.82,0.82,0.725,0.725,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_059.jpg,0.869,0.869,0.926,0.926,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_060.jpg,0.922,0.922,0.814,0.814,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_061.jpg,0.892,0.892,0.759,0.759,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_062.jpg,0.901,0.901,0.86,0.86,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_063.jpg,0.964,0.964,0.763,0.763,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_064.jpg,0.916,0.916,0.8,0.8,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_065.jpg,0.943,0.943,0.788,0.788,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_066.jpg,0.718,0.718,0.754,0.754,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_067.jpg,0.848,0.848,0.764,0.764,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_068.jpg,0.914,0.914,0.765,0.765,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_069.jpg,0.676,0.676,0.802,0.802,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_070.jpg,0.938,0.938,0.805,0.805,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_071.jpg,0.561,0.561,0.614,0.614,REJECT,REJECT,Image underexposed (56.6 < 60.0),Image underexposed (56.6 < 60.0),False
+IDRiD_Testing_IDRiD_072.jpg,0.726,0.726,0.779,0.779,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_073.jpg,0.583,0.583,0.864,0.864,REJECT,REJECT,"Composite quality score (0.58 < 0.6) due to marginal sharpness, suboptimal illumination, low tissue contrast","Composite quality score (0.58 < 0.6) due to marginal sharpness, suboptimal illumination, low tissue contrast",False
+IDRiD_Testing_IDRiD_074.jpg,0.851,0.851,0.759,0.759,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_075.jpg,0.942,0.942,0.618,0.618,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_076.jpg,0.783,0.783,0.843,0.843,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_077.jpg,0.896,0.896,0.685,0.685,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_078.jpg,0.908,0.908,0.788,0.788,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_079.jpg,0.915,0.915,0.834,0.834,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_080.jpg,0.961,0.961,0.746,0.746,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_081.jpg,0.841,0.841,0.856,0.856,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_082.jpg,0.668,0.668,0.774,0.774,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_083.jpg,0.843,0.843,0.762,0.762,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_084.jpg,0.888,0.888,0.719,0.719,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_085.jpg,0.914,0.914,0.818,0.818,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_086.jpg,0.911,0.911,0.889,0.889,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_087.jpg,0.752,0.752,0.671,0.671,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_088.jpg,0.927,0.927,0.751,0.751,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_089.jpg,0.891,0.891,0.722,0.722,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_090.jpg,0.918,0.918,0.802,0.802,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_091.jpg,0.665,0.665,0.812,0.812,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_092.jpg,0.368,0.368,0.651,0.651,REJECT,REJECT,Blur detected (67.9 < 80.0); Image underexposed (50.5 < 60.0),Blur detected (67.9 < 80.0); Image underexposed (50.5 < 60.0),False
+IDRiD_Testing_IDRiD_093.jpg,0.588,0.588,0.896,0.896,REJECT,REJECT,Low tissue contrast (11.0 < 12.0),Low tissue contrast (11.0 < 12.0),False
+IDRiD_Testing_IDRiD_094.jpg,0.768,0.768,0.854,0.854,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_095.jpg,0.768,0.768,0.656,0.656,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_096.jpg,0.783,0.783,0.814,0.814,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_097.jpg,0.735,0.735,0.773,0.773,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_098.jpg,0.357,0.357,0.686,0.686,REJECT,REJECT,Blur detected (51.9 < 80.0); Image underexposed (45.5 < 60.0),Blur detected (51.9 < 80.0); Image underexposed (45.5 < 60.0),False
+IDRiD_Testing_IDRiD_099.jpg,0.929,0.929,0.842,0.842,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_100.jpg,0.647,0.647,0.778,0.778,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_101.jpg,0.689,0.689,0.73,0.73,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_102.jpg,0.806,0.806,0.939,0.939,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False
+IDRiD_Testing_IDRiD_103.jpg,0.817,0.817,0.759,0.759,PASS,PASS,Good clinical quality; suitable for DR grading.,Good clinical quality; suitable for DR grading.,False

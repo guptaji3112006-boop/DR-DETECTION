@@ -1,0 +1,9 @@
+{
+  "run_date": "2026-09-12T10:30:24.262861",
+  "status": "SUCCESS",
+  "train_count": 413,
+  "test_count": 103,
+  "exact_duplicates_found": 1,
+  "errors": [],
+  "note": "No matching hashes does not exclude re-encoded copies, same-patient overlap, or tuning exposure."
+}

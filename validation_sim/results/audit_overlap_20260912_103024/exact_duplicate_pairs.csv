@@ -1,0 +1,2 @@
+sha256,image_name_train,relative_path_train,true_grade_train,image_name_test,relative_path_test,true_grade_test
+505330878f4d4186a71b8001570100b82b6b05cb431e81e2c259d8c584314708,IDRiD_118.jpg,IDRiD_118.jpg,0,IDRiD_064.jpg,IDRiD_064.jpg,3

@@ -24,6 +24,22 @@ CLASS_NAMES = [
     "Proliferative DR",
 ]
 
+# Load configurations if they exist
+try:
+    with open(ROOT / "validation_sim" / "config" / "operating_threshold.json") as f:
+        config = json.load(f)
+        OPERATING_THRESHOLD = config.get("referral_threshold", None)
+except Exception:
+    OPERATING_THRESHOLD = None
+
+try:
+    with open(ROOT / "validation_sim" / "config" / "calibration.json") as f:
+        config = json.load(f)
+        TEMPERATURE = config.get("temperature", 1.0)
+except Exception:
+    TEMPERATURE = 1.0
+
+
 
 class DRModelAdapter:
     def __init__(self, model_path=DEFAULT_MODEL):
@@ -86,6 +102,29 @@ class DRModelAdapter:
             raise ValueError("Invalid class probabilities.")
 
         grade = int(np.argmax(probabilities))
+        
+        # Calibration
+        if TEMPERATURE != 1.0:
+            eps = 1e-7
+            probs_clipped = np.clip(probabilities, eps, 1.0 - eps)
+            logits = np.log(probs_clipped)
+            scaled_logits = logits / TEMPERATURE
+            exp_logits = np.exp(scaled_logits - np.max(scaled_logits))
+            scaled_probs = exp_logits / np.sum(exp_logits)
+            calibrated_probabilities = scaled_probs.tolist()
+            calibrated_confidence = float(scaled_probs[grade])
+            confidence_flag = "calibrated"
+        else:
+            calibrated_probabilities = probabilities.tolist()
+            calibrated_confidence = None
+            confidence_flag = "not_calibrated"
+            
+        # Operating Threshold
+        referable_score = sum(calibrated_probabilities[2:])
+        if OPERATING_THRESHOLD is not None:
+            is_referable = bool(referable_score >= OPERATING_THRESHOLD)
+        else:
+            is_referable = bool(grade >= 2)
 
         return {
             "image_name": Path(image_path).name,
@@ -93,8 +132,11 @@ class DRModelAdapter:
             "label": CLASS_NAMES[grade],
             "raw_confidence": float(probabilities[grade]),
             "probabilities": probabilities.tolist(),
-            "calibrated_confidence": None,
-            "confidence_flag": "not_calibrated",
+            "calibrated_confidence": calibrated_confidence,
+            "calibrated_probabilities": calibrated_probabilities,
+            "confidence_flag": confidence_flag,
+            "referable_score": float(referable_score),
+            "is_referable": is_referable,
         }
 
 

@@ -1,0 +1,35 @@
+{
+  "run_id": "20260912_111717_018436",
+  "run_date": "2026-09-12T11:17:17.117540+05:30",
+  "mode": "baseline",
+  "checkpoint_sha256": "52058ebf6d7a58d940d6b1ffcc7b00c0574a7153cdc5769ad3cd48ca84759b3f",
+  "manifest_sha256": "0a9d074b0eb79b821b9a9be50349361f3ace648820072e0e6f5339fcba1e264f",
+  "referable_grade_threshold": 2,
+  "class_mapping": "0, 1, 2, 3, 4 (argmax of model output)",
+  "preprocessing": "Original image, 224x224 RGB, values 0\u20131",
+  "calibration": "Unavailable",
+  "dataset_independence": "Not independently verified",
+  "environment": {
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "packages": {
+      "tensorflow": "2.16.1",
+      "keras": "3.8.0",
+      "numpy": "1.26.4",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.1",
+      "opencv-python": "4.11.0.86"
+    }
+  },
+  "git": {
+    "commit_sha": "34a60318e84741caa52f2e8ce246d16e47646594",
+    "dirty_working_tree": true
+  },
+  "code_hashes": {
+    "validation_sim/evaluate.py": "7a3b74134fa0d789afbfde1b626cc0dc6027b62bc9dcb01abc9d21f261b34e51",
+    "validation_sim/model_adapter.py": "52dc3021963f6d0824f4dc1d7a55aa89ee0aa6ba4422f1d413226e7f98b56bed",
+    "iqa_module/pipeline.py": "b8bf745ca1535ffd4cdca1e66c211c52fe49c68972af0f8000c9841d51978795",
+    "iqa_module/config.py": "59605c4638e0948b4823a6b2cdd4e3ec3586db14994cfdfa2d040dade6342c31",
+    "iqa_module/quality_assessment.py": "e4c0bf25aa7fe05abd9cd8aac53d36f2c55dd7797ac66cacaab91abee395138e",
+    "iqa_module/enhancement.py": "fb74162007a25a033c69533f562022696aa2b4ec1fe95af5bfec95186f4e0ded"
+  }
+}
