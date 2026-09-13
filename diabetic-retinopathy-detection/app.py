@@ -140,7 +140,7 @@ def _find_last_conv(layers):
     return None
 
 
-def make_gradcam(img_array, model):
+def make_gradcam(img_array, model, target_class):
     try:
         # Find EfficientNetB3
         sub_model = next(
@@ -198,12 +198,7 @@ def make_gradcam(img_array, model):
 
             predictions = x
 
-            # Predicted class
-            predicted_class = tf.argmax(
-                predictions[0]
-            )
-
-            class_score = predictions[:, predicted_class]
+            class_score = predictions[:, target_class]
 
         # Gradient of predicted class
         # with respect to convolution feature maps
@@ -212,10 +207,8 @@ def make_gradcam(img_array, model):
             conv_output
         )
 
-        if gradients is None:
-            logging.warning(
-                "Grad-CAM: gradients are None"
-            )
+        if gradients is None or not tf.reduce_all(tf.math.is_finite(gradients)):
+            logging.warning("Grad-CAM: gradients are None or non-finite")
             return None
 
         # Average gradients over height and width
@@ -330,15 +323,17 @@ def make_gradcam(img_array, model):
         ).astype(np.uint8)
 
         # Original image
-        orig = (
-            img_array[0] * 255
-        ).astype(np.uint8)
+        orig = (img_array[0] * 255).astype(np.uint8)
 
-        # Blend
-        blended = (
-            0.55 * orig +
-            0.45 * heatmap
-        ).astype(np.uint8)
+        import cv2
+        gray = cv2.cvtColor(orig, cv2.COLOR_RGB2GRAY)
+        fov_mask = (gray > 5)
+
+        activation_outside = np.sum(cam_resized[~fov_mask])
+        logging.info(f"Grad-CAM activation outside FOV: {activation_outside:.4f}")
+
+        blended = orig.copy()
+        blended[fov_mask] = (0.55 * orig[fov_mask] + 0.45 * heatmap[fov_mask]).astype(np.uint8)
 
         # Convert to Base64
         buf = io.BytesIO()
@@ -424,6 +419,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
   border-bottom: 1px solid #0e9f9244;
   padding: 0 40px; height: 68px;
   display: flex; align-items: center; gap: 14px;
+  position: relative;
 }
 .logo {
   width: 38px; height: 38px; border-radius: 9px;
@@ -431,7 +427,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
   display: flex; align-items: center; justify-content: center;
   font-size: 1.1rem; flex-shrink: 0;
 }
-.hnav { display: flex; gap: 28px; align-items: center; margin-left: 36px; }
+.hnav { display: flex; gap: 28px; align-items: center; position: absolute; left: 50%; transform: translateX(-50%); }
 .hnav a {
   font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 700;
   color: var(--text); text-decoration: none; cursor: pointer; opacity: 0.72;
@@ -450,7 +446,24 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
   border: 1px solid rgba(14,159,146,0.3); border-radius: 8px; color: var(--accent2);
   font-weight: 700; font-size: 0.82rem; font-family: 'Barlow'; display: inline-block;
 }
-@media(max-width: 900px) { .hnav { display: none; } }
+.hamburger { display: none; margin-left: 12px; cursor: pointer; color: var(--accent2); flex-shrink: 0; }
+@media (max-width: 900px) {
+  .hamburger { display: block; }
+  .hsub { display: none; }
+  .hnav {
+    display: none; position: absolute; top: 68px; left: 0; width: 100%;
+    background: white; border-bottom: 1px solid var(--border);
+    flex-direction: column; gap: 15px; padding: 20px;
+    z-index: 999; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    transform: none;
+  }
+  .hnav.active { display: flex; }
+  .hnav a { width: 100%; text-align: left; padding: 5px 0; border-bottom: 1px solid #eee; }
+  .hnav a:last-child { border-bottom: none; }
+  .header { padding: 0 20px; }
+  .main { padding: 20px 20px 60px; }
+  .footer { padding: 40px 20px 0; }
+}
 .htitle { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.02em; }
 .hsub { font-size: 0.72rem; color: #087267; margin-top: 2px; }
 .hpills { margin-left: auto; display: flex; gap: 6px; }
@@ -524,7 +537,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
 @media(max-width: 640px) { .top-grid { grid-template-columns: 1fr; } }
 /* IMAGE CARD */
 .scan-img-wrap { border-radius: 11px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 10px; }
-.scan-img-wrap img { width: 100%; display: block; max-height: 210px; object-fit: cover; }
+.scan-img-wrap img { width: 100%; display: block; max-height: 210px; object-fit: contain; }
 /* RESULT CARD */
 .risk-pill {
   display: inline-flex; align-items: center; gap: 7px;
@@ -555,7 +568,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
 .gradcam-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 14px; }
 @media(max-width: 560px) { .gradcam-grid { grid-template-columns: 1fr; } }
 .gcam-wrap { border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
-.gcam-wrap img { width: 100%; display: block; max-height: 180px; object-fit: cover; }
+.gcam-wrap img { width: 100%; display: block; max-height: 180px; object-fit: contain; }
 .gcam-label { font-size: 0.68rem; color: var(--muted); text-align: center; margin-top: 8px; font-weight: 500; }
 .gradcam-note {
   margin-top: 14px; padding: 11px 14px;
@@ -597,8 +610,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
 .spinner { width: 15px; height: 15px; border: 2px solid rgba(255,255,255,0.25); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .footer {
-  margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--border);
-  padding-bottom: 0px;
+  max-width: 1560px; margin: 56px auto 0; padding: 40px 56px 0; border-top: 1px solid var(--border);
 }
 .footer-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; flex-wrap: wrap; margin-bottom: 28px; }
 .footer-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
@@ -710,19 +722,19 @@ body {
 .lp-pipe-card h4 { font-size: 1.15rem; margin: 0 0 8px; font-family: 'Barlow'; }
 .lp-pipe-card p { font-size: 0.72rem; color: var(--muted); line-height: 1.45; margin: 0; font-family: 'Barlow'; }
 
-.lp-visual { width: 100%; height: 66px; border-radius: 8px; margin-bottom: 12px; position: relative; overflow: hidden; background: #0f1620; }
-.lp-v-retina { position: absolute; inset: 0; border-radius: 50%; width: 54px; height: 54px; margin: auto; background: radial-gradient(circle at 40% 35%, #c0532b, #1a0805 78%); }
-.lp-v-blur .lp-v-retina { filter: blur(2.5px); opacity: 0.6; }
-.lp-v-blur .lp-v-badge { position: absolute; top: 6px; right: 8px; background: #d94f5c; color: white; font-size: 8px; font-weight: 800; font-family: 'Nunito'; padding: 2px 6px; border-radius: 5px; }
-.lp-v-heat { position: absolute; inset: 0; border-radius: 50%; width: 54px; height: 54px; margin: auto; background: radial-gradient(circle at 45% 40%, #ff5a3c 0%, #ffce45 35%, #1a3a52 70%, #08131c 100%); }
+.lp-visual { width: 120px; height: 120px; border-radius: 16px; margin: 0 auto 20px; position: relative; overflow: hidden; background: #0f1620; }
+.lp-v-retina { position: absolute; inset: 0; border-radius: 50%; width: 94px; height: 94px; margin: auto; background: radial-gradient(circle at 40% 35%, #c0532b, #1a0805 78%); }
+.lp-v-blur .lp-v-retina { filter: blur(4px); opacity: 0.6; }
+.lp-v-blur .lp-v-badge { position: absolute; top: 10px; right: 12px; background: #d94f5c; color: white; font-size: 11px; font-weight: 800; font-family: 'Nunito'; padding: 4px 8px; border-radius: 6px; }
+.lp-v-heat { position: absolute; inset: 0; border-radius: 50%; width: 94px; height: 94px; margin: auto; background: radial-gradient(circle at 45% 40%, #ff5a3c 0%, #ffce45 35%, #1a3a52 70%, #08131c 100%); }
 .lp-v-lesion { position: absolute; inset: 0; }
-.lp-v-lesion .dot { position: absolute; width: 5px; height: 5px; border-radius: 50%; }
+.lp-v-lesion .dot { position: absolute; width: 8px; height: 8px; border-radius: 50%; }
 .lp-v-report { display: flex; align-items: center; justify-content: center; background: #eef7f6; }
-.lp-v-report .doc { width: 34px; height: 42px; background: white; border-radius: 3px; box-shadow: 0 3px 8px rgba(20,43,58,0.12); position: relative; }
-.lp-v-report .doc::before, .lp-v-report .doc::after { content: ''; position: absolute; left: 6px; right: 6px; height: 2px; background: var(--border); border-radius: 2px; }
-.lp-v-report .doc::before { top: 10px; }
-.lp-v-report .doc::after { top: 16px; width: 60%; }
-.lp-v-report .badge-ok { position: absolute; bottom: -4px; right: -4px; width: 17px; height: 17px; border-radius: 50%; background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; font-size: 9px; }
+.lp-v-report .doc { width: 58px; height: 72px; background: white; border-radius: 4px; box-shadow: 0 4px 12px rgba(20,43,58,0.12); position: relative; }
+.lp-v-report .doc::before, .lp-v-report .doc::after { content: ''; position: absolute; left: 10px; right: 10px; height: 3px; background: var(--border); border-radius: 3px; }
+.lp-v-report .doc::before { top: 17px; }
+.lp-v-report .doc::after { top: 27px; width: 60%; }
+.lp-v-report .badge-ok { position: absolute; bottom: -6px; right: -6px; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; font-size: 14px; }
 
 .lp-cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 @media(max-width:700px){ .lp-cap-grid { grid-template-columns: 1fr; } }
@@ -763,11 +775,16 @@ body {
     <div class="hsub">AI-Assisted Diabetic Retinopathy Screening</div>
   </div>
   <nav class="hnav">
-    <a onclick="window.scrollTo({top:0, behavior:'smooth'})">Home</a>
-    <a onclick="document.getElementById('howNetraWorks').scrollIntoView({behavior:'smooth'})">How It Works</a>
-    <a onclick="document.getElementById('capabilities').scrollIntoView({behavior:'smooth'})">Capabilities</a>
+    <a onclick="navTo('home')">Home</a>
+    <a onclick="navTo('howItWorks')">How It Works</a>
+    <a onclick="navTo('capabilities')">Capabilities</a>
   </nav>
   <button class="hnav-cta" id="hnavCta" onclick="startApp()">Start Screening</button>
+  <div class="hamburger" onclick="document.querySelector('.hnav').classList.toggle('active')">
+    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 6h16M4 12h16M4 18h16"/>
+    </svg>
+  </div>
 </header>
 <main class="main">
   <!-- INTRO / LANDING STATE -->
@@ -800,12 +817,21 @@ body {
       <div class="lp-title lp-reveal">Manual Screening Doesn't Scale. Early DR Often Goes Unnoticed.</div>
       <div class="lp-problem-grid">
         <div class="lp-problem-card lp-reveal">
-          <div class="lp-problem-icon">&#129658;&#8205;&#9877;&#65039;</div>
+          <div class="lp-problem-icon">
+            <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="var(--text)" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+          </div>
           <h3>Manual Grading</h3>
           <p>Relies on specialist availability &mdash; results can take days and vary between readers.</p>
         </div>
         <div class="lp-problem-card mid lp-reveal">
-          <div class="lp-problem-icon">&#128065;&#65039;&#8205;&#128488;&#65039;</div>
+          <div class="lp-problem-icon">
+            <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="var(--text)" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+          </div>
           <h3>Silent Progression</h3>
           <p>Diabetic retinopathy often shows no symptoms until vision loss has already begun.</p>
         </div>
@@ -838,9 +864,9 @@ body {
           <div class="lp-visual">
             <div class="lp-v-retina"></div>
             <div class="lp-v-lesion">
-              <div class="dot" style="top:16px; left:34px; background:#d94f5c;"></div>
-              <div class="dot" style="top:30px; left:42px; background:#d94f5c;"></div>
-              <div class="dot" style="top:38px; left:24px; background:#d9a441;"></div>
+              <div class="dot" style="top:27px; left:58px; background:#d94f5c;"></div>
+              <div class="dot" style="top:51px; left:72px; background:#d94f5c;"></div>
+              <div class="dot" style="top:65px; left:41px; background:#d9a441;"></div>
             </div>
           </div>
           <div class="lp-pipe-top"><span class="lp-pipe-num">03</span><span class="lp-pipe-badge">ACTIVE</span></div>
@@ -937,15 +963,23 @@ body {
     </div>
     <!-- Grad-CAM -->
     <div class="card gradcam-card" id="gradcamCard" style="display:none;">
-      <div class="card-label">Model Attention &mdash; Grad-CAM Visualization</div>
+      <div class="card-label">
+        Model Attention &mdash; Grad-CAM Visualization
+        <span id="gradcamTargetLabel" style="float:right; color:var(--accent2); text-transform:none; font-weight:bold;"></span>
+      </div>
       <div class="gradcam-grid">
         <div>
           <div class="gcam-wrap"><img id="origImg" alt="Original scan"></div>
           <div class="gcam-label">Original Retinal Scan</div>
         </div>
         <div>
-          <div class="gcam-wrap"><img id="camImg" alt="Attention heatmap"></div>
-          <div class="gcam-label">AI Attention Heatmap &mdash; red zones indicate highest model focus</div>
+          <div class="gcam-wrap">
+            <img id="camImg" alt="Attention heatmap">
+            <div id="gradcamUnavailableMsg" style="display:none; height: 180px; display:flex; align-items:center; justify-content:center; background:var(--surface2); color:var(--muted); font-style:italic;">Grad-CAM unavailable</div>
+          </div>
+          <div class="gcam-label">
+            AI Attention Heatmap &mdash; <span style="background: linear-gradient(to right, blue, cyan, green, yellow, red); -webkit-background-clip: text; color: transparent; font-weight: bold;">Low to High Attention</span>
+          </div>
         </div>
         <div>
           <div class="gcam-wrap"><img id="lesionImg" alt="Lesion overlay"></div>
@@ -1014,13 +1048,12 @@ body {
     <div class="footer-links">
       <div class="footer-links-col">
         <div class="flabel">Project</div>
-        <a onclick="window.scrollTo({top:0, behavior:'smooth'})">Home</a>
-        <a onclick="document.getElementById('howNetraWorks').scrollIntoView({behavior:'smooth'})">How It Works</a>
-        <a onclick="document.getElementById('capabilities').scrollIntoView({behavior:'smooth'})">Capabilities</a>
+        <a onclick="navTo('home')" style="cursor:pointer;">Home</a>
+        <a onclick="navTo('howItWorks')" style="cursor:pointer;">How It Works</a>
+        <a onclick="navTo('capabilities')" style="cursor:pointer;">Capabilities</a>
       </div>
       <div class="footer-links-col">
         <div class="flabel">References</div>
-        <a href="https://github.com/priyankaraghunathan15/diabetic-retinopathy-detection" target="_blank">GitHub Repository</a>
         <a href="https://www.kaggle.com/competitions/aptos2019-blindness-detection" target="_blank">APTOS 2019 Dataset</a>
       </div>
     </div>
@@ -1051,10 +1084,22 @@ document.getElementById('imageInput').addEventListener('change', function(e) {
   };
   reader.readAsDataURL(file);
 });
+function navTo(target) {
+  document.querySelector('.hnav').classList.remove('active');
+  document.getElementById('introState').style.display = 'block';
+  document.getElementById('uploadState').style.display = 'none';
+  if (target === 'home') {
+    window.scrollTo({top:0, behavior:'smooth'});
+  } else if (target === 'howItWorks') {
+    document.getElementById('howNetraWorks').scrollIntoView({behavior:'smooth'});
+  } else if (target === 'capabilities') {
+    document.getElementById('capabilities').scrollIntoView({behavior:'smooth'});
+  }
+}
+
 function startApp() {
   document.getElementById('introState').style.display = 'none';
   document.getElementById('uploadState').style.display = 'block';
-  updateNavCta(false);
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
@@ -1219,15 +1264,28 @@ function renderResults(data) {
       if (el) el.style.width = (p*100).toFixed(1) + '%';
     });
   }, 80);
-  if (data.gradcam) {
-    document.getElementById('origImg').src = 'data:image/png;base64,' + data.original_image;
-    document.getElementById('camImg').src  = 'data:image/png;base64,' + data.gradcam;
-    if (data.lesion_overlay) {
-      document.getElementById('lesionImg').src = 'data:image/png;base64,' + data.lesion_overlay;
-      document.getElementById('lesionLabel').textContent = 'Lesion Overlay \u2014 ' + data.lesion_count + ' candidate regions flagged (red=dark lesion, yellow=bright lesion)';
-    }
-    document.getElementById('gradcamCard').style.display = 'block';
+  if (data.gradcam_target_class) {
+    document.getElementById('gradcamTargetLabel').textContent = 'Target: ' + data.gradcam_target_class;
   }
+  
+  if (data.original_image) {
+    document.getElementById('origImg').src = 'data:image/png;base64,' + data.original_image;
+  }
+  
+  if (data.gradcam) {
+    document.getElementById('camImg').src  = 'data:image/png;base64,' + data.gradcam;
+    document.getElementById('camImg').style.display = 'block';
+    document.getElementById('gradcamUnavailableMsg').style.display = 'none';
+  } else {
+    document.getElementById('camImg').style.display = 'none';
+    document.getElementById('gradcamUnavailableMsg').style.display = 'flex';
+  }
+  
+  if (data.lesion_overlay) {
+    document.getElementById('lesionImg').src = 'data:image/png;base64,' + data.lesion_overlay;
+    document.getElementById('lesionLabel').textContent = 'Lesion Overlay \u2014 ' + data.lesion_count + ' candidate regions flagged (red=dark lesion, yellow=bright lesion)';
+  }
+  document.getElementById('gradcamCard').style.display = 'block';
   document.getElementById('aiSummary').textContent = data.ai_summary;
   document.getElementById('aiAction').textContent  = data.ai_action;
   document.getElementById('aiHcp').textContent     = data.ai_hcp;
@@ -1335,7 +1393,7 @@ def predict():
     summary = AI_SUMMARIES[predicted_class]
 
     orig_b64    = img_to_b64(image)
-    gradcam_b64 = make_gradcam(img_input, model)
+    gradcam_b64 = make_gradcam(img_input, model, predicted_class)
 
     lesion_overlay_img, lesion_count = detect_lesions(img_array)
     lesion_b64 = img_to_b64(Image.fromarray(lesion_overlay_img))
@@ -1344,6 +1402,7 @@ def predict():
         'predicted_class': predicted_class,
         'severity_grade': grading['severity_grade'],
         'label':           CLASS_LABELS[predicted_class],
+        'gradcam_target_class': CLASS_LABELS[predicted_class],
         'confidence':      grading['calibrated_confidence'],
         'raw_confidence':  grading['raw_confidence'],
         'calibrated_confidence': grading['calibrated_confidence'],
@@ -1437,16 +1496,33 @@ def generate_report():
             return None
 
     img_cells, label_cells = [], []
-    for key, lbl in [('original_image', 'Original'), ('gradcam', 'Grad-CAM'), ('lesion_overlay', 'Lesion Overlay')]:
-        rl_img = b64_to_rlimage(data.get(key))
-        if rl_img:
-            img_cells.append(rl_img)
-            label_cells.append(Paragraph(lbl, ParagraphStyle('imglbl', parent=styles['Normal'],
-                                                               fontSize=8, alignment=1)))
+    
+    orig_img = b64_to_rlimage(data.get('original_image'))
+    if orig_img:
+        img_cells.append(orig_img)
+        label_cells.append(Paragraph('Original', ParagraphStyle('imglbl', parent=styles['Normal'], fontSize=8, alignment=1)))
+        
+    gradcam_img = b64_to_rlimage(data.get('gradcam'))
+    target_class = data.get('gradcam_target_class', 'N/A')
+    # Simple color legend using HTML-like text
+    lbl_text = f"Grad-CAM (Target: {target_class})<br/>Low -<font color='blue'>■</font><font color='cyan'>■</font><font color='green'>■</font><font color='yellow'>■</font><font color='red'>■</font>- High"
+    
+    if gradcam_img:
+        img_cells.append(gradcam_img)
+    else:
+        img_cells.append(Paragraph('<br/><br/><br/>Grad-CAM<br/>unavailable', ParagraphStyle('unavailable', parent=styles['Normal'], fontSize=8, alignment=1, textColor=colors.grey)))
+    
+    label_cells.append(Paragraph(lbl_text, ParagraphStyle('imglbl', parent=styles['Normal'], fontSize=8, alignment=1)))
+        
+    lesion_img = b64_to_rlimage(data.get('lesion_overlay'))
+    if lesion_img:
+        img_cells.append(lesion_img)
+        label_cells.append(Paragraph('Lesion Overlay', ParagraphStyle('imglbl', parent=styles['Normal'], fontSize=8, alignment=1)))
+        
     if img_cells:
         elements.append(Paragraph("Imaging", h2))
         img_table = Table([img_cells, label_cells])
-        img_table.setStyle(TableStyle([('ALIGN', (0, 0), (-1, -1), 'CENTER')]))
+        img_table.setStyle(TableStyle([('ALIGN', (0, 0), (-1, -1), 'CENTER'), ('VALIGN', (0,0), (-1,-1), 'MIDDLE')]))
         elements.append(img_table)
         elements.append(Spacer(1, 10))
 
