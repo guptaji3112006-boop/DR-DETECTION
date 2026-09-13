@@ -76,3 +76,5 @@ idrid/
 
 # Generated Reports & Media
 reports/*.png
+*.bak*
+patch_*.py
