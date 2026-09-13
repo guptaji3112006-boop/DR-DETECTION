@@ -140,7 +140,7 @@ def _find_last_conv(layers):
     return None
 
 
-def make_gradcam(img_array, model, target_class):
+def make_gradcam(img_array, model, predicted_class, **kwargs):
     try:
         # Find EfficientNetB3
         sub_model = next(
@@ -334,13 +334,18 @@ def make_gradcam(img_array, model, target_class):
 
         blended = orig.copy()
         blended[fov_mask] = (0.55 * orig[fov_mask] + 0.45 * heatmap[fov_mask]).astype(np.uint8)
+        
+        # Resize blended image back to original aspect ratio
+        if 'target_size' in kwargs:
+            target_size = kwargs['target_size']
+            blended_pil = Image.fromarray(blended).resize(target_size, Image.Resampling.LANCZOS)
+        else:
+            blended_pil = Image.fromarray(blended)
 
         # Convert to Base64
         buf = io.BytesIO()
 
-        Image.fromarray(
-            blended
-        ).save(
+        blended_pil.save(
             buf,
             format="PNG"
         )
@@ -358,29 +363,45 @@ def make_gradcam(img_array, model, target_class):
 
 def detect_lesions(img):
     """Classical CV lesion detector. img: RGB float(0-1) or uint8 array. Returns (overlay_uint8_rgb, lesion_count)."""
-    img_uint8 = (img * 255).astype(np.uint8) if img.max() <= 1.0 else img.astype(np.uint8)
-    gray = cv2.cvtColor(img_uint8, cv2.COLOR_RGB2GRAY)
-    gray_blur = cv2.GaussianBlur(gray, (5, 5), 0)
+    try:
+        img_uint8 = (img * 255).astype(np.uint8) if img.max() <= 1.0 else img.astype(np.uint8)
+        gray = cv2.cvtColor(img_uint8, cv2.COLOR_RGB2GRAY)
+        
+        # 1. FOV Masking
+        _, fov_mask = cv2.threshold(gray, 10, 255, cv2.THRESH_BINARY)
+        fov_mask = cv2.erode(fov_mask, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (15, 15)), iterations=1)
 
-    _, dark_thresh = cv2.threshold(gray_blur, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
-    dark_thresh = cv2.erode(dark_thresh, np.ones((3, 3), np.uint8), iterations=1)
+        # 2. Morphological filtering (Top-Hat for bright lesions, Bottom-Hat for dark lesions)
+        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (15, 15))
+        tophat = cv2.morphologyEx(gray, cv2.MORPH_TOPHAT, kernel)
+        bottomhat = cv2.morphologyEx(gray, cv2.MORPH_BLACKHAT, kernel)
 
-    _, bright_thresh = cv2.threshold(gray_blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    bright_thresh = cv2.erode(bright_thresh, np.ones((3, 3), np.uint8), iterations=1)
+        # 3. Thresholding the morphological results
+        _, bright_thresh = cv2.threshold(tophat, 40, 255, cv2.THRESH_BINARY)
+        _, dark_thresh = cv2.threshold(bottomhat, 30, 255, cv2.THRESH_BINARY)
 
-    overlay = img_uint8.copy()
-    lesion_count = 0
+        # Apply FOV mask to eliminate artifacts outside the retina
+        bright_thresh = cv2.bitwise_and(bright_thresh, fov_mask)
+        dark_thresh = cv2.bitwise_and(dark_thresh, fov_mask)
 
-    for mask, color in [(dark_thresh, (255, 0, 0)), (bright_thresh, (255, 255, 0))]:
-        contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        for c in contours:
-            area = cv2.contourArea(c)
-            if 5 < area < 300:
-                (x, y), r = cv2.minEnclosingCircle(c)
-                cv2.circle(overlay, (int(x), int(y)), int(r) + 2, color, 1)
-                lesion_count += 1
+        overlay = img_uint8.copy()
+        lesion_count = 0
 
-    return overlay, lesion_count
+        # Find contours
+        for mask, color in [(dark_thresh, (255, 0, 0)), (bright_thresh, (255, 255, 0))]:
+            contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            for c in contours:
+                area = cv2.contourArea(c)
+                # Area >= 4 pixels to capture small microaneurysms while ignoring 1-2 pixel noise
+                if 4 <= area < 1000:
+                    (x, y), r = cv2.minEnclosingCircle(c)
+                    cv2.circle(overlay, (int(x), int(y)), int(r) + 2, color, 1)
+                    lesion_count += 1
+
+        return overlay, lesion_count
+    except Exception as e:
+        logging.warning("Lesion detection failed: %s", e)
+        return None, -1
 
 
 def img_to_b64(pil_img):
@@ -411,8 +432,8 @@ HTML = """<!DOCTYPE html>
   --accent: #0e9f92;
   --accent2: #087267;
 }
-html { font-size: 18px; }
-body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; }
+html { font-size: 18px; overflow-x: hidden; }
+body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; overflow-x: hidden; }
 /* HEADER */
 .header {
   background: #ffffff;
@@ -445,6 +466,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
   margin-top: 14px; padding: 8px 14px; background: rgba(14,159,146,0.12);
   border: 1px solid rgba(14,159,146,0.3); border-radius: 8px; color: var(--accent2);
   font-weight: 700; font-size: 0.82rem; font-family: 'Barlow'; display: inline-block;
+  max-width: 100%; box-sizing: border-box; word-break: break-all;
 }
 .hamburger { display: none; margin-left: 12px; cursor: pointer; color: var(--accent2); flex-shrink: 0; }
 @media (max-width: 900px) {
@@ -477,6 +499,11 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
 .card {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: 16px; padding: 22px;
+}
+@media (max-width: 500px) {
+  .main { padding: 12px 8px 60px; }
+  .card { padding: 12px; }
+  .upload-zone { padding: 36px 12px; }
 }
 .card-label {
   font-size: 0.67rem; font-weight: 700; color: var(--muted);
@@ -524,11 +551,13 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
   border: 1px solid var(--border);
 }
 .sev-item {
-  flex: 1; text-align: center; padding: 10px 6px;
+  flex: 1; text-align: center; padding: 10px 4px;
   font-size: 0.63rem; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.05em; background: var(--surface); color: var(--muted);
   border-right: 1px solid var(--border); transition: all 0.3s;
+  white-space: nowrap;
 }
+@media(max-width: 560px) { .sev-item { font-size: 0.5rem; letter-spacing: 0; padding: 8px 2px; } }
 .sev-item:last-child { border-right: none; }
 .sev-dot { width: 5px; height: 5px; border-radius: 50%; margin: 0 auto 5px; background: currentColor; opacity: 0.5; }
 .sev-item.sev-active { z-index: 1; }
@@ -565,11 +594,12 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
 .bar-fill { height: 100%; border-radius: 5px; transition: width 0.7s cubic-bezier(0.4,0,0.2,1); width: 0; }
 /* GRADCAM */
 .gradcam-card { margin-bottom: 18px; }
-.gradcam-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 14px; }
-@media(max-width: 560px) { .gradcam-grid { grid-template-columns: 1fr; } }
-.gcam-wrap { border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
-.gcam-wrap img { width: 100%; display: block; max-height: 180px; object-fit: contain; }
-.gcam-label { font-size: 0.68rem; color: var(--muted); text-align: center; margin-top: 8px; font-weight: 500; }
+.gradcam-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 14px; justify-items: center; }
+.gradcam-grid > div { display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; max-width: 320px; }
+@media(max-width: 560px) { .gradcam-grid { grid-template-columns: 1fr; gap: 24px; } }
+.gcam-wrap { border-radius: 10px; overflow: hidden; border: 1px solid var(--border); width: 100%; background: black; display: flex; align-items: center; justify-content: center; }
+.gcam-wrap img { width: 100%; display: block; max-height: 220px; object-fit: contain; }
+.gcam-label { font-size: 0.68rem; color: var(--muted); text-align: center; margin-top: 8px; font-weight: 500; width: 100%; }
 .gradcam-note {
   margin-top: 14px; padding: 11px 14px;
   background: #eef7f6; border: 1px solid #08726733;
@@ -577,7 +607,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
 }
 /* MODEL PERFORMANCE */
 .perf-card { margin-bottom: 18px; }
-.perf-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px; }
+.perf-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
 @media(max-width: 560px) { .perf-grid { grid-template-columns: repeat(2, 1fr); } }
 .perf-metric { background: var(--surface2); border-radius: 10px; padding: 14px; text-align: center; }
 .perf-val { font-size: 1.25rem; font-weight: 800; color: var(--accent2); margin-bottom: 3px; }
@@ -678,9 +708,13 @@ body {
   box-shadow: 0 4px 14px rgba(20,43,58,0.05);
 }
 .lp-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-.lp-hero h1 { font-size: 3.6rem; line-height: 1.08; margin: 0 0 22px; }
+.lp-hero h1 { font-size: 3.6rem; line-height: 1.08; margin: 0 0 22px; word-wrap: break-word; hyphens: auto; }
 .lp-hero h1 .line1 { display: block; font-weight: 700; color: var(--text); }
 .lp-hero h1 .line2 { display: block; font-style: italic; font-weight: 500; color: var(--accent2); }
+@media(max-width: 700px) {
+  .lp-hero h1 { font-size: 2.2rem; }
+  .lp-badge { font-size: 0.5rem; padding: 4px 10px; }
+}
 .lp-hero p.lp-sub { max-width: 640px; margin: 0 auto 26px; color: var(--muted); font-size: 1rem; line-height: 1.65; font-family: 'Barlow'; }
 .lp-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 6px; }
 .lp-btn-secondary {
@@ -688,11 +722,13 @@ body {
   padding: 13px 20px; font-size: 0.82rem; font-weight: 700; cursor: pointer; font-family: 'Nunito';
 }
 .lp-float { position: absolute; width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 8px 18px rgba(20,43,58,0.12); }
+@media(max-width: 700px) { .lp-float { display: none !important; } }
 .lp-f1 { top: 6px; left: 2%; background: var(--accent); }
 .lp-f2 { top: -2px; right: 4%; background: var(--text); }
 .lp-f3 { bottom: 14px; right: -6px; background: #d9a441; }
 
 .lp-stats { max-width: 760px; margin: 10px auto 54px; display: flex; justify-content: center; gap: 70px; }
+@media(max-width: 600px) { .lp-stats { flex-direction: column; gap: 30px; } }
 .lp-stat { text-align: center; }
 .lp-stat .num { font-family: 'Fraunces', serif; font-weight: 700; font-size: 2.4rem; color: var(--text); }
 .lp-stat .lbl { font-family: 'Nunito'; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.06em; color: var(--muted); margin-top: 3px; text-transform: uppercase; }
@@ -714,7 +750,8 @@ body {
 .lp-tag { font-family: 'Nunito'; font-size: 0.6rem; font-weight: 800; color: var(--accent2); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px; display: block; }
 
 .lp-pipe-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-@media(max-width:800px){ .lp-pipe-grid { grid-template-columns: 1fr 1fr; } }
+@media(max-width:900px){ .lp-pipe-grid { grid-template-columns: 1fr 1fr; } }
+@media(max-width:560px){ .lp-pipe-grid { grid-template-columns: 1fr; } }
 .lp-pipe-card { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: 16px; padding: 22px; }
 .lp-pipe-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .lp-pipe-num { font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.2rem; color: #c7d2d6; }
@@ -996,12 +1033,11 @@ body {
       <div class="card-label">Model Performance &mdash; External Validation (IDRiD, IQA-Accepted)</div>
       <div class="perf-grid">
         <div class="perf-metric"><div class="perf-val">{{ sensitivity }}</div><div class="perf-lbl">Sensitivity (Referable DR)</div></div>
-        <div class="perf-metric"><div class="perf-val" style="color:#f59e0b">{{ specificity }}</div><div class="perf-lbl">Specificity</div></div>
         <div class="perf-metric"><div class="perf-val">{{ qwk }}</div><div class="perf-lbl">QWK (Cohen's Kappa)</div></div>
         <div class="perf-metric"><div class="perf-val">{{ n_validation }}</div><div class="perf-lbl">External Validation Images</div></div>
       </div>
       <div style="background:#0a1929;border:1px solid #3b82f644;border-radius:8px;padding:10px 14px;margin-top:12px;font-size:0.78rem;color:#93c5fd;line-height:1.4;">
-        <b>Design philosophy &mdash; screening-first:</b> Like mammography and other high-stakes screening tools, this model is tuned to prioritize catching every possible case of DR ({{ sensitivity }} sensitivity) rather than minimizing false alarms. This intentionally trades off specificity ({{ specificity }}), so flagged cases are designed to route to a human ophthalmologist for confirmation &mdash; never as a standalone diagnosis. Threshold tuning to improve specificity is an active, ongoing area of the project (see validation_sim/README.md for full methodology).
+        <b>Design philosophy &mdash; screening-first:</b> Like mammography and other high-stakes screening tools, this model is tuned to prioritize catching every possible case of DR ({{ sensitivity }} sensitivity) rather than minimizing false alarms. Flagged cases are designed to route to a human ophthalmologist for confirmation &mdash; never as a standalone diagnosis. Threshold tuning to improve specificity is an active, ongoing area of the project (see validation_sim/README.md for full methodology).
       </div>
     </div>
     <!-- AI Clinical Intelligence -->
@@ -1283,7 +1319,13 @@ function renderResults(data) {
   
   if (data.lesion_overlay) {
     document.getElementById('lesionImg').src = 'data:image/png;base64,' + data.lesion_overlay;
-    document.getElementById('lesionLabel').textContent = 'Lesion Overlay \u2014 ' + data.lesion_count + ' candidate regions flagged (red=dark lesion, yellow=bright lesion)';
+    if (data.lesion_count === -1) {
+      document.getElementById('lesionLabel').textContent = 'Lesion Overlay \u2014 Lesion detection unavailable';
+    } else if (data.lesion_count === 0) {
+      document.getElementById('lesionLabel').textContent = 'Lesion Overlay \u2014 No candidate lesions detected by this detector; this does not rule out DR.';
+    } else {
+      document.getElementById('lesionLabel').textContent = 'Lesion Overlay \u2014 ' + data.lesion_count + ' candidate regions flagged (red=dark, yellow=bright)';
+    }
   }
   document.getElementById('gradcamCard').style.display = 'block';
   document.getElementById('aiSummary').textContent = data.ai_summary;
@@ -1361,8 +1403,21 @@ def check_quality():
 @app.route('/predict', methods=['POST'])
 def predict():
     file = request.files['file']
-    image = Image.open(file.stream).resize((224, 224)).convert('RGB')
-    img_array = np.array(image).astype('float32') / 255.0
+    
+    orig_image = Image.open(file.stream).convert('RGB')
+    orig_w, orig_h = orig_image.size
+    max_dim = 800
+    if max(orig_w, orig_h) > max_dim:
+        scale = max_dim / max(orig_w, orig_h)
+        lesion_size = (int(orig_w * scale), int(orig_h * scale))
+        lesion_image = orig_image.resize(lesion_size, Image.Resampling.LANCZOS)
+    else:
+        lesion_image = orig_image.copy()
+        
+    lesion_img_array = np.array(lesion_image)
+
+    model_image = orig_image.resize((224, 224), Image.Resampling.LANCZOS)
+    img_array = np.array(model_image).astype('float32') / 255.0
     img_input = np.expand_dims(img_array, axis=0)
     
 
@@ -1392,11 +1447,16 @@ def predict():
     probs = np.asarray(grading['probabilities'], dtype=np.float32)
     summary = AI_SUMMARIES[predicted_class]
 
-    orig_b64    = img_to_b64(image)
-    gradcam_b64 = make_gradcam(img_input, model, predicted_class)
+    orig_b64    = img_to_b64(lesion_image)
+    gradcam_b64 = make_gradcam(img_input, model, predicted_class, target_size=lesion_image.size)
 
-    lesion_overlay_img, lesion_count = detect_lesions(img_array)
-    lesion_b64 = img_to_b64(Image.fromarray(lesion_overlay_img))
+    lesion_result = detect_lesions(lesion_img_array)
+    if lesion_result[0] is not None:
+        lesion_overlay_img, lesion_count = lesion_result
+        lesion_b64 = img_to_b64(Image.fromarray(lesion_overlay_img))
+    else:
+        lesion_b64 = None
+        lesion_count = -1
 
     return jsonify({
         'predicted_class': predicted_class,
@@ -1454,6 +1514,12 @@ def generate_report():
     confidence = data.get('confidence') or 0
     quality_score = data.get('quality_score')
     lesion_count = data.get('lesion_count', 'N/A')
+    lesion_count_str = str(lesion_count)
+    if lesion_count == -1:
+        lesion_count_str = "Lesion detection unavailable"
+    elif lesion_count == 0:
+        lesion_count_str = "0 (Does not rule out DR)"
+
     confidence_flag = data.get('confidence_flag', 'ok')
     description = data.get('description', '')
 
@@ -1461,7 +1527,7 @@ def generate_report():
         ["Predicted Grade", label],
         ["Model Confidence", f"{confidence*100:.1f}%"],
         ["Input Image Quality Score", f"{quality_score*100:.0f}/100" if quality_score is not None else "N/A"],
-        ["Candidate Lesion Regions Flagged", str(lesion_count)],
+        ["Candidate Lesion Regions Flagged", lesion_count_str],
     ]
     t = Table(summary_data, colWidths=[2.4*inch, 3.4*inch])
     t.setStyle(TableStyle([
