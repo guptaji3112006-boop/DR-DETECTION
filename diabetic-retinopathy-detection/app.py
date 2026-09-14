@@ -12,13 +12,14 @@ import io
 import json
 import logging
 import csv
-from flask import Flask, request, jsonify, render_template, send_file
+from flask import Flask, request, jsonify, render_template, send_file, send_from_directory
 import cv2
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from iqa_module.pipeline import process_retinal_image
 from grading_model import LesionAwareSeverityClassifier
+import database as db
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -369,6 +370,163 @@ HTML = """
 @app.route("/")
 def index():
     return render_template("index.html", **VALIDATION_METRICS)
+
+# Serve React frontend for /patients
+@app.route("/patients")
+@app.route("/patients/<path:path>")
+def serve_react_app(path=""):
+    return send_from_directory("frontend/dist", "index.html")
+
+@app.route("/assets/<path:path>")
+def serve_react_assets(path):
+    return send_from_directory("frontend/dist/assets", path)
+
+
+
+# --- DASHBOARD & PATIENT ROUTES (JSON API for React frontend) ---
+
+@app.route("/api/patients", methods=["GET"])
+def get_patients():
+    patients = db.get_patients()
+    for p in patients:
+        p['visits'] = db.get_patient_visits(p['patient_id'])
+    return jsonify({"patients": patients})
+
+@app.route("/api/patients", methods=["POST"])
+def register_patient():
+    data = request.json
+    patient_id = db.add_patient(data)
+    return jsonify({"patient_id": patient_id})
+
+@app.route("/api/patients/<patient_id>", methods=["GET"])
+def get_patient_record(patient_id):
+    patient = db.get_patient(patient_id)
+    if not patient:
+        return jsonify({"error": "Patient not found"}), 404
+    visits = db.get_patient_visits(patient_id)
+    return jsonify({"patient": patient, "visits": visits})
+
+@app.route("/api/visits", methods=["POST"])
+def create_visit():
+    data = request.json
+    patient_id = data.get("patient_id")
+    visit_id = db.create_visit(patient_id)
+    return jsonify({"visit_id": visit_id})
+
+@app.route("/api/visits/<visit_id>/review", methods=["POST"])
+def save_review(visit_id):
+    data = request.json
+    db.update_visit_review(visit_id, data)
+    return jsonify({"status": "success"})
+
+
+@app.route("/api/screenings", methods=["POST"])
+def api_screenings():
+    import uuid
+    visit_id = request.form.get("visit_id")
+    eye = request.form.get("eye")  # Left or Right
+    if not visit_id or not eye:
+        return "Missing visit_id or eye", 400
+
+    file = request.files.get("file")
+    if not file:
+        return "Missing file", 400
+
+    # Ensure uploads dir exists
+    os.makedirs("uploads", exist_ok=True)
+    ext = file.filename.split('.')[-1] if '.' in file.filename else 'jpg'
+    img_filename = f"{visit_id}_{eye}_{uuid.uuid4().hex[:6]}.{ext}"
+    img_path = os.path.join("uploads", img_filename)
+    file.save(img_path)
+
+    # IQA Check
+    image = Image.open(img_path).convert("RGB")
+    image_np = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+    iqa_result = process_retinal_image(image_np)
+
+    # If IQA fails entirely
+    if not iqa_result["is_usable"]:
+        screening_id = db.save_eye_screening(visit_id, eye, {
+            'image_path': img_path,
+            'quality_score': iqa_result["quality_score"],
+            'quality_pass': False,
+            'quality_reason': iqa_result["reason"]
+        })
+        return jsonify({
+            "status": "rejected",
+            "quality_reason": iqa_result["reason"],
+            "screening_id": screening_id
+        })
+
+    # Prepare for model prediction
+    orig_w, orig_h = image.size
+    max_dim = 800
+    if max(orig_w, orig_h) > max_dim:
+        scale = max_dim / max(orig_w, orig_h)
+        lesion_size = (int(orig_w * scale), int(orig_h * scale))
+        lesion_image = image.resize(lesion_size, Image.Resampling.LANCZOS)
+    else:
+        lesion_image = image.copy()
+
+    lesion_img_array = np.array(lesion_image)
+    model_image = image.resize((224, 224), Image.Resampling.LANCZOS)
+    img_array = np.array(model_image).astype("float32") / 255.0
+    img_input = np.expand_dims(img_array, axis=0)
+
+    enhanced_input = None
+    if iqa_result["enhanced_image"] is not None:
+        enhanced_rgb = cv2.cvtColor(iqa_result["enhanced_image"], cv2.COLOR_BGR2RGB)
+        enhanced_image = Image.fromarray(enhanced_rgb).resize((224, 224))
+        enhanced_input = np.expand_dims(
+            np.array(enhanced_image).astype("float32") / 255.0, axis=0
+        )
+
+    grading = grading_classifier.predict(img_input, enhanced_image=enhanced_input, lesion_evidence=None)
+    predicted_class = grading["severity_grade"]
+
+    orig_b64 = img_to_b64(lesion_image)
+    gradcam_b64 = make_gradcam(img_input, model, predicted_class, target_size=lesion_image.size)
+    lesion_result = detect_lesions(lesion_img_array)
+    
+    lesion_b64 = None
+    lesion_count = -1
+    if lesion_result[0] is not None:
+        lesion_b64 = img_to_b64(Image.fromarray(lesion_result[0]))
+        lesion_count = lesion_result[1]
+
+    # Save to DB
+    screening_id = db.save_eye_screening(visit_id, eye, {
+        'image_path': img_path,
+        'quality_score': iqa_result["quality_score"],
+        'quality_pass': True,
+        'quality_reason': iqa_result["reason"],
+        'ai_grade': predicted_class,
+        'ai_raw_confidence': grading["raw_confidence"],
+        'ai_calibrated_confidence': grading["calibrated_confidence"],
+        'ai_confidence_flag': grading["confidence_flag"],
+        'model_version': 'EfficientNetB3 (LesionAware)',
+        'lesion_count': lesion_count,
+        'original_b64_path': orig_b64, 
+        'gradcam_b64_path': gradcam_b64,
+        'lesion_overlay_b64_path': lesion_b64
+    })
+
+    return jsonify({
+        "status": "success",
+        "screening_id": screening_id,
+        "quality_score": iqa_result["quality_score"],
+        "quality_reason": iqa_result["reason"],
+        "ai_grade": predicted_class,
+        "ai_label": CLASS_LABELS[predicted_class],
+        "ai_calibrated_confidence": grading["calibrated_confidence"],
+        "ai_confidence_flag": grading["confidence_flag"],
+        "lesion_count": lesion_count,
+        "original_b64": orig_b64,
+        "gradcam_b64": gradcam_b64,
+        "lesion_b64": lesion_b64,
+        "ai_summary": AI_SUMMARIES[predicted_class]["summary"],
+        "ai_action": AI_SUMMARIES[predicted_class]["action"]
+    })
 
 
 @app.route("/check_quality", methods=["POST"])
