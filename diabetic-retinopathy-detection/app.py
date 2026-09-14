@@ -198,7 +198,7 @@ def make_gradcam(img_array, model, predicted_class, **kwargs):
 
             predictions = x
 
-            class_score = predictions[:, target_class]
+            class_score = predictions[:, predicted_class]
 
         # Gradient of predicted class
         # with respect to convolution feature maps
