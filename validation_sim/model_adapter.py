@@ -73,7 +73,7 @@ class DRModelAdapter:
         # Match the existing app's resize-then-RGB preprocessing.
         with Image.open(image_path) as image:
             image = image.resize((224, 224)).convert("RGB")
-            array = np.asarray(image, dtype=np.float32) / 255.0
+            array = np.asarray(image, dtype=np.float32)
 
         return np.expand_dims(array, axis=0)
 

@@ -39,13 +39,14 @@ def create_tf_dataset(dataframe, batch_size=BATCH_SIZE, shuffle=True, augment=Fa
         img_path = tf.strings.join([train_images_dir + '/', img_id, '.png'])
         img = tf.io.read_file(img_path)
         img = tf.image.decode_png(img, channels=3)
-        img = tf.cast(img, tf.float32) / 255.0
+        img = tf.cast(img, tf.float32)
         img = tf.image.resize(img, [IMG_SIZE, IMG_SIZE])
         if augment:
             img = tf.image.random_flip_left_right(img)
             img = tf.image.random_brightness(img, 0.15)
             img = tf.image.random_contrast(img, 0.9, 1.1)
             img = tf.image.random_saturation(img, 0.9, 1.1)
+            img = tf.clip_by_value(img, 0.0, 255.0)
         return img, label
 
     img_ids = dataframe['id_code'].values
@@ -109,10 +110,10 @@ val_dataset = create_tf_dataset(val_data, shuffle=False, augment=False)
 class_weights = compute_class_weight('balanced', classes=np.unique(train_data['diagnosis']), y=train_data['diagnosis'])
 class_weight_dict = dict(zip(np.unique(train_data['diagnosis']), class_weights))
 
-# Compile model with focal loss
+# Compile model with standard cross-entropy to allow class_weight handling
 improved_model.compile(
     optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001),
-    loss=focal_loss(alpha=0.25, gamma=2.0),
+    loss=tf.keras.losses.SparseCategoricalCrossentropy(),
     metrics=['accuracy']
 )
 
@@ -123,12 +124,13 @@ callbacks = [
 ]
 
 # Train
-print("Starting model training with FOCAL LOSS...")
+print("Starting model training with CLASS WEIGHTS...")
 history = improved_model.fit(
     train_dataset,
     epochs=EPOCHS,
     validation_data=val_dataset,
     callbacks=callbacks,
+    class_weight=class_weight_dict,
     verbose=1
 )
 print("Training completed!")
