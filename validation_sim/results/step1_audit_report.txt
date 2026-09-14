@@ -1,0 +1,217 @@
+
+========================================================================
+  1. CHECKPOINT IDENTITY
+========================================================================
+
+Checkpoint: d:\Hackathon project\nit\DR-DETECTION\diabetic-retinopathy-detection\models\diabetic_retinopathy_model.keras
+SHA-256:    52058ebf6d7a58d940d6b1ffcc7b00c0574a7153cdc5769ad3cd48ca84759b3f
+Size:       45,275,368 bytes
+
+calibration.json hardcoded checkpoint_hash: b2069ed07d2c31e9c5ed104e79391ab1e71ab85295cfccf00cf05cdaaf7284b8
+Actual checkpoint hash:                      52058ebf6d7a58d940d6b1ffcc7b00c0574a7153cdc5769ad3cd48ca84759b3f
+Result: ** MISMATCH **
+DEFECT: calibrator.py hardcodes a checkpoint hash that does not match the evaluated model.
+
+========================================================================
+  2. MODEL ARCHITECTURE (requires TensorFlow)
+========================================================================
+
+Input shape:  (None, 224, 224, 3)
+Output shape: (None, 5)
+  Layer: efficientnetb3 (Functional)
+  Layer: global_average_pooling2d (GlobalAveragePooling2D)
+  Layer: dropout (Dropout)
+  Layer: dense (Dense)
+  Layer: dropout_1 (Dropout)
+  Layer: dense_1 (Dense)
+
+Embedded Rescaling layer: False
+Embedded Preprocessing layer: False
+No embedded rescaling found. model_adapter.py /255 is the sole normalization.
+
+========================================================================
+  3. TRAINING SCRIPT ANALYSIS
+========================================================================
+
+FOUND: sklearn compute_class_weight imported
+FOUND: class_weight_dict computed
+DEFECT: class_weight_dict is computed but NOT passed to model.fit()
+FOUND: Focal loss implementation
+  alpha=0.25 (scalar, same for all classes)
+  FINDING: Scalar alpha does not address class-specific imbalance
+  gamma=2.0 (standard)
+FOUND: random_brightness augmentation
+  max_delta=0.15
+FOUND: random_contrast augmentation
+POTENTIAL ISSUE: No tf.clip_by_value found after brightness/contrast augmentation
+  This can push pixel values outside [0,1] range
+FOUND: Manual /255.0 scaling in training preprocessing
+FOUND: Model re-compiled with sparse_categorical_crossentropy before final save
+  The .keras checkpoint was saved with standard CE, not focal loss
+  But the TRAINING used focal loss — the weights reflect focal-loss optimization
+
+========================================================================
+  4. TRAINING CLASS DISTRIBUTION (APTOS 2019)
+========================================================================
+
+Total training samples: 3662
+  Grade 0 (No DR, Non-referable): 1805 (49.3%)
+  Grade 1 (Mild DR, Non-referable): 370 (10.1%)
+  Grade 2 (Moderate DR, Referable): 999 (27.3%)
+  Grade 3 (Severe DR, Referable): 193 (5.3%)
+  Grade 4 (Proliferative DR, Referable): 295 (8.1%)
+
+  Non-referable (0+1): 2175 (59.4%)
+  Referable (2+3+4):   1487 (40.6%)
+  Ratio: 1.46:1 non-referable to referable
+
+  Balanced class weights (sklearn):
+    Grade 0: 0.4058
+    Grade 1: 1.9795
+    Grade 2: 0.7331
+    Grade 3: 3.7948
+    Grade 4: 2.4827
+
+========================================================================
+  5. DEVELOPMENT MANIFEST ANALYSIS
+========================================================================
+
+Development manifest: 413 samples
+SHA-256: a52b82b973ebfe9dda8e8c12fb61cc33bf1322afec5d3f04148f15ae8ce9f862
+calibration.json manifest hash: a52b82b973ebfe9dda8e8c12fb61cc33bf1322afec5d3f04148f15ae8ce9f862
+Actual development_manifest hash: a52b82b973ebfe9dda8e8c12fb61cc33bf1322afec5d3f04148f15ae8ce9f862
+Result: ** MATCH **
+
+Development set class distribution:
+  Grade 0: 134
+  Grade 1: 20
+  Grade 2: 136
+  Grade 3: 74
+  Grade 4: 49
+
+Cross-split hash overlap: 1 files
+  Hash: 505330878f4d4186a71b8001570100b82b6b05cb431e81e2c259d8c584314708
+    DEV:  IDRiD_Training_IDRiD_118 grade=0
+    TEST: IDRiD_Testing_IDRiD_064.jpg grade=3
+
+========================================================================
+  6. SAVED PREDICTION AUDIT VERIFICATION
+========================================================================
+
+
+--- baseline_original ---
+  Total rows: 103, Successful predictions: 103
+  Referral method: predicted_grade >= 2 (is_referable column absent)
+  TP=61 TN=5 FP=34 FN=3
+  Sensitivity=0.9531 Specificity=0.1282
+  False Positives by true grade:
+    Grade 0 (No DR): 29
+    Grade 1 (Mild DR): 5
+  False Negatives by true grade:
+    Grade 2 (Moderate DR): 1
+    Grade 3 (Severe DR): 1
+    Grade 4 (Proliferative DR): 1
+  IQA: pass=94, reject=9
+  Checkpoint in metadata: 52058ebf6d7a58d9...
+  Calibration note: Unavailable
+  Threshold note: not recorded
+
+--- gated_original ---
+  Total rows: 103, Successful predictions: 94
+  Referral method: predicted_grade >= 2 (is_referable column absent)
+  TP=58 TN=4 FP=30 FN=2
+  Sensitivity=0.9667 Specificity=0.1176
+  False Positives by true grade:
+    Grade 0 (No DR): 26
+    Grade 1 (Mild DR): 4
+  False Negatives by true grade:
+    Grade 2 (Moderate DR): 1
+    Grade 3 (Severe DR): 1
+  IQA: pass=94, reject=0
+  Checkpoint in metadata: 52058ebf6d7a58d9...
+  Calibration note: Unavailable
+  Threshold note: not recorded
+
+--- tuned_baseline ---
+  Total rows: 103, Successful predictions: 103
+  Referral method: is_referable column
+  TP=0 TN=39 FP=0 FN=64
+  Sensitivity=0.0000 Specificity=1.0000
+  False Negatives by true grade:
+    Grade 2 (Moderate DR): 32
+    Grade 3 (Severe DR): 19
+    Grade 4 (Proliferative DR): 13
+  IQA: pass=94, reject=9
+  Checkpoint in metadata: 52058ebf6d7a58d9...
+  Calibration note: Fitted on IDRiD Training subset via calibrator.py (Temperature scaling)
+  Threshold note: Tuned threshold on IDRiD Training set
+
+--- calibrated_baseline ---
+  Total rows: 103, Successful predictions: 103
+  Referral method: is_referable column
+  TP=56 TN=6 FP=33 FN=8
+  Sensitivity=0.8750 Specificity=0.1538
+  False Positives by true grade:
+    Grade 0 (No DR): 28
+    Grade 1 (Mild DR): 5
+  False Negatives by true grade:
+    Grade 2 (Moderate DR): 5
+    Grade 3 (Severe DR): 2
+    Grade 4 (Proliferative DR): 1
+  IQA: pass=94, reject=9
+  Checkpoint in metadata: 52058ebf6d7a58d9...
+  Calibration note: Fitted on IDRiD Training subset via calibrator.py (Temperature scaling)
+  Threshold note: Tuned threshold on IDRiD Training set
+
+--- calibrated_gated ---
+  Total rows: 103, Successful predictions: 94
+  Referral method: is_referable column
+  TP=54 TN=3 FP=31 FN=6
+  Sensitivity=0.9000 Specificity=0.0882
+  False Positives by true grade:
+    Grade 0 (No DR): 27
+    Grade 1 (Mild DR): 4
+  False Negatives by true grade:
+    Grade 2 (Moderate DR): 4
+    Grade 3 (Severe DR): 2
+  IQA: pass=94, reject=0
+  Checkpoint in metadata: 52058ebf6d7a58d9...
+  Calibration note: Fitted on IDRiD Training subset via calibrator.py (Temperature scaling)
+  Threshold note: Tuned threshold on IDRiD Training set
+
+========================================================================
+  7. CONFIG PROVENANCE ISSUES SUMMARY
+========================================================================
+
+  1. CONFIRMED: calibrator.py hardcodes checkpoint hash that differs from actual model file
+  2. CONFIRMED: model_adapter.py loads calibration.json and operating_threshold.json at module import time (lines 28-40), not as explicit constructor arguments
+  3. CONFIRMED: operating_threshold.json contains only ['referral_threshold'] — no checkpoint hash, manifest, preprocessing, or score definition
+  4. CONFIRMED: evaluate.py metadata uses Path('config/calibration.json').exists() which depends on working directory
+  5. CONFIRMED: calibrator.py reports NLL/Brier/ECE on the same data used for fitting temperature — these are training diagnostics, not independent evaluation metrics
+  6. CONFIRMED: model_adapter.py line 107 uses `if TEMPERATURE != 1.0` to decide calibration status — a genuinely fitted T=1.0 would be mislabeled as uncalibrated
+  7. CONFIRMED: Known cross-split duplicate (IDRiD_118 Training / IDRiD_064 Testing) is included in development_manifest.csv without filtering
+
+========================================================================
+  8. PREPROCESSING COMPARISON: TRAINING vs INFERENCE
+========================================================================
+
+Training script (train_model.py):
+  1. tf.io.read_file + tf.image.decode_png(channels=3)  → RGB uint8
+  2. tf.cast(float32) / 255.0  → [0, 1]
+  3. tf.image.resize([224, 224])
+  4. Augmentation: random_flip, brightness(0.15), contrast(0.9-1.1), saturation(0.9-1.1)
+  5. No tf.clip_by_value after augmentation
+
+Inference (model_adapter.py):
+  1. PIL Image.open → resize(224,224) → convert('RGB')  → RGB uint8
+  2. np.asarray(float32) / 255.0  → [0, 1]
+
+Model architecture:
+  EfficientNetB3 — need to verify if it has an internal Rescaling layer
+
+STATUS:
+  - Training and inference both apply /255.0
+  - If the model has NO embedded Rescaling layer: preprocessing is consistent
+  - If the model HAS an embedded Rescaling layer: both paths would double-scale,
+    meaning training and inference are at least consistently wrong together
+  - The augmentation pixel-range issue affects training only (augment=False for validation)
