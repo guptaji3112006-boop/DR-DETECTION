@@ -110,7 +110,7 @@ export default function PatientRecord() {
       {/* Patient Header */}
       <div className="bg-white border border-border rounded-xl p-6 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-sky-100 text-sky-700 text-2xl font-bold flex items-center justify-center shrink-0">
+          <div className="w-16 h-16 rounded-full bg-primary-light text-primary-dark text-2xl font-bold flex items-center justify-center shrink-0">
             {patient.name[0].toUpperCase()}
           </div>
           <div>

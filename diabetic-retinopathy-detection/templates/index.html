@@ -5,6 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Netra | DR Detection</title>
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}" />
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&amp;family=Inter:wght@300;400;500;600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;family=Carter+One&amp;family=Slabo+13px&amp;family=Fraunces:ital,wght@0,600;0,700;1,500;1,600&amp;display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -12,15 +13,8 @@
 </head>
 <body>
 <header class="header">
-<div class="logo">
-<svg fill="none" height="20" viewbox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
-<path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-<circle cx="12" cy="12" r="3.5" stroke="white" stroke-width="2"></circle>
-</svg>
-</div>
-<div>
-<div class="text-[1.05rem] font-extrabold tracking-[-0.02em]">Netra</div>
-<div class="hsub">AI-Assisted Diabetic Retinopathy Screening</div>
+<div style="display: flex; align-items: center;">
+<img src="{{ url_for('static', filename='img/logo.png') }}" alt="Netra Logo" style="height: 64px; width: auto; object-fit: contain;" />
 </div>
 <nav class="hnav">
 <a onclick="navTo('home')">Home</a>
@@ -35,13 +29,11 @@
 </svg>
 </div>
 </header>
-<main class="max-w-[1560px] mx-auto pt-8 px-14 pb-[60px]">
+<main class="main-content">
 <!-- INTRO / LANDING STATE -->
 <div id="introState">
-<section class="lp-hero">
-<div class="lp-float lp-f1 lp-reveal">🛡️</div>
-<div class="lp-float lp-f2 lp-reveal">🔍</div>
-<div class="lp-float lp-f3 lp-reveal">📊</div>
+<section class="lp-hero lp-hero-split">
+<div class="lp-hero-left">
 <div class="lp-badge lp-reveal"><span class="dot"></span>AI-ASSISTED RETINAL SCREENING · EFFICIENTNETB3</div>
 <h1 class="lp-reveal">
 <span class="lp-serif line1">See Diabetic Retinopathy</span>
@@ -49,8 +41,15 @@
 </h1>
 <p class="lp-sub lp-reveal">Netra reads retinal fundus photographs the way a specialist would — grading severity, checking image quality first, and showing exactly what it saw so nothing is missed and nothing is hidden.</p>
 <div class="lp-ctas lp-reveal">
-<button class="w-full mt-[14px] bg-gradient-to-br from-[#0e9f92] to-[#087267] border-none rounded-[11px] text-white text-[0.88rem] font-bold p-[14px] cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_4px_18px_#0e9f9228] hover:-translate-y-[1px] hover:shadow-[0_6px_22px_#0e9f9240] disabled:opacity-45 disabled:cursor-not-allowed disabled:shadow-none disabled:transform-none" onclick="startApp()" style="width:auto; margin-top:0; padding:13px 22px;">Start Screening →</button>
+<button style="background:linear-gradient(135deg,#0077B6,#03045E);color:#fff;border:none;border-radius:11px;padding:13px 22px;font-size:0.88rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 18px rgba(0,119,182,0.16);transition:all 0.2s;" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 6px 22px rgba(0,119,182,0.25)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 18px rgba(0,119,182,0.16)'" onclick="startApp()">Start Screening →</button>
 <button class="lp-btn-secondary" onclick="document.getElementById('howNetraWorks').scrollIntoView({behavior:'smooth'})">See How It Works</button>
+</div>
+</div>
+<div class="lp-hero-right lp-reveal">
+<div class="lp-retina-showcase">
+<img src="{{ url_for('static', filename='img/retina_hero.jpg') }}" alt="Retinal fundus with visible blood vessels" />
+<div class="lp-retina-glow"></div>
+</div>
 </div>
 </section>
 <div class="lp-stats">
@@ -150,24 +149,24 @@
 </div>
 <!-- UPLOAD STATE -->
 <div id="uploadState">
-<div class="bg-white border border-[#d6e0e4] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]" style="margin-bottom: 18px;">
-<div class="text-[0.67rem] font-bold text-[#8896a1] uppercase tracking-[0.1em] mb-[14px]">Upload Retinal Image</div>
-<div class="border-2 border-dashed border-[#d6e0e4] rounded-[14px] pt-[52px] px-6 pb-[52px] text-center cursor-pointer transition-all duration-200 relative bg-[#f2f6f5] hover:border-[#0e9f92] hover:bg-[#0e9f920a]" id="uploadZone">
+<div class="bg-white border border-[#E2E8F0] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]" style="margin-bottom: 18px;">
+<div class="text-[0.67rem] font-bold text-[#475569] uppercase tracking-[0.1em] mb-[14px]">Upload Retinal Image</div>
+<div class="border-2 border-dashed border-[#90E0EF] rounded-[14px] pt-[52px] px-6 pb-[52px] text-center cursor-pointer transition-all duration-200 relative bg-[#CAF0F8] hover:border-[#0077B6] hover:bg-[#0077B60a]" id="uploadZone" onclick="document.getElementById('imageInput').click()">
 <input accept="image/*" id="imageInput" type="file"/>
-<div class="text-[1rem] font-bold text-[#172033] mb-[6px]">Upload a retinal fundus image</div>
-<div class="text-[0.8rem] text-[#8896a1] leading-[1.6]"><span>Click to browse</span> or drag and drop</div>
-<div class="text-[0.72rem] text-[#8896a1] mt-[8px] opacity-70">PNG, JPG, JPEG supported</div>
+<div class="text-[1rem] font-bold text-[#14213D] mb-[6px]">Upload a retinal fundus image</div>
+<div class="text-[0.8rem] text-[#475569] leading-[1.6]"><span>Click to browse</span> or drag and drop</div>
+<div class="text-[0.72rem] text-[#475569] mt-[8px] opacity-70">PNG, JPG, JPEG supported</div>
 <div class="upload-filename" id="uploadFileName" style="display:none;"></div>
 </div>
-<button class="w-full mt-[14px] bg-gradient-to-br from-[#0e9f92] to-[#087267] border-none rounded-[11px] text-white text-[0.88rem] font-bold p-[14px] cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_4px_18px_#0e9f9228] hover:-translate-y-[1px] hover:shadow-[0_6px_22px_#0e9f9240] disabled:opacity-45 disabled:cursor-not-allowed disabled:shadow-none disabled:transform-none" disabled="" id="analyzeBtn" onclick="analyze()">
+<button style="width:100%;margin-top:14px;background:linear-gradient(135deg,#0077B6,#03045E);border:none;border-radius:11px;color:#fff;font-size:0.88rem;font-weight:700;padding:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 18px rgba(0,119,182,0.16);transition:all 0.2s;opacity:0.45;" disabled="" id="analyzeBtn" onclick="analyze()">
 <span id="btnText">Select an image to begin</span>
 <div class="spinner" id="spinner" style="display:none"></div>
 </button>
 </div>
 </div>
 <!-- QUALITY REJECT STATE -->
-<div class="bg-white border border-[#d6e0e4] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]" id="qualityRejectState" style="display:none; border-color:#d94f5c;">
-<div class="text-[0.67rem] font-bold text-[#8896a1] uppercase tracking-[0.1em] mb-[14px]" style="color:#d94f5c;">Image Rejected — Quality Check Failed</div>
+<div class="bg-white border border-[#E2E8F0] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]" id="qualityRejectState" style="display:none; border-color:#d94f5c;">
+<div class="text-[0.67rem] font-bold text-[#475569] uppercase tracking-[0.1em] mb-[14px]" style="color:#d94f5c;">Image Rejected — Quality Check Failed</div>
 <div style="font-size:0.85rem; color:var(--text); margin-bottom:10px;">
       Quality score: <span id="rejectScore" style="font-weight:700;"></span>
 </div>
@@ -177,12 +176,12 @@
 <div class="result-desc" style="border-left-color:#d94f5c;">
 <span id="rejectGuidance"></span>
 </div>
-<button class="w-full mt-[14px] bg-gradient-to-br from-[#0e9f92] to-[#087267] border-none rounded-[11px] text-white text-[0.88rem] font-bold p-[14px] cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_4px_18px_#0e9f9228] hover:-translate-y-[1px] hover:shadow-[0_6px_22px_#0e9f9240] disabled:opacity-45 disabled:cursor-not-allowed disabled:shadow-none disabled:transform-none" onclick="resetFromReject()" style="margin-top:14px;">Recapture Image</button>
+<button style="width:100%;margin-top:14px;background:linear-gradient(135deg,#0077B6,#03045E);border:none;border-radius:11px;color:#fff;font-size:0.88rem;font-weight:700;padding:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 18px rgba(0,119,182,0.16);transition:all 0.2s;" onclick="resetFromReject()" >Recapture Image</button>
 </div>
 <!-- RESULTS STATE -->
 <div id="resultsState">
 <!-- Severity Scale -->
-<div class="flex mb-[18px] rounded-[11px] overflow-hidden border border-[#d6e0e4]" id="severityScale">
+<div class="flex mb-[18px] rounded-[11px] overflow-hidden border border-[#E2E8F0]" id="severityScale">
 <div class="sev-item" id="sev0"><div class="sev-dot"></div>No DR</div>
 <div class="sev-item" id="sev1"><div class="sev-dot"></div>Mild</div>
 <div class="sev-item" id="sev2"><div class="sev-dot"></div>Moderate</div>
@@ -191,31 +190,31 @@
 </div>
 <!-- Top Grid: Scan + Result -->
 <div class="top-grid">
-<div class="bg-white border border-[#d6e0e4] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]">
-<div class="text-[0.67rem] font-bold text-[#8896a1] uppercase tracking-[0.1em] mb-[14px]">Retinal Scan</div>
+<div class="bg-white border border-[#E2E8F0] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]">
+<div class="text-[0.67rem] font-bold text-[#475569] uppercase tracking-[0.1em] mb-[14px]">Retinal Scan</div>
 <div class="scan-img-wrap">
 <img alt="Retinal scan" id="scanPreview"/>
 </div>
-<button class="w-full mt-[10px] bg-transparent border border-[#d6e0e4] rounded-[10px] text-[#8896a1] text-[0.78rem] font-medium p-[10px] cursor-pointer transition-all duration-200 hover:border-[#0e9f92] hover:text-[#087267]" onclick="resetToUpload()">Upload another image</button>
+<button class="w-full mt-[10px] bg-transparent border border-[#90E0EF] rounded-[10px] text-[#475569] text-[0.78rem] font-medium p-[10px] cursor-pointer transition-all duration-200 hover:border-[#0077B6] hover:text-[#0077B6]" onclick="resetToUpload()">Upload another image</button>
 </div>
-<div class="bg-white border border-[#d6e0e4] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]" id="resultCard">
-<div class="text-[0.67rem] font-bold text-[#8896a1] uppercase tracking-[0.1em] mb-[14px]">Classification Result</div>
+<div class="bg-white border border-[#E2E8F0] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]" id="resultCard">
+<div class="text-[0.67rem] font-bold text-[#475569] uppercase tracking-[0.1em] mb-[14px]">Classification Result</div>
 <div id="resultBody"></div>
 </div>
 </div>
 <!-- Grad-CAM -->
-<div class="gradcam-card bg-white border border-[#d6e0e4] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]" id="gradcamCard" style="display:none;">
-<div class="text-[0.67rem] font-bold text-[#8896a1] uppercase tracking-[0.1em] mb-[14px]">
+<div class="gradcam-card bg-white border border-[#E2E8F0] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]" id="gradcamCard" style="display:none;">
+<div class="text-[0.67rem] font-bold text-[#475569] uppercase tracking-[0.1em] mb-[14px]">
         Model Attention — Grad-CAM Visualization
         <span id="gradcamTargetLabel" style="float:right; color:var(--accent2); text-transform:none; font-weight:bold;"></span>
 </div>
 <div class="gradcam-grid">
 <div>
-<div class="rounded-[10px] overflow-hidden border border-[#d6e0e4] w-full bg-black flex items-center justify-center"><img alt="Original scan" id="origImg"/></div>
+<div class="rounded-[10px] overflow-hidden border border-[#E2E8F0] w-full bg-black flex items-center justify-center"><img alt="Original scan" id="origImg"/></div>
 <div class="gcam-label">Original Retinal Scan</div>
 </div>
 <div>
-<div class="rounded-[10px] overflow-hidden border border-[#d6e0e4] w-full bg-black flex items-center justify-center">
+<div class="rounded-[10px] overflow-hidden border border-[#E2E8F0] w-full bg-black flex items-center justify-center">
 <img alt="Attention heatmap" id="camImg"/>
 <div id="gradcamUnavailableMsg" style="display:none; height: 180px; display:flex; align-items:center; justify-content:center; background:var(--surface2); color:var(--muted); font-style:italic;">Grad-CAM unavailable</div>
 </div>
@@ -224,29 +223,29 @@
 </div>
 </div>
 <div>
-<div class="rounded-[10px] overflow-hidden border border-[#d6e0e4] w-full bg-black flex items-center justify-center"><img alt="Lesion overlay" id="lesionImg"/></div>
+<div class="rounded-[10px] overflow-hidden border border-[#E2E8F0] w-full bg-black flex items-center justify-center"><img alt="Lesion overlay" id="lesionImg"/></div>
 <div class="gcam-label" id="lesionLabel">Lesion Overlay</div>
 </div>
 </div>
-<div class="mt-[14px] py-[11px] px-[14px] bg-[#eef7f6] border border-[#08726733] rounded-[10px] text-[0.76rem] text-[#087267] leading-[1.65]">
+<div class="mt-[14px] py-[11px] px-[14px] bg-[#CAF0F8] border border-[#0077B633] rounded-[10px] text-[0.76rem] text-[#0077B6] leading-[1.65]">
     Red zones indicate regions receiving higher attention from the model during classification. 
     This visualization provides an additional interpretability signal alongside the model prediction.
 </div>
 </div>
 <!-- Model Performance -->
-<div class="perf-card bg-white border border-[#d6e0e4] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]">
-<div class="text-[0.67rem] font-bold text-[#8896a1] uppercase tracking-[0.1em] mb-[14px]">Model Performance — External Validation (IDRiD, IQA-Accepted)</div>
+<div class="perf-card bg-white border border-[#E2E8F0] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]">
+<div class="text-[0.67rem] font-bold text-[#475569] uppercase tracking-[0.1em] mb-[14px]">Model Performance — External Validation (IDRiD, IQA-Accepted)</div>
 <div class="perf-grid">
 <div class="perf-metric"><div class="perf-val">{{ sensitivity }}</div><div class="perf-lbl">Sensitivity (Referable DR)</div></div>
 <div class="perf-metric"><div class="perf-val">{{ qwk }}</div><div class="perf-lbl">QWK (Cohen's Kappa)</div></div>
 <div class="perf-metric"><div class="perf-val">{{ n_validation }}</div><div class="perf-lbl">External Validation Images</div></div>
 </div>
-<div style="background:#0a1929;border:1px solid #3b82f644;border-radius:8px;padding:10px 14px;margin-top:12px;font-size:0.78rem;color:#93c5fd;line-height:1.4;">
+<div style="background:#032e52;border:1px solid #0077B644;border-radius:8px;padding:10px 14px;margin-top:12px;font-size:0.78rem;color:#90E0EF;line-height:1.4;">
 <b>Design philosophy — screening-first:</b> Like mammography and other high-stakes screening tools, this model is tuned to prioritize catching every possible case of DR ({{ sensitivity }} sensitivity) rather than minimizing false alarms. Flagged cases are designed to route to a human ophthalmologist for confirmation — never as a standalone diagnosis. Threshold tuning to improve specificity is an active, ongoing area of the project (see validation_sim/README.md for full methodology).
       </div>
 </div>
 <!-- AI Clinical Intelligence -->
-<div class="ai-card bg-white border border-[#d6e0e4] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]">
+<div class="ai-card bg-white border border-[#E2E8F0] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]">
 <div class="ai-header">
 <div class="ai-icon-box">AI</div>
 <div>
@@ -255,18 +254,18 @@
 </div>
 </div>
 <div class="ai-grid">
-<div class="bg-[#f2f6f5] rounded-[12px] p-[16px] border border-[#d6e0e4]">
+<div class="bg-[#CAF0F8] rounded-[12px] p-[16px] border border-[#90E0EF]">
 <div class="ai-panel-title">Clinical Summary</div>
 <div class="ai-panel-text" id="aiSummary"></div>
 </div>
-<div class="bg-[#f2f6f5] rounded-[12px] p-[16px] border border-[#d6e0e4]">
+<div class="bg-[#CAF0F8] rounded-[12px] p-[16px] border border-[#90E0EF]">
 <div class="ai-panel-title">Recommended Action</div>
 <div class="ai-panel-text" id="aiAction"></div>
 </div>
-<div class="bg-[#f2f6f5] rounded-[12px] p-[16px] border border-[#d6e0e4]">
+<div class="bg-[#CAF0F8] rounded-[12px] p-[16px] border border-[#90E0EF]">
 <div class="ai-panel-title">HCP Engagement</div>
 <div class="ai-panel-text" id="aiHcp"></div>
-<div class="inline-block mt-[10px] bg-[#0e9f9222] border border-[#0e9f9233] text-[#087267] text-[0.68rem] font-bold py-[4px] px-[10px] rounded-[20px]" id="aiChannel"></div>
+<div class="inline-block mt-[10px] bg-[#0077B622] border border-[#0077B633] text-[#0077B6] text-[0.68rem] font-bold py-[4px] px-[10px] rounded-[20px]" id="aiChannel"></div>
 </div>
 </div>
 </div>
@@ -276,13 +275,9 @@
 <div class="footer-top">
 <div style="max-width: 440px;">
 <div class="footer-brand">
-<div class="logo">
-<svg fill="none" height="16" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
-<path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-<circle cx="12" cy="12" r="3.5" stroke="white" stroke-width="2"></circle>
-</svg>
+<div style="display: flex; align-items: center;">
+<img src="{{ url_for('static', filename='img/footerlogo.png') }}" alt="Netra Logo" style="height: 60px; width: auto; object-fit: contain;" />
 </div>
-<div class="text-[1.05rem] font-extrabold tracking-[-0.02em]">Netra</div>
 </div>
 <div class="footer-desc">Quality-gated, explainable diabetic retinopathy screening — built to catch bad images before they become bad diagnoses, and to show every lesion and confidence score behind each grade. Designed as decision support for real screening programs, not a replacement for an ophthalmologist.</div>
 </div>
@@ -300,7 +295,7 @@
 </div>
 </div>
 <div class="footer-bottom">
-<div>Built by <b>Team Netra</b></div>
+<div>Built by <b>team : ASYNC AWAIT</b></div>
 <div>© 2026 Netra · Built on EfficientNetB3, trained on APTOS 2019</div>
 </div>
 <div class="footer-disclaimer">NETRA · AI-ASSISTED SCREENING DECISION SUPPORT · NOT A DIAGNOSIS · FOR DEMONSTRATION &amp; EDUCATIONAL PURPOSES ONLY</div>
@@ -317,8 +312,10 @@ document.getElementById('imageInput').addEventListener('change', function(e) {
   reader.onload = ev => {
     document.getElementById('scanPreview').src = ev.target.result;
     document.getElementById('analyzeBtn').disabled = false;
+    document.getElementById('analyzeBtn').style.opacity = '1';
+    document.getElementById('analyzeBtn').style.cursor = 'pointer';
     document.getElementById('btnText').textContent = 'Analyze Image';
-    document.getElementById('uploadZone').style.borderColor = '#0e9f92';
+    document.getElementById('uploadZone').style.borderColor = '#0077B6';
     const fnEl = document.getElementById('uploadFileName');
     fnEl.textContent = '\u2713 ' + file.name;
     fnEl.style.display = 'inline-block';
@@ -497,7 +494,7 @@ function renderResults(data) {
           <div class="bar-fill" id="bar${j}" style="background:${BAR_COLORS[j]}"></div>
         </div>
       </div>`).join('')}
-    <button id="downloadReportBtn" onclick="downloadReport()" style="margin-top:16px;width:100%;padding:12px;background:linear-gradient(135deg,#4f46e5,#087267);color:white;border:none;border-radius:10px;font-size:0.85rem;font-weight:600;cursor:pointer;">Download PDF Report</button>`;
+    <button id="downloadReportBtn" onclick="downloadReport()" style="margin-top:16px;width:100%;padding:12px;background:linear-gradient(135deg,#0077B6,#03045E);color:white;border:none;border-radius:10px;font-size:0.85rem;font-weight:600;cursor:pointer;">Download PDF Report</button>`;
   setTimeout(() => {
     document.getElementById('confFill').style.width = (data.confidence*100).toFixed(1) + '%';
     data.probabilities.forEach((p, j) => {
@@ -546,6 +543,8 @@ function resetToUpload() {
   document.getElementById('gradcamCard').style.display   = 'none';
   document.getElementById('imageInput').value            = '';
   document.getElementById('analyzeBtn').disabled         = true;
+  document.getElementById('analyzeBtn').style.opacity     = '0.45';
+  document.getElementById('analyzeBtn').style.cursor      = 'not-allowed';
   document.getElementById('btnText').textContent         = 'Select an image to begin';
   document.getElementById('uploadZone').style.borderColor = '';
 }

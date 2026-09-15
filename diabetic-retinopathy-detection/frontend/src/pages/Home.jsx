@@ -197,7 +197,7 @@ export default function Home() {
 </h1>
 <p className="lp-sub lp-reveal">Netra reads retinal fundus photographs the way a specialist would — grading severity, checking image quality first, and showing exactly what it saw so nothing is missed and nothing is hidden.</p>
 <div className="lp-ctas lp-reveal">
-<button className="w-full mt-[14px] bg-gradient-to-br from-[#0e9f92] to-[#087267] border-none rounded-[11px] text-white text-[0.88rem] font-bold p-[14px] cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_4px_18px_#0e9f9228] hover:-translate-y-[1px] hover:shadow-[0_6px_22px_#0e9f9240] disabled:opacity-45 disabled:cursor-not-allowed disabled:shadow-none disabled:transform-none" onClick={() => startApp()} style={{'width': 'auto', 'marginTop': '0', 'padding': '13px 22px'}}>Start Screening →</button>
+<button className="w-full mt-[14px] bg-gradient-to-br from-[#0077B6] to-[#03045E] border-none rounded-[11px] text-white text-[0.88rem] font-bold p-[14px] cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_4px_18px_#0077B628] hover:-translate-y-[1px] hover:shadow-[0_6px_22px_#0077B640] disabled:opacity-45 disabled:cursor-not-allowed disabled:shadow-none disabled:transform-none" onClick={() => startApp()} style={{'width': 'auto', 'marginTop': '0', 'padding': '13px 22px'}}>Start Screening →</button>
 <button className="lp-btn-secondary" onClick={() => navTo('howNetraWorks')}>See How It Works</button>
 </div>
 </section>
@@ -298,24 +298,24 @@ export default function Home() {
 </div>
 {/*  UPLOAD STATE  */}
 <div id="uploadState" style={{ display: viewState === 'upload' ? 'block' : 'none' }}>
-<div className="bg-white border border-[#d6e0e4] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]" style={{'marginBottom': '18px'}}>
-<div className="text-[0.67rem] font-bold text-[#8896a1] uppercase tracking-[0.1em] mb-[14px]">Upload Retinal Image</div>
-<div className="border-2 border-dashed border-[#d6e0e4] rounded-[14px] pt-[52px] px-6 pb-[52px] text-center cursor-pointer transition-all duration-200 relative bg-[#f2f6f5] hover:border-[#0e9f92] hover:bg-[#0e9f920a]" id="uploadZone" onClick={() => fileInputRef.current?.click()}>
+<div className="bg-white border border-[#90E0EF] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]" style={{'marginBottom': '18px'}}>
+<div className="text-[0.67rem] font-bold text-[#475569] uppercase tracking-[0.1em] mb-[14px]">Upload Retinal Image</div>
+<div className="border-2 border-dashed border-[#90E0EF] rounded-[14px] pt-[52px] px-6 pb-[52px] text-center cursor-pointer transition-all duration-200 relative bg-[#CAF0F8] hover:border-[#0077B6] hover:bg-[#0077B60a]" id="uploadZone" onClick={() => fileInputRef.current?.click()}>
 <input accept="image/*" id="imageInput" type="file"/>
-<div className="text-[1rem] font-bold text-[#172033] mb-[6px]">Upload a retinal fundus image</div>
-<div className="text-[0.8rem] text-[#8896a1] leading-[1.6]"><span>Click to browse</span> or drag and drop</div>
-<div className="text-[0.72rem] text-[#8896a1] mt-[8px] opacity-70">PNG, JPG, JPEG supported</div>
+<div className="text-[1rem] font-bold text-[#03045E] mb-[6px]">Upload a retinal fundus image</div>
+<div className="text-[0.8rem] text-[#475569] leading-[1.6]"><span>Click to browse</span> or drag and drop</div>
+<div className="text-[0.72rem] text-[#475569] mt-[8px] opacity-70">PNG, JPG, JPEG supported</div>
 {file && <div className="upload-filename" id="uploadFileName" style={{display: 'inline-block'}}>✓ {file.name}</div>}
 </div>
-<button className="w-full mt-[14px] bg-gradient-to-br from-[#0e9f92] to-[#087267] border-none rounded-[11px] text-white text-[0.88rem] font-bold p-[14px] cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_4px_18px_#0e9f9228] hover:-translate-y-[1px] hover:shadow-[0_6px_22px_#0e9f9240] disabled:opacity-45 disabled:cursor-not-allowed disabled:shadow-none disabled:transform-none" disabled="" id="analyzeBtn" onClick={(e) => { e.stopPropagation(); doAnalyze(); }} disabled={!file || analyzing}>
+<button className="w-full mt-[14px] bg-gradient-to-br from-[#0077B6] to-[#03045E] border-none rounded-[11px] text-white text-[0.88rem] font-bold p-[14px] cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_4px_18px_#0077B628] hover:-translate-y-[1px] hover:shadow-[0_6px_22px_#0077B640] disabled:opacity-45 disabled:cursor-not-allowed disabled:shadow-none disabled:transform-none" disabled="" id="analyzeBtn" onClick={(e) => { e.stopPropagation(); doAnalyze(); }} disabled={!file || analyzing}>
 <span id="btnText">{analyzeText}</span>
 {analyzing && <div className="spinner" id="spinner"></div>}
 </button>
 </div>
 </div>
 {/*  QUALITY REJECT STATE  */}
-<div className="bg-white border border-[#d6e0e4] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]" id="qualityRejectState" style={{ display: viewState === 'qualityReject' ? 'block' : 'none', borderColor: '#d94f5c' }}>
-<div className="text-[0.67rem] font-bold text-[#8896a1] uppercase tracking-[0.1em] mb-[14px]" style={{'color': '#d94f5c'}}>Image Rejected — Quality Check Failed</div>
+<div className="bg-white border border-[#90E0EF] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]" id="qualityRejectState" style={{ display: viewState === 'qualityReject' ? 'block' : 'none', borderColor: '#d94f5c' }}>
+<div className="text-[0.67rem] font-bold text-[#475569] uppercase tracking-[0.1em] mb-[14px]" style={{'color': '#d94f5c'}}>Image Rejected — Quality Check Failed</div>
 <div style={{'fontSize': '0.85rem', 'color': 'var(--text)', 'marginBottom': '10px'}}>
       Quality score: <span id="rejectScore" style={{fontWeight: '700'}}>{qData ? (qData.quality_score * 100).toFixed(0) + '/100' : ''}</span>
 </div>
@@ -325,12 +325,12 @@ export default function Home() {
 <div className="result-desc" style={{'borderLeftColor': '#d94f5c'}}>
 <span id="rejectGuidance">{qData?.clinical_guidance || 'Please recapture the image.'}</span>
 </div>
-<button className="w-full mt-[14px] bg-gradient-to-br from-[#0e9f92] to-[#087267] border-none rounded-[11px] text-white text-[0.88rem] font-bold p-[14px] cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_4px_18px_#0e9f9228] hover:-translate-y-[1px] hover:shadow-[0_6px_22px_#0e9f9240] disabled:opacity-45 disabled:cursor-not-allowed disabled:shadow-none disabled:transform-none" onClick={() => { setFile(null); setViewState('upload'); }} style={{'marginTop': '14px'}}>Recapture Image</button>
+<button className="w-full mt-[14px] bg-gradient-to-br from-[#0077B6] to-[#03045E] border-none rounded-[11px] text-white text-[0.88rem] font-bold p-[14px] cursor-pointer transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_4px_18px_#0077B628] hover:-translate-y-[1px] hover:shadow-[0_6px_22px_#0077B640] disabled:opacity-45 disabled:cursor-not-allowed disabled:shadow-none disabled:transform-none" onClick={() => { setFile(null); setViewState('upload'); }} style={{'marginTop': '14px'}}>Recapture Image</button>
 </div>
 {/*  RESULTS STATE  */}
 <div id="resultsState" style={{ display: viewState === 'results' ? 'block' : 'none' }}>
 {/*  Severity Scale  */}
-<div className="flex mb-[18px] rounded-[11px] overflow-hidden border border-[#d6e0e4]" id="severityScale">
+<div className="flex mb-[18px] rounded-[11px] overflow-hidden border border-[#90E0EF]" id="severityScale">
 <div className="sev-item" id="sev0" style={reportData?.predicted_class === 0 ? {background: "#052e16", color: "#10b981", borderBottom: "2px solid #10b981"} : {}}><div className="sev-dot" style={{opacity: 1}}></div>No DR</div>
 <div className="sev-item" id="sev1" style={reportData?.predicted_class === 1 ? {background: "#052e16", color: "#10b981", borderBottom: "2px solid #10b981"} : {}}><div className="sev-dot" style={{opacity: 1}}></div>Mild</div>
 <div className="sev-item" id="sev2" style={reportData?.predicted_class === 2 ? {background: "#1c1408", color: "#f59e0b", borderBottom: "2px solid #f59e0b"} : {}}><div className="sev-dot" style={{opacity: 1}}></div>Moderate</div>
@@ -339,31 +339,31 @@ export default function Home() {
 </div>
 {/*  Top Grid: Scan + Result  */}
 <div className="top-grid">
-<div className="bg-white border border-[#d6e0e4] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]">
-<div className="text-[0.67rem] font-bold text-[#8896a1] uppercase tracking-[0.1em] mb-[14px]">Retinal Scan</div>
+<div className="bg-white border border-[#90E0EF] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]">
+<div className="text-[0.67rem] font-bold text-[#475569] uppercase tracking-[0.1em] mb-[14px]">Retinal Scan</div>
 <div className="scan-img-wrap">
 <img alt="Retinal scan" id="scanPreview"/>
 </div>
-<button className="w-full mt-[10px] bg-transparent border border-[#d6e0e4] rounded-[10px] text-[#8896a1] text-[0.78rem] font-medium p-[10px] cursor-pointer transition-all duration-200 hover:border-[#0e9f92] hover:text-[#087267]" onClick={() => { setFile(null); setViewState('upload'); }}>Upload another image</button>
+<button className="w-full mt-[10px] bg-transparent border border-[#90E0EF] rounded-[10px] text-[#475569] text-[0.78rem] font-medium p-[10px] cursor-pointer transition-all duration-200 hover:border-[#0077B6] hover:text-[#03045E]" onClick={() => { setFile(null); setViewState('upload'); }}>Upload another image</button>
 </div>
-<div className="bg-white border border-[#d6e0e4] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]" id="resultCard">
-<div className="text-[0.67rem] font-bold text-[#8896a1] uppercase tracking-[0.1em] mb-[14px]">Classification Result</div>
+<div className="bg-white border border-[#90E0EF] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]" id="resultCard">
+<div className="text-[0.67rem] font-bold text-[#475569] uppercase tracking-[0.1em] mb-[14px]">Classification Result</div>
 <div id="resultBody" dangerouslySetInnerHTML={{ __html: reportData ? generateResultHtml(reportData) : '' }}></div>
 </div>
 </div>
 {/*  Grad-CAM  */}
-<div className="gradcam-card bg-white border border-[#d6e0e4] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]" id="gradcamCard" style={{ display: reportData ? 'block' : 'none' }}>
-<div className="text-[0.67rem] font-bold text-[#8896a1] uppercase tracking-[0.1em] mb-[14px]">
+<div className="gradcam-card bg-white border border-[#90E0EF] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]" id="gradcamCard" style={{ display: reportData ? 'block' : 'none' }}>
+<div className="text-[0.67rem] font-bold text-[#475569] uppercase tracking-[0.1em] mb-[14px]">
         Model Attention — Grad-CAM Visualization
         <span id="gradcamTargetLabel" style={{float: 'right', color: 'var(--accent2)', textTransform: 'none', fontWeight: 'bold'}}>{reportData ? 'Target: ' + reportData.gradcam_target_class : ''}</span>
 </div>
 <div className="gradcam-grid">
 <div>
-<div className="rounded-[10px] overflow-hidden border border-[#d6e0e4] w-full bg-black flex items-center justify-center"><img alt="Original scan" id="origImg"/></div>
+<div className="rounded-[10px] overflow-hidden border border-[#90E0EF] w-full bg-black flex items-center justify-center"><img alt="Original scan" id="origImg"/></div>
 <div className="gcam-label">Original Retinal Scan</div>
 </div>
 <div>
-<div className="rounded-[10px] overflow-hidden border border-[#d6e0e4] w-full bg-black flex items-center justify-center">
+<div className="rounded-[10px] overflow-hidden border border-[#90E0EF] w-full bg-black flex items-center justify-center">
 <img alt="Attention heatmap" id="camImg"/>
 <div id="gradcamUnavailableMsg" style={{'display': 'none', 'height': '180px', 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center', 'background': 'var(--surface2)', 'color': 'var(--muted)', 'fontStyle': 'italic'}}>Grad-CAM unavailable</div>
 </div>
@@ -372,29 +372,29 @@ export default function Home() {
 </div>
 </div>
 <div>
-<div className="rounded-[10px] overflow-hidden border border-[#d6e0e4] w-full bg-black flex items-center justify-center"><img alt="Lesion overlay" id="lesionImg"/></div>
+<div className="rounded-[10px] overflow-hidden border border-[#90E0EF] w-full bg-black flex items-center justify-center"><img alt="Lesion overlay" id="lesionImg"/></div>
 <div className="gcam-label" id="lesionLabel">{reportData?.lesion_count === -1 ? "Lesion Overlay — Lesion detection unavailable" : reportData?.lesion_count === 0 ? "Lesion Overlay — No candidate lesions detected by this detector; this does not rule out DR." : "Lesion Overlay — " + reportData?.lesion_count + " candidate regions flagged (red=dark, yellow=bright)"}</div>
 </div>
 </div>
-<div className="mt-[14px] py-[11px] px-[14px] bg-[#eef7f6] border border-[#08726733] rounded-[10px] text-[0.76rem] text-[#087267] leading-[1.65]">
+<div className="mt-[14px] py-[11px] px-[14px] bg-[#CAF0F8] border border-[#0077B633] rounded-[10px] text-[0.76rem] text-[#0077B6] leading-[1.65]">
     Red zones indicate regions receiving higher attention from the model during classification. 
     This visualization provides an additional interpretability signal alongside the model prediction.
 </div>
 </div>
 {/*  Model Performance  */}
-<div className="perf-card bg-white border border-[#d6e0e4] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]">
-<div className="text-[0.67rem] font-bold text-[#8896a1] uppercase tracking-[0.1em] mb-[14px]">Model Performance — External Validation (IDRiD, IQA-Accepted)</div>
+<div className="perf-card bg-white border border-[#90E0EF] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]">
+<div className="text-[0.67rem] font-bold text-[#475569] uppercase tracking-[0.1em] mb-[14px]">Model Performance — External Validation (IDRiD, IQA-Accepted)</div>
 <div className="perf-grid">
 <div className="perf-metric"><div className="perf-val">96.7%</div><div className="perf-lbl">Sensitivity (Referable DR)</div></div>
 <div className="perf-metric"><div className="perf-val">0.852</div><div className="perf-lbl">QWK (Cohen's Kappa)</div></div>
 <div className="perf-metric"><div className="perf-val">94</div><div className="perf-lbl">External Validation Images</div></div>
 </div>
-<div style={{'background': '#0a1929', 'border': '1px solid #3b82f644', 'borderRadius': '8px', 'padding': '10px 14px', 'marginTop': '12px', 'fontSize': '0.78rem', 'color': '#93c5fd', 'lineHeight': '1.4'}}>
+<div style={{'background': '#032e52', 'border': '1px solid #0077B644', 'borderRadius': '8px', 'padding': '10px 14px', 'marginTop': '12px', 'fontSize': '0.78rem', 'color': '#90E0EF', 'lineHeight': '1.4'}}>
 <b>Design philosophy — screening-first:</b> Like mammography and other high-stakes screening tools, this model is tuned to prioritize catching every possible case of DR (96.7% sensitivity) rather than minimizing false alarms. Flagged cases are designed to route to a human ophthalmologist for confirmation — never as a standalone diagnosis. Threshold tuning to improve specificity is an active, ongoing area of the project (see validation_sim/README.md for full methodology).
       </div>
 </div>
 {/*  AI Clinical Intelligence  */}
-<div className="ai-card bg-white border border-[#d6e0e4] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]">
+<div className="ai-card bg-white border border-[#90E0EF] rounded-[16px] p-[22px] shadow-[0_8px_22px_rgba(20,43,58,0.05)]">
 <div className="ai-header">
 <div className="ai-icon-box">AI</div>
 <div>
@@ -403,18 +403,18 @@ export default function Home() {
 </div>
 </div>
 <div className="ai-grid">
-<div className="bg-[#f2f6f5] rounded-[12px] p-[16px] border border-[#d6e0e4]">
+<div className="bg-[#CAF0F8] rounded-[12px] p-[16px] border border-[#90E0EF]">
 <div className="ai-panel-title">Clinical Summary</div>
 <div className="ai-panel-text" id="aiSummary">{reportData?.ai_summary}</div>
 </div>
-<div className="bg-[#f2f6f5] rounded-[12px] p-[16px] border border-[#d6e0e4]">
+<div className="bg-[#CAF0F8] rounded-[12px] p-[16px] border border-[#90E0EF]">
 <div className="ai-panel-title">Recommended Action</div>
 <div className="ai-panel-text" id="aiAction">{reportData?.ai_action}</div>
 </div>
-<div className="bg-[#f2f6f5] rounded-[12px] p-[16px] border border-[#d6e0e4]">
+<div className="bg-[#CAF0F8] rounded-[12px] p-[16px] border border-[#90E0EF]">
 <div className="ai-panel-title">HCP Engagement</div>
 <div className="ai-panel-text" id="aiHcp">{reportData?.ai_hcp}</div>
-{reportData?.ai_channel && <div className="inline-block mt-[10px] bg-[#0e9f9222] border border-[#0e9f9233] text-[#087267] text-[0.68rem] font-bold py-[4px] px-[10px] rounded-[20px]" id="aiChannel">{reportData?.ai_channel}</div>}
+{reportData?.ai_channel && <div className="inline-block mt-[10px] bg-[#0077B622] border border-[#0077B633] text-[#03045E] text-[0.68rem] font-bold py-[4px] px-[10px] rounded-[20px]" id="aiChannel">{reportData?.ai_channel}</div>}
 </div>
 </div>
 </div>
@@ -448,7 +448,7 @@ export default function Home() {
 </div>
 </div>
 <div className="footer-bottom">
-<div>Built by <b>Team Netra</b></div>
+<div>Built by <b>team : ASYNC AWAIT</b></div>
 <div>© 2026 Netra · Built on EfficientNetB3, trained on APTOS 2019</div>
 </div>
 <div className="footer-disclaimer">NETRA · AI-ASSISTED SCREENING DECISION SUPPORT · NOT A DIAGNOSIS · FOR DEMONSTRATION &amp; EDUCATIONAL PURPOSES ONLY</div>

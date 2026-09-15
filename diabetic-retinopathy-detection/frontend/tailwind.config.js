@@ -4,12 +4,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: { DEFAULT: '#008F87', dark: '#007A73', light: '#E0F7F5' },
-        bg: '#EFF8FA',
-        heading: '#172235',
-        muted: '#64748B',
+        primary: { DEFAULT: '#0077B6', dark: '#03045E', light: '#CAF0F8' },
+        bg: '#F8FAFC',
+        heading: '#03045E',
+        muted: '#475569',
         surface: '#FFFFFF',
-        border: '#E2E8F0',
+        border: '#90E0EF',
       },
       fontFamily: {
         serif: ['Fraunces', 'serif'],
