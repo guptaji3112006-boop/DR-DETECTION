@@ -5,7 +5,7 @@ from contextlib import closing
 from datetime import datetime
 import uuid
 
-DB_PATH = os.path.join(os.path.dirname(__file__), 'netra.db')
+DB_PATH = os.getenv('DB_PATH', os.path.join(os.path.dirname(__file__), 'netra.db'))
 
 def init_db():
     """Initialize the database schema."""

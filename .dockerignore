@@ -1,0 +1,16 @@
+.git
+.gitignore
+.venv
+.venv-*
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+datasets/
+validation_sim/results/
+diabetic-retinopathy-detection/netra.db
+diabetic-retinopathy-detection/uploads/
+diabetic-retinopathy-detection/frontend/node_modules/
+diabetic-retinopathy-detection/frontend/dist/
+.env

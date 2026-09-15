@@ -4,13 +4,17 @@
 # ==============================================================================
 
 # --- Core & Image Processing ---
-numpy
+numpy==1.26.4
 pandas
 scikit-learn
 scikit-image
-opencv-python
+opencv-python-headless
 matplotlib
-Pillow
+Pillow==10.0.1
+flask==3.0.0
+flask-cors
+gunicorn
+werkzeug==3.0.0
 
 # --- Deep Learning (TensorFlow / Keras Framework) ---
 tensorflow

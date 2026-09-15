@@ -20,9 +20,15 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from iqa_module.pipeline import process_retinal_image
 from grading_model import LesionAwareSeverityClassifier
 import database as db
+from flask_cors import CORS
 
 app = Flask(__name__)
+cors_origins = os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+CORS(app, supports_credentials=True, origins=cors_origins)
+db.init_db()
+
 logging.basicConfig(level=logging.INFO)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 CLASS_LABELS = ["No DR", "Mild DR", "Moderate DR", "Severe DR", "Proliferative DR"]
 RISK_TIERS = ["MONITOR", "MONITOR", "ENGAGE", "ACT NOW", "ACT NOW"]
@@ -70,12 +76,13 @@ AI_SUMMARIES = [
     },
 ]
 
-model = keras.models.load_model("models/diabetic_retinopathy_model.keras")
+model_path = os.path.join(BASE_DIR, "models/diabetic_retinopathy_model.keras")
+model = keras.models.load_model(model_path)
 print(
     "MODEL LAYERS:", [(i, l.name, type(l).__name__) for i, l in enumerate(model.layers)]
 )
 
-calibration_path = "models/calibration.json"
+calibration_path = os.path.join(BASE_DIR, "models/calibration.json")
 
 if os.path.exists(calibration_path):
     with open(calibration_path, "r") as f:
@@ -86,7 +93,7 @@ else:
 grading_classifier = LesionAwareSeverityClassifier(
     model=model, temperature=temperature, low_confidence_threshold=0.60
 )
-temperature_path = os.getenv("DR_TEMPERATURE_FILE", "models/calibration.json")
+temperature_path = os.getenv("DR_TEMPERATURE_FILE", os.path.join(BASE_DIR, "models/calibration.json"))
 configured_temperature = float(os.getenv("DR_TEMPERATURE", "1.0"))
 if os.path.exists(temperature_path):
     with open(temperature_path, "r", encoding="utf-8") as calibration_file:
@@ -371,6 +378,10 @@ HTML = """
 def index():
     return render_template("index.html", **VALIDATION_METRICS)
 
+@app.route("/health")
+def health():
+    return jsonify({"status": "ok", "message": "Netra backend is running"})
+
 # Serve React frontend for /patients
 @app.route("/patients")
 @app.route("/patients/<path:path>")
@@ -433,10 +444,11 @@ def api_screenings():
         return "Missing file", 400
 
     # Ensure uploads dir exists
-    os.makedirs("uploads", exist_ok=True)
+    upload_folder = os.getenv("UPLOAD_FOLDER", os.path.join(BASE_DIR, "uploads"))
+    os.makedirs(upload_folder, exist_ok=True)
     ext = file.filename.split('.')[-1] if '.' in file.filename else 'jpg'
     img_filename = f"{visit_id}_{eye}_{uuid.uuid4().hex[:6]}.{ext}"
-    img_path = os.path.join("uploads", img_filename)
+    img_path = os.path.join(upload_folder, img_filename)
     file.save(img_path)
 
     # IQA Check

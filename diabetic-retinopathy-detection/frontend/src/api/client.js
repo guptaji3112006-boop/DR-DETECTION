@@ -1,5 +1,26 @@
-const API_BASE = '';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
 
+export async function checkQuality(file) {
+  const fd = new FormData();
+  fd.append('file', file);
+  const res = await fetch(`${API_BASE}/check_quality`, {
+    method: 'POST',
+    body: fd,
+  });
+  if (!res.ok) throw new Error('Quality check failed');
+  return res.json();
+}
+
+export async function predict(file) {
+  const fd = new FormData();
+  fd.append('file', file);
+  const res = await fetch(`${API_BASE}/predict`, {
+    method: 'POST',
+    body: fd,
+  });
+  if (!res.ok) throw new Error('Prediction failed');
+  return res.json();
+}
 export async function getPatients() {
   const res = await fetch(`${API_BASE}/api/patients`);
   if (!res.ok) throw new Error('Failed to fetch patients');
