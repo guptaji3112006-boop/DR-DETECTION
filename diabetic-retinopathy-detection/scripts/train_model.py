@@ -24,8 +24,6 @@ def focal_loss(alpha=0.25, gamma=2.0):
     def focal_loss_fixed(y_true, y_pred):
         epsilon = 1e-8
         y_pred = tf.clip_by_value(y_pred, epsilon, 1. - epsilon)
-        y_true = tf.cast(y_true, tf.int32)
-        y_true = tf.one_hot(y_true, depth=5)
         y_true = tf.cast(y_true, tf.float32)
         ce = -y_true * tf.math.log(y_pred)
         weight = alpha * tf.pow((1 - y_pred), gamma)
@@ -46,6 +44,7 @@ def create_tf_dataset(dataframe, batch_size=BATCH_SIZE, shuffle=True, augment=Fa
             img = tf.image.random_brightness(img, 0.15)
             img = tf.image.random_contrast(img, 0.9, 1.1)
             img = tf.image.random_saturation(img, 0.9, 1.1)
+        label = tf.one_hot(label, depth=5)
         return img, label
 
     img_ids = dataframe['id_code'].values
@@ -113,7 +112,7 @@ class_weight_dict = dict(zip(np.unique(train_data['diagnosis']), class_weights))
 improved_model.compile(
     optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001),
     loss=focal_loss(alpha=0.25, gamma=2.0),
-    metrics=['accuracy']
+    metrics=['accuracy', tf.keras.metrics.Recall(name='sensitivity')]
 )
 
 # Callbacks
@@ -165,9 +164,12 @@ plt.show()
 # Summary
 final_train_acc = max(history.history['accuracy'])
 final_val_acc = max(history.history['val_accuracy'])
+final_val_sens = max(history.history.get('val_sensitivity', [0]))
 print(f"\nFinal Results:")
 print(f"Best Training Accuracy: {final_train_acc:.4f}")
 print(f"Best Validation Accuracy: {final_val_acc:.4f}")
+if final_val_sens > 0:
+    print(f"Best Validation Sensitivity: {final_val_sens:.4f}")
 
 # Save model with custom and standard loss
 model_save_path = str(MODEL_DIR / 'diabetic_retinopathy_model.h5')
@@ -176,8 +178,8 @@ print(f"Model saved to: {model_save_path}")
 
 improved_model.compile(
     optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001),
-    loss='sparse_categorical_crossentropy',
-    metrics=['accuracy']
+    loss='categorical_crossentropy',
+    metrics=['accuracy', tf.keras.metrics.Recall(name='sensitivity')]
 )
 
 keras_model_path = str(MODEL_DIR / 'diabetic_retinopathy_model.keras')

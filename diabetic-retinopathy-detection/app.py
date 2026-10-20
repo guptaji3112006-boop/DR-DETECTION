@@ -150,6 +150,102 @@ for i, l in enumerate(model.layers):
         logging.info("      last 3 conv layers: %s", conv_names[-3:])
 
 
+TTA_ENABLED = os.getenv("TTA_ENABLED", "false").lower() == "true"
+
+def apply_tta_transforms(img_input):
+    """
+    Generate TTA views for a single image input of shape (1, 224, 224, 3).
+    Returns a batch of 4 views: [Original, Horizontal Flip, +5 deg rot, -5 deg rot]
+    """
+    img = img_input[0]
+    views = [img]
+    
+    # 1. Horizontal flip
+    flipped = cv2.flip(img, 1)
+    views.append(flipped)
+    
+    # Rotation preserving entire retinal field
+    h, w = img.shape[:2]
+    center = (w / 2, h / 2)
+    
+    for angle in [5.0, -5.0]:
+        M = cv2.getRotationMatrix2D(center, angle, 1.0)
+        
+        # Calculate new bounding box to avoid cropping
+        cos = np.abs(M[0, 0])
+        sin = np.abs(M[0, 1])
+        new_w = int((h * sin) + (w * cos))
+        new_h = int((h * cos) + (w * sin))
+        
+        # Adjust matrix to take into account translation
+        M[0, 2] += (new_w / 2) - center[0]
+        M[1, 2] += (new_h / 2) - center[1]
+        
+        # Perform rotation and padding
+        rotated_padded = cv2.warpAffine(img, M, (new_w, new_h), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=0)
+        
+        # Resize back to original size (224, 224)
+        rotated_resized = cv2.resize(rotated_padded, (w, h), interpolation=cv2.INTER_LINEAR)
+        views.append(rotated_resized)
+        
+    return np.array(views)
+
+def run_inference_with_tta(img_input, enhanced_input, lesion_evidence, grading_classifier, model):
+    """
+    Shared inference function handling TTA logic.
+    """
+    model_input = enhanced_input if enhanced_input is not None else img_input
+
+    if not TTA_ENABLED:
+        # Backward compatible non-TTA path
+        grading = grading_classifier.predict(img_input, enhanced_image=enhanced_input, lesion_evidence=lesion_evidence)
+        grading["tta_enabled"] = False
+        grading["tta_views"] = 1
+        grading["calibration_status"] = "calibrated" if os.path.exists(calibration_path) else "uncalibrated"
+        return grading
+
+    # TTA Path
+    tta_views_batch = apply_tta_transforms(model_input)
+    
+    if lesion_evidence is None and grading_classifier.lesion_predictor is not None:
+        lesion_evidence = grading_classifier.lesion_predictor(model_input)
+    
+    # Run batch through Keras model
+    probabilities_batch = np.asarray(model.predict(tta_views_batch, verbose=0))
+    probabilities_batch = np.clip(probabilities_batch.astype(np.float64), 1e-8, 1.0)
+    probabilities_batch /= probabilities_batch.sum(axis=1, keepdims=True)
+    
+    lesion_adj = grading_classifier._lesion_adjustment(lesion_evidence)
+    raw_logits_batch = np.log(probabilities_batch) + lesion_adj
+    
+    def _softmax(logits):
+        shifted = logits - np.max(logits, axis=-1, keepdims=True)
+        exp_logits = np.exp(shifted)
+        return exp_logits / np.sum(exp_logits, axis=-1, keepdims=True)
+    
+    raw_probabilities_batch = _softmax(raw_logits_batch)
+    
+    # Arithmetic mean of raw probabilities
+    tta_probabilities = np.mean(raw_probabilities_batch, axis=0)
+    tta_grade = int(np.argmax(tta_probabilities))
+    tta_raw_confidence = float(np.max(tta_probabilities))
+    
+    grading = {
+        "severity_grade": tta_grade,
+        "raw_confidence": tta_raw_confidence,
+        "calibrated_confidence": tta_raw_confidence, # explicitly uncalibrated
+        "confidence_flag": "ok" if tta_raw_confidence >= grading_classifier.low_confidence_threshold else "low",
+        "probabilities": tta_probabilities.tolist(),
+        "raw_probabilities": tta_probabilities.tolist(),
+        "lesion_evidence": dict(lesion_evidence or {}),
+        "tta_enabled": True,
+        "tta_views": len(tta_views_batch),
+        "calibration_status": "uncalibrated"
+    }
+    
+    return grading
+
+
 def _find_last_conv(layers):
     """Return the last Conv layer from a list, checking by type then name."""
     for l in reversed(layers):
@@ -343,10 +439,11 @@ def detect_lesions(img):
         dark_thresh = cv2.bitwise_and(dark_thresh, fov_mask)
 
         overlay = img_uint8.copy()
-        lesion_count = 0
+        dark_count = 0
+        bright_count = 0
 
         # Find contours
-        for mask, color in [(dark_thresh, (255, 0, 0)), (bright_thresh, (255, 255, 0))]:
+        for is_bright, mask, color in [(False, dark_thresh, (255, 0, 0)), (True, bright_thresh, (255, 255, 0))]:
             contours, _ = cv2.findContours(
                 mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
             )
@@ -356,12 +453,30 @@ def detect_lesions(img):
                 if 4 <= area < 1000:
                     (x, y), r = cv2.minEnclosingCircle(c)
                     cv2.circle(overlay, (int(x), int(y)), int(r) + 2, color, 1)
-                    lesion_count += 1
+                    if is_bright:
+                        bright_count += 1
+                    else:
+                        dark_count += 1
 
-        return overlay, lesion_count
+        breakdown = {
+            "status": "success",
+            "method": "classical_cv",
+            "total_candidates": dark_count + bright_count,
+            "dark_candidates": dark_count,
+            "bright_candidates": bright_count,
+            "subtype_status": "not_determined"
+        }
+        return overlay, breakdown
     except Exception as e:
         logging.warning("Lesion detection failed: %s", e)
-        return None, -1
+        return None, {
+            "status": "error",
+            "method": "classical_cv",
+            "total_candidates": 0,
+            "dark_candidates": 0,
+            "bright_candidates": 0,
+            "subtype_status": "not_determined"
+        }
 
 
 def img_to_b64(pil_img):
@@ -493,7 +608,7 @@ def api_screenings():
             np.array(enhanced_image).astype("float32") / 255.0, axis=0
         )
 
-    grading = grading_classifier.predict(img_input, enhanced_image=enhanced_input, lesion_evidence=None)
+    grading = run_inference_with_tta(img_input, enhanced_input, None, grading_classifier, model)
     predicted_class = grading["severity_grade"]
 
     orig_b64 = img_to_b64(lesion_image)
@@ -502,9 +617,13 @@ def api_screenings():
     
     lesion_b64 = None
     lesion_count = -1
+    lesion_breakdown = None
     if lesion_result[0] is not None:
-        lesion_b64 = img_to_b64(Image.fromarray(lesion_result[0]))
-        lesion_count = lesion_result[1]
+        lesion_overlay_img, lesion_breakdown = lesion_result
+        lesion_b64 = img_to_b64(Image.fromarray(lesion_overlay_img))
+        lesion_count = lesion_breakdown["total_candidates"]
+    elif lesion_result[1]:
+        lesion_breakdown = lesion_result[1]
 
     # Save to DB
     screening_id = db.save_eye_screening(visit_id, eye, {
@@ -520,7 +639,8 @@ def api_screenings():
         'lesion_count': lesion_count,
         'original_b64_path': orig_b64, 
         'gradcam_b64_path': gradcam_b64,
-        'lesion_overlay_b64_path': lesion_b64
+        'lesion_overlay_b64_path': lesion_b64,
+        'lesion_breakdown': lesion_breakdown
     })
 
     return jsonify({
@@ -533,11 +653,16 @@ def api_screenings():
         "ai_calibrated_confidence": grading["calibrated_confidence"],
         "ai_confidence_flag": grading["confidence_flag"],
         "lesion_count": lesion_count,
+        "lesion_breakdown": lesion_breakdown,
         "original_b64": orig_b64,
         "gradcam_b64": gradcam_b64,
         "lesion_b64": lesion_b64,
         "ai_summary": AI_SUMMARIES[predicted_class]["summary"],
-        "ai_action": AI_SUMMARIES[predicted_class]["action"]
+        "ai_action": AI_SUMMARIES[predicted_class]["action"],
+        "tta_enabled": grading.get("tta_enabled", False),
+        "tta_views": grading.get("tta_views", 1),
+        "calibration_status": grading.get("calibration_status", "calibrated"),
+        "probabilities": [float(p) for p in grading.get("probabilities", [])]
     })
 
 
@@ -599,10 +724,12 @@ def predict():
     if request.form.get("lesion_evidence"):
         lesion_evidence = json.loads(request.form["lesion_evidence"])
 
-    grading = grading_classifier.predict(
+    grading = run_inference_with_tta(
         img_input,
-        enhanced_image=enhanced_input,
-        lesion_evidence=lesion_evidence,
+        enhanced_input,
+        lesion_evidence,
+        grading_classifier,
+        model
     )
     print("GRADING OUTPUT:", grading)
 
@@ -616,12 +743,15 @@ def predict():
     )
 
     lesion_result = detect_lesions(lesion_img_array)
+    lesion_b64 = None
+    lesion_count = -1
+    lesion_breakdown = None
     if lesion_result[0] is not None:
-        lesion_overlay_img, lesion_count = lesion_result
+        lesion_overlay_img, lesion_breakdown = lesion_result
         lesion_b64 = img_to_b64(Image.fromarray(lesion_overlay_img))
-    else:
-        lesion_b64 = None
-        lesion_count = -1
+        lesion_count = lesion_breakdown.get("total_candidates", -1)
+    elif lesion_result[1]:
+        lesion_breakdown = lesion_result[1]
 
     return jsonify(
         {
@@ -643,6 +773,10 @@ def predict():
             "gradcam": gradcam_b64,
             "lesion_overlay": lesion_b64,
             "lesion_count": lesion_count,
+            "tta_enabled": grading.get("tta_enabled", False),
+            "tta_views": grading.get("tta_views", 1),
+            "calibration_status": grading.get("calibration_status", "calibrated"),
+            "lesion_breakdown": lesion_breakdown
         }
     )
 
@@ -708,11 +842,28 @@ def generate_report():
     confidence = data.get("confidence") or 0
     quality_score = data.get("quality_score")
     lesion_count = data.get("lesion_count", "N/A")
+    lesion_breakdown = data.get("lesion_breakdown")
     lesion_count_str = str(lesion_count)
-    if lesion_count == -1:
-        lesion_count_str = "Lesion detection unavailable"
-    elif lesion_count == 0:
-        lesion_count_str = "0 (Does not rule out DR)"
+
+    if lesion_breakdown:
+        status = lesion_breakdown.get("status", "error")
+        if status == "success":
+            total = lesion_breakdown.get("total_candidates", 0)
+            if total == 0:
+                lesion_count_str = "0 (Does not rule out DR)"
+            else:
+                dark = lesion_breakdown.get("dark_candidates", 0)
+                bright = lesion_breakdown.get("bright_candidates", 0)
+                lesion_count_str = f"{total} (Dark: {dark} | Bright: {bright})"
+        elif status == "error":
+            lesion_count_str = "Lesion analysis failed"
+        else:
+            lesion_count_str = "Lesion analysis unavailable"
+    else:
+        if lesion_count == -1:
+            lesion_count_str = "Lesion analysis unavailable (Legacy)"
+        elif lesion_count == 0:
+            lesion_count_str = "0 (Does not rule out DR)"
 
     confidence_flag = data.get("confidence_flag", "ok")
     description = data.get("description", "")

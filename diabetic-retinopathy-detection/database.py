@@ -76,6 +76,13 @@ def init_db():
                 FOREIGN KEY(visit_id) REFERENCES visits(visit_id)
             )
         ''')
+        
+        # Add lesion_breakdown column if it doesn't exist (additive migration)
+        try:
+            cursor.execute("ALTER TABLE eye_screenings ADD COLUMN lesion_breakdown TEXT")
+        except sqlite3.OperationalError:
+            pass # Column already exists
+            
         conn.commit()
 
 def get_db():
@@ -147,14 +154,16 @@ def save_eye_screening(visit_id, eye, data):
             INSERT INTO eye_screenings (
                 id, visit_id, eye, image_path, quality_score, quality_pass, quality_reason, 
                 ai_grade, ai_raw_confidence, ai_calibrated_confidence, ai_confidence_flag, 
-                model_version, lesion_count, original_b64_path, gradcam_b64_path, lesion_overlay_b64_path
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                model_version, lesion_count, original_b64_path, gradcam_b64_path, lesion_overlay_b64_path,
+                lesion_breakdown
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             screening_id, visit_id, eye, data.get('image_path'), data.get('quality_score'), 
             data.get('quality_pass'), data.get('quality_reason'), data.get('ai_grade'),
             data.get('ai_raw_confidence'), data.get('ai_calibrated_confidence'), data.get('ai_confidence_flag'),
             data.get('model_version'), data.get('lesion_count'), data.get('original_b64_path'),
-            data.get('gradcam_b64_path'), data.get('lesion_overlay_b64_path')
+            data.get('gradcam_b64_path'), data.get('lesion_overlay_b64_path'),
+            json.dumps(data.get('lesion_breakdown')) if data.get('lesion_breakdown') else None
         ))
         conn.commit()
     return screening_id
